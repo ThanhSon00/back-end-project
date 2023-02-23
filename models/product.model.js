@@ -30,7 +30,7 @@ const Product = sequelize.define("Product", {
 },
 {
     initialAutoIncrement: 0,
-    timestamps: false,
+    paranoid : true,
 });
 
 module.exports = Product;

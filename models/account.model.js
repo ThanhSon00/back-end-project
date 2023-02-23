@@ -10,14 +10,9 @@ const Account = sequelize.define("Account", {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-        allowNull: false,
-    },
 },
 {
-    timestamps: false,
+    paranoid : true
 });
 
 module.exports = Account;

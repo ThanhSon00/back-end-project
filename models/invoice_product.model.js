@@ -7,13 +7,9 @@ const InvoiceProducts = sequelize.define("Invoice_Products", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-    }
 },
 {
-    timestamps: false,
+    paranoid : true,
 });
     
 Invoice.belongsToMany(Product, { 

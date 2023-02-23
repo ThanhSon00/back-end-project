@@ -20,12 +20,9 @@ const Customer = sequelize.define("Customer", {
         type: DataTypes.DOUBLE,
         defaultValue: 0,
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-    },
 },
 {
+    paranoid : true,
     timestamps: false,
 });
 

@@ -22,7 +22,7 @@ const Invoice = sequelize.define("Invoice", {
 },
 {
     initialAutoIncrement: 0,
-    timestamps: false,
+    paranoid : true,
 });
 
 module.exports = Invoice;

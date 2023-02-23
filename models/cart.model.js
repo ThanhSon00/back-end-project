@@ -13,7 +13,7 @@ const Cart = sequelize.define("Cart", {
         defaultValue: 0,
     },
 }, {
-    timestamps: false,
+    paranoid : true,
     initialAutoIncrement: 0,
 });
 

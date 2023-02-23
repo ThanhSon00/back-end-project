@@ -7,9 +7,8 @@ const CartProducts = sequelize.define("Cart_Product", {
         type: DataTypes.INTEGER,
         allowNull: false,
     }
-},
-{
-    timestamps: false,
+}, {
+    paranoid: true,
 });
 
 Cart.belongsToMany(Product, { 
