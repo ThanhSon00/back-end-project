@@ -4,6 +4,7 @@ const sequelize = require('../database/connect');
 const Invoice = sequelize.define("Invoice", {
     invoice_id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
     },
     totalAmount: {
@@ -20,6 +21,7 @@ const Invoice = sequelize.define("Invoice", {
     },
 },
 {
+    initialAutoIncrement: 0,
     timestamps: false,
 });
 
