@@ -23,7 +23,6 @@ const Customer = sequelize.define("Customer", {
 },
 {
     paranoid : true,
-    timestamps: false,
 });
 
 Customer.hasOne(Account, {
