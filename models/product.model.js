@@ -4,6 +4,7 @@ const sequelize = require('../database/connect');
 const Product = sequelize.define("Product", {
     product_id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
     },
     name: {
@@ -28,6 +29,7 @@ const Product = sequelize.define("Product", {
     },
 },
 {
+    initialAutoIncrement: 0,
     timestamps: false,
 });
 

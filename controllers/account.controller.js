@@ -45,7 +45,6 @@ const updateAccount = async (req, res) => {
             phoneNumber: phoneNumber,
         }
     }, { fields: ['password']});
-    console.log(password)
     res.status(StatusCodes.OK).send();
 }
 
