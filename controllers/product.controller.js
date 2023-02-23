@@ -15,6 +15,7 @@ const getProduct = async (req, res) => {
     const product = await Product.findAll({
         where: {
             product_id: product_id,
+            status: true,
         }
     });
     res.status(StatusCodes.OK).json(product);
