@@ -2,11 +2,7 @@ const Invoice = require('../models/invoice.model');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllInvoice = async (req, res) => {
-    const invoices = await Invoice.findAll({
-        where: {
-            status: true,
-        }
-    })
+    const invoices = await Invoice.findAll();
     res.status(StatusCodes.OK).json(invoices);
 }
 
@@ -15,7 +11,6 @@ const getInvoice = async (req, res) => {
     const invoice = await Invoice.findAll({
         where: {
             invoice_id: invoice_id,
-            status: true,
         }
     });
     res.status(StatusCodes.OK).json(invoice);
@@ -38,7 +33,6 @@ const updateInvoice = async (req, res) => {
     }, {
         where: {
             invoice_id: invoice_id,
-            status: true,
         } 
     }, { fields: ['totalAmount', 'totalMoney']});
     res.status(StatusCodes.OK).send();

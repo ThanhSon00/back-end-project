@@ -2,11 +2,7 @@ const Product = require('../models/product.model');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllProduct = async (req, res) => {
-    const products = await Product.findAll({
-        where: {
-            status: true,
-        }
-    });
+    const products = await Product.findAll();
     res.status(StatusCodes.OK).json(products);
 }
 
@@ -15,7 +11,6 @@ const getProduct = async (req, res) => {
     const product = await Product.findAll({
         where: {
             product_id: product_id,
-            status: true,
         }
     });
     res.status(StatusCodes.OK).json(product);

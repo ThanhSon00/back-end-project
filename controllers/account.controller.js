@@ -2,11 +2,7 @@ const Account = require("../models/account.model");
 const { StatusCodes } = require('http-status-codes')
 
 const getAllAccount = async (req, res) => {
-    const accounts = await Account.findAll({
-        where: {
-            status: true,
-        }
-    });
+    const accounts = await Account.findAll();
     res.status(StatusCodes.OK).json({accounts});
 }
 
@@ -18,7 +14,6 @@ const getAccount = async (req, res) => {
     const account = await Account.findAll({
         where: {
             phoneNumber: phoneNumber,
-            status: true,
         }
     });
     res.status(StatusCodes.OK).json({account});

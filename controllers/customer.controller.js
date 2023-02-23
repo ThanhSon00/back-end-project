@@ -2,11 +2,7 @@ const Customer = require('../models/customer.model');
 const { StatusCodes} = require('http-status-codes');
 
 const getAllCustomer = async (req, res) => {
-    const customers = await Customer.findAll({
-        where: {
-            status: true,
-        }
-    });
+    const customers = await Customer.findAll();
     res.status(StatusCodes.OK).json(customers);
 }
 
@@ -27,7 +23,6 @@ const getCustomer = async (req, res) => {
     const customer = await Customer.findAll({
         where: {
             phone: phoneNumber,
-            status: true,
         }
     });
     res.status(StatusCodes.OK).json(customer);
