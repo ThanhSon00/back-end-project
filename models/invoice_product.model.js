@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, DOUBLE } = require('sequelize');
 const sequelize = require('../database/connect');
 const Invoice = require('./invoice.model');
 const Product = require('./product.model');
@@ -7,6 +7,10 @@ const InvoiceProducts = sequelize.define("Invoice_Products", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    money: {
+        type: DataTypes.DOUBLE,
+        defaultValue: 0,
+    }
 },
 {
     paranoid : true,
