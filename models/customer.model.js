@@ -6,27 +6,38 @@ const Invoice = require("./invoice.model")
 
 // Define model
 const Customer = sequelize.define("Customer", {
-    phone: {
-        type: DataTypes.STRING,
+    customer_id: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
     },
     name: {
         type: DataTypes.STRING,
+        allowNull: false,
     },
     email: {
         type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
     },
     money: {
         type: DataTypes.DOUBLE,
         defaultValue: 0,
+        allowNull: false,
+    },
+    phone: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
     },
 },
 {
+    initialAutoIncrement: 0,
     paranoid : true,
 });
 
 Customer.hasOne(Account, {
-    foreignKey: "phoneNumber",
+    foreignKey: "customer_id",
 });
 
 Customer.hasOne(Cart, {

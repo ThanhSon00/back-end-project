@@ -10,14 +10,12 @@ const Invoice = sequelize.define("Invoice", {
     totalAmount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
+        allowNull: false,
     },
     totalMoney: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
-    },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        allowNull: false,
     },
 },
 {

@@ -2,9 +2,9 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
 // Define model 
 const Account = sequelize.define("Account", {
-    phoneNumber: {
-        type: DataTypes.STRING,
+    customer_id: {
         primaryKey: true,
+        autoIncrement: true,
     },
     password: {
         type: DataTypes.TEXT,
@@ -12,7 +12,8 @@ const Account = sequelize.define("Account", {
     },
 },
 {
-    paranoid : true
+    initialAutoIncrement: 0,
+    paranoid : true,
 });
 
 module.exports = Account;

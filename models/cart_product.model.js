@@ -5,10 +5,11 @@ const Product = require('./product.model');
 const CartProducts = sequelize.define("Cart_Product", {
     amount: {
         type: DataTypes.INTEGER,
+        defaultValue: 0,
         allowNull: false,
     }
 }, {
-    paranoid: true,
+    timeStamps: false,
 });
 
 Cart.belongsToMany(Product, { 

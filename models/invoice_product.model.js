@@ -10,6 +10,7 @@ const InvoiceProducts = sequelize.define("Invoice_Products", {
     money: {
         type: DataTypes.DOUBLE,
         defaultValue: 0,
+        allowNull: false,
     }
 },
 {
