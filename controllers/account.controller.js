@@ -1,7 +1,7 @@
 const Account = require("../models/account.model");
 const { StatusCodes } = require('http-status-codes')
 
-const getAllAccount = async (req, res) => {
+const getAllAccounts = async (req, res) => {
     const accounts = await Account.findAll();
     res.status(StatusCodes.OK).json({accounts});
 }
@@ -57,7 +57,7 @@ const deleteAccount = async (req, res) => {
 
 module.exports = {
     getAccount, 
-    getAllAccount,
+    getAllAccounts,
     createAccount,
     updateAccount,
     deleteAccount,

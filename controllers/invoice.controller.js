@@ -1,7 +1,7 @@
 const Invoice = require('../models/invoice.model');
 const { StatusCodes } = require('http-status-codes');
 
-const getAllInvoice = async (req, res) => {
+const getAllInvoices = async (req, res) => {
     const invoices = await Invoice.findAll();
     res.status(StatusCodes.OK).json(invoices);
 }
@@ -49,7 +49,7 @@ const deleteInvoice = async (req, res) => {
 }
 
 module.exports = {
-    getAllInvoice,
+    getAllInvoices,
     getInvoice,
     updateInvoice,
     deleteInvoice,

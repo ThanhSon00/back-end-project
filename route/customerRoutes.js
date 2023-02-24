@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
-    getAllCustomer,
+    getAllCustomers,
     getCustomer,
     updateCustomer,
     createCustomer,
@@ -9,7 +9,7 @@ const {
 } = require('../controllers/customer.controller');
 
 router.route('/')
-            .get(getAllCustomer)
+            .get(getAllCustomers)
             .post(createCustomer);
 
 router.route('/:phoneNumber')

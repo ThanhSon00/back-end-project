@@ -1,7 +1,7 @@
 const Cart = require('../models/cart.model');
 const { StatusCodes } = require('http-status-codes');
 
-const getAllCart = async (req, res) => {
+const getAllCarts = async (req, res) => {
     const carts = await Cart.findAll();
     res.status(StatusCodes.OK).json(carts);
 }
@@ -49,7 +49,7 @@ const deleteCart = async (req, res) => {
 }
 
 module.exports = {
-    getAllCart,
+    getAllCarts,
     getCart,
     createCart,
     updateCart,

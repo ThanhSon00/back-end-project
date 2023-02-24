@@ -1,7 +1,7 @@
 const Customer = require('../models/customer.model');
 const { StatusCodes} = require('http-status-codes');
 
-const getAllCustomer = async (req, res) => {
+const getAllCustomers = async (req, res) => {
     const customers = await Customer.findAll();
     res.status(StatusCodes.OK).json(customers);
 }
@@ -53,7 +53,7 @@ const deleteCustomer = async (req, res) => {
 }
 
 module.exports = {
-    getAllCustomer,
+    getAllCustomers,
     getCustomer,
     updateCustomer,
     createCustomer,

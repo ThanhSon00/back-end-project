@@ -3,14 +3,14 @@ const router = express.Router();
 
 const {
     getAccount, 
-    getAllAccount, 
+    getAllAccounts, 
     updateAccount, 
     createAccount, 
     deleteAccount
 } = require('../controllers/account.controller');
 
 router.route('/')
-                .get(getAllAccount)
+                .get(getAllAccounts)
                 .post(createAccount);
 router.route('/:phoneNumber')
                 .get(getAccount)

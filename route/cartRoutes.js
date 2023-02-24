@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getAllCart,
+    getAllCarts,
     getCart,
     createCart,
     updateCart,
@@ -10,7 +10,7 @@ const {
 } = require('../controllers/cart.controller')
 
 router.route('/')
-                .get(getAllCart)
+                .get(getAllCarts)
                 .post(createCart);
 router.route('/:cart_id')
                 .get(getCart)
