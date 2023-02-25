@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
+const bcrypt = require('bcryptjs');
 // Define model 
 const Account = sequelize.define("Account", {
     customer_id: {
@@ -20,4 +21,14 @@ const Account = sequelize.define("Account", {
     paranoid : true,
 });
 
+
+// Hook
+Account.beforeCreate(async (account, options) => {
+    const password = account.password;
+    bcrypt.genSalt(10, async (err, Salt) => {
+        bcrypt.hash(password, Salt, async (err, hash) => {
+            account.password = hash;
+        })
+    })
+})
 module.exports = Account;
