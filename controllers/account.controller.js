@@ -8,36 +8,36 @@ const getAllAccounts = async (req, res) => {
 
 const getAccount = async (req, res) => {
     const {
-        params: { phoneNumber },
+        params: { customer_id },
       } = req;
         
     const account = await Account.findAll({
         where: {
-            phoneNumber: phoneNumber,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).json({account});
 }
 
 const createAccount = async (req, res) => {
-    const { phoneNumber, password } = req.body;
+    const { email, password } = req.body;
     const account = await Account.create({
-        phoneNumber: phoneNumber,
+        email: email,
         password: password,
-    }, { fields: ['phoneNumber', 'password']});
+    }, { fields: ['email', 'password']});
     res.status(StatusCodes.CREATED).json({account});
 }
 
 const updateAccount = async (req, res) => {
     const {
-        params: { phoneNumber }
+        params: { customer_id }
       } = req;
     const { password } = req.body;
     await Account.update({
         password: password,
     }, {
         where: {
-            phoneNumber: phoneNumber,
+            customer_id: customer_id,
         }
     }, { fields: ['password']});
     res.status(StatusCodes.OK).send();
@@ -45,11 +45,11 @@ const updateAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
     const {
-        params: { phoneNumber }
+        params: { customer_id }
       } = req;
     await Account.destroy({
         where: {
-            phoneNumber: phoneNumber,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).send();

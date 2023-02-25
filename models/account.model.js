@@ -3,8 +3,12 @@ const sequelize = require('../database/connect');
 // Define model 
 const Account = sequelize.define("Account", {
     customer_id: {
-        primaryKey: true,
-        autoIncrement: true,
+        type: DataTypes.INTEGER,
+    },
+    email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
     },
     password: {
         type: DataTypes.TEXT,

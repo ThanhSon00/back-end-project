@@ -12,7 +12,7 @@ router.route('/')
             .get(getAllCustomers)
             .post(createCustomer);
 
-router.route('/:phoneNumber')
+router.route('/:customer_id')
             .get(getCustomer)
             .patch(updateCustomer)
             .delete(deleteCustomer);

@@ -1,4 +1,4 @@
-const { DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
 const Account = require('./account.model');
 const Cart = require('./cart.model');
@@ -13,11 +13,6 @@ const Customer = sequelize.define("Customer", {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
     },
     money: {
@@ -36,6 +31,7 @@ const Customer = sequelize.define("Customer", {
     paranoid : true,
 });
 
+// Relationship
 Customer.hasOne(Account, {
     foreignKey: "customer_id",
 });

@@ -7,46 +7,45 @@ const getAllCustomers = async (req, res) => {
 }
 
 const createCustomer = async (req, res) => {
-    const { phone, name, email } = req.body;
+    const { phone, name } = req.body;
     const customer = await Customer.create({
         phone: phone,
         name: name,
-        email: email,
     }, {
-        fields: ['phone', 'name', 'email']
+        fields: ['phone', 'name']
     });
     res.status(StatusCodes.CREATED).json(customer);
 }
 
 const getCustomer = async (req, res) => {
-    const { params: { phoneNumber } } = req;
+    const { params: { customer_id } } = req;
     const customer = await Customer.findAll({
         where: {
-            phone: phoneNumber,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).json(customer);
 }
 
 const updateCustomer = async (req, res) => {
-    const {params: { phoneNumber }} = req;
-    const { name, email } = req.body;
+    const {params: { customer_id }} = req;
+    const { name } = req.body;
     await Customer.update({
         name: name,
-        email: email,
+        phone: phone,
     }, {
         where: {
-            phone: phoneNumber,
+            customer_id: customer_id,
         }
-    }, {fields: ['name', 'email']});
+    }, {fields: ['name', 'phone']});
     res.status(StatusCodes.OK).send();
 }
 
 const deleteCustomer = async (req, res) => {
-    const { params: { phoneNumber }} = req;
+    const { params: { customer_id }} = req;
     await Customer.destroy({
         where: {
-            phone: phoneNumber,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).send();
