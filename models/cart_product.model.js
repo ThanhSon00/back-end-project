@@ -9,7 +9,7 @@ const CartProducts = sequelize.define("Cart_Product", {
         allowNull: false,
     }
 }, {
-    timeStamps: false,
+    timestamps: false,
 });
 
 Cart.belongsToMany(Product, { 
