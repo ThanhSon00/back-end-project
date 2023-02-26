@@ -23,6 +23,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/home', async (req, res) => {
+  res.render('index');
+});
+
+app.use('/product', async (req, res) => {
+  res.render('product');
+});
+
+app.use('/store', async (req, res) => {
+  res.render('store');
+});
+
+app.use('/checkout', async (req, res) => {
+  res.render('checkout');
+});
+
 // api
 app.use('/api/v1/account', asyncHandler(accountRoutes));
 app.use('/api/v1/customer', asyncHandler(customerRoutes));
