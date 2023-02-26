@@ -20,11 +20,12 @@ const getAccount = async (req, res) => {
 }
 
 const createAccount = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, customer_id } = req.body;
     const account = await Account.create({
+        customer_id: customer_id,
         email: email,
         password: password,
-    }, { fields: ['email', 'password']});
+    }, { fields: ['customer_id', 'email', 'password']});
     res.status(StatusCodes.CREATED).json({account});
 }
 

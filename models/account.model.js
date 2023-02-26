@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const Account = sequelize.define("Account", {
     customer_id: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -17,7 +18,6 @@ const Account = sequelize.define("Account", {
     },
 },
 {
-    initialAutoIncrement: 0,
     paranoid : true,
 });
 
