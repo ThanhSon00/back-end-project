@@ -5,15 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var createError = require('http-errors');
 
-const accountRoutes = require('./route/accountRoutes');
-const customerRoutes = require('./route/customerRoutes');
-const cartRoutes = require('./route/cartRoutes');
-const productRoutes = require('./route/productRoutes');
-const invoiceRoutes = require('./route/invoiceRoutes');
+const accountRoutes = require('./routes/accountRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const productRoutes = require('./routes/productRoutes');
+const invoiceRoutes = require('./routes/invoiceRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
