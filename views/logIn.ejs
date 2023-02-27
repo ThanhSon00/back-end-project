@@ -6,7 +6,9 @@
 <br>
 <div class="login-block">
     <h1>Login</h1>
-    <input type="text" value="" placeholder="Username" id="username" />
-    <input type="password" value="" placeholder="Password" id="password" />
-    <button>Submit</button>
+    <form action="/auth" method="post">
+        <input type="text" placeholder="Email" id="email" />
+        <input type="password" placeholder="Password" id="password" />
+        <input type="submit" value="Submit">
+    </form>
 </div>

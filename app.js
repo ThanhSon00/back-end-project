@@ -4,12 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var createError = require('http-errors');
+var bodyParser = require('body-parser');
 
 const accountRoutes = require('./routes/accountRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
@@ -19,9 +21,10 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/login', async (req, res) => {
   res.render('login');
@@ -42,6 +45,8 @@ app.use('/store', async (req, res) => {
 app.use('/checkout', async (req, res) => {
   res.render('checkout');
 });
+
+app.use('/auth', asyncHandler(authRoutes));
 
 // api
 app.use('/api/v1/account', asyncHandler(accountRoutes));

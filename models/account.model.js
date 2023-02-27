@@ -25,10 +25,10 @@ const Account = sequelize.define("Account", {
 // Hook
 Account.beforeCreate(async (account, options) => {
     const password = account.password;
-    bcrypt.genSalt(10, async (err, Salt) => {
-        bcrypt.hash(password, Salt, async (err, hash) => {
-            account.password = hash;
-        })
-    })
-})
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    account.password = hash;
+});
+
+
 module.exports = Account;
