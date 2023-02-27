@@ -9,12 +9,14 @@ const {
     deleteAccount
 } = require('../controllers/account.controller');
 
-router.route('/')
-                .get(getAllAccounts)
-                .post(createAccount);
-router.route('/:phoneNumber')
+router.route('/:email')
                 .get(getAccount)
                 .patch(updateAccount)
                 .delete(deleteAccount);
+
+router.route('/')
+                .get(getAllAccounts)
+                .post(createAccount);
+
 
 module.exports = router;

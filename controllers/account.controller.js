@@ -8,12 +8,12 @@ const getAllAccounts = async (req, res) => {
 
 const getAccount = async (req, res) => {
     const {
-        params: { customer_id },
+        params: { email },
       } = req;
         
     const account = await Account.findAll({
         where: {
-            customer_id: customer_id,
+            email: email,
         }
     });
     res.status(StatusCodes.OK).json({account});
@@ -31,14 +31,14 @@ const createAccount = async (req, res) => {
 
 const updateAccount = async (req, res) => {
     const {
-        params: { customer_id }
+        params: { email }
       } = req;
     const { password } = req.body;
     await Account.update({
         password: password,
     }, {
         where: {
-            customer_id: customer_id,
+            email: email,
         }
     }, { fields: ['password']});
     res.status(StatusCodes.OK).send();
@@ -46,11 +46,11 @@ const updateAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
     const {
-        params: { customer_id }
+        params: { email }
       } = req;
     await Account.destroy({
         where: {
-            customer_id: customer_id,
+            email: email,
         }
     });
     res.status(StatusCodes.OK).send();
