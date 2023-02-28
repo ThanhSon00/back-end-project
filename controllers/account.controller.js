@@ -8,32 +8,32 @@ const getAllAccounts = async (req, res) => {
 
 const getAccount = async (req, res) => {
     const {
-        params: { email },
+        params: { customer_id },
       } = req;    
         
     const account = await Account.findOne({
         where: {
-            email: email,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).json({account});
 }
 
 const createAccount = async (req, res) => {
-    const { email, password, customer_id} = req.body;
+    const { customer_id, password } = req.body;
     const hash = crypto.randomBytes(128).toString('hex');
     const account = await Account.create({
         customer_id: customer_id,
-        email: email,
+        customer_id: customer_id,
         password: password,
         hash: hash,
-    }, { fields: ['customer_id', 'email', 'password', 'hash']});
+    }, { fields: ['customer_id', 'password', 'hash']});
     res.status(StatusCodes.CREATED).json({account});
 }
 
 const updateAccount = async (req, res) => {
     const {
-        params: { email }
+        params: { customer_id }
       } = req;
     const { password } = req.body;
     
@@ -41,7 +41,7 @@ const updateAccount = async (req, res) => {
         password: password,
     }, {
         where: {
-            email: email,
+            customer_id: customer_id,
         }
     }, { fields: ['password']});
     res.status(StatusCodes.OK).send();
@@ -49,11 +49,11 @@ const updateAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
     const {
-        params: { email }
+        params: { customer_id }
       } = req;
     await Account.destroy({
         where: {
-            email: email,
+            customer_id: customer_id,
         }
     });
     res.status(StatusCodes.OK).send();
@@ -61,12 +61,12 @@ const deleteAccount = async (req, res) => {
 
 const activateAccount = async (req, res) => {
     const { params: {
-        email,
+        customer_id,
         hash,
     }} = req;
     const account = await Account.findOne({
         where: {
-            email: email,
+            customer_id: customer_id,
         }
     });
     if (account.hash == hash) {
@@ -74,7 +74,7 @@ const activateAccount = async (req, res) => {
             isNotActivated: false,
         }, {
             where: {
-                email: email,
+                customer_id: customer_id,
             }
         }, { fields: ['isNotActivated']});
         res.status(StatusCodes.OK).send('Account has been activated!');
