@@ -16,6 +16,14 @@ const Account = sequelize.define("Account", {
         type: DataTypes.TEXT,
         allowNull: false,
     },
+    hash: {
+        type: DataTypes.TEXT,
+    },
+    isNotActivated: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+    },
 },
 {
     paranoid : true,
