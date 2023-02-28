@@ -8,7 +8,7 @@ const getAllProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
     const { params: { product_id }} = req;
-    const product = await Product.findAll({
+    const product = await Product.findOne({
         where: {
             product_id: product_id,
         }

@@ -8,7 +8,7 @@ const getAllCarts = async (req, res) => {
 
 const getCart = async (req, res) => {
     const { params: {cart_id} } = req;
-    const cart = await Cart.findAll({
+    const cart = await Cart.findOne({
         where: {
             cart_id: cart_id,
         }

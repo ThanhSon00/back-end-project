@@ -13,7 +13,7 @@ const getInvoiceProduct = async (req, res) => {
             product_id,
         }
     } = req;
-    const invoiceProduct = await InvoiceProduct.findAll({
+    const invoiceProduct = await InvoiceProduct.findOne({
         where: {
             invoice_id: invoice_id,
             product_id: product_id,

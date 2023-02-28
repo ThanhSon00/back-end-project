@@ -19,7 +19,7 @@ const createCustomer = async (req, res) => {
 
 const getCustomer = async (req, res) => {
     const { params: { customer_id } } = req;
-    const customer = await Customer.findAll({
+    const customer = await Customer.findOne({
         where: {
             customer_id: customer_id,
         }

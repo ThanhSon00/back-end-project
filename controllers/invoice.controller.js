@@ -8,7 +8,7 @@ const getAllInvoices = async (req, res) => {
 
 const getInvoice = async (req, res) => {
     const { params: { invoice_id }} = req;
-    const invoice = await Invoice.findAll({
+    const invoice = await Invoice.findOne({
         where: {
             invoice_id: invoice_id,
         }

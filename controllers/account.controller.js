@@ -11,7 +11,7 @@ const getAccount = async (req, res) => {
         params: { email },
       } = req;    
         
-    const account = await Account.findAll({
+    const account = await Account.findOne({
         where: {
             email: email,
         }
@@ -64,7 +64,7 @@ const activateAccount = async (req, res) => {
         email,
         hash,
     }} = req;
-    const account = await Account.findAll({
+    const account = await Account.findOne({
         where: {
             email: email,
         }
@@ -79,7 +79,7 @@ const activateAccount = async (req, res) => {
         }, { fields: ['isNotActivated']});
         res.status(StatusCodes.OK).send('Account has been activated!');
     }
-    else res.status(StatusCodes.UNAUTHORIZED).send('Wrong hash');
+    else res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
     
 }
 module.exports = {
