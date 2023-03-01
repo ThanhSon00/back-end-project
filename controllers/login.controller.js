@@ -1,12 +1,10 @@
 const axios = require('axios').default;
 const bcrypt = require('bcryptjs');
-const login = async (req, res, next) => {
+const login = async (req, res) => {
     const { email, password} = req.body;
-    let url = 'http://localhost:3000/api/v1/account/' + email.toString();
+    let url = 'http://localhost:3000/api/v1/account/' + email;
     const response = await axios.get(url);
-    const accountString = JSON.stringify(response.data.account);
-    var result = accountString.substring(1, accountString.length-1);
-    const account = JSON.parse(result);
+    const account = response.data;
 
     // Compare password
     const success = await bcrypt.compare(password, account.password);
