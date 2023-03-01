@@ -6,35 +6,21 @@ const getAllAccounts = async (req, res) => {
     res.status(StatusCodes.OK).json({accounts});
 }
 
-const getAccount = async (req, res) => {
-    const {
-        params: { customer_id },
-      } = req;    
-        
-    const account = await Account.findOne({
-        where: {
-            customer_id: customer_id,
-        }
-    });
-    res.status(StatusCodes.OK).json({account});
-}
 
 const createAccount = async (req, res) => {
-    const { customer_id, password } = req.body;
+    const { customer_id, password, email } = req.body;
     const hash = crypto.randomBytes(128).toString('hex');
     const account = await Account.create({
         customer_id: customer_id,
-        customer_id: customer_id,
+        email: email,
         password: password,
         hash: hash,
-    }, { fields: ['customer_id', 'password', 'hash']});
+    }, { fields: ['customer_id', 'password', 'hash', 'email']});
     res.status(StatusCodes.CREATED).json({account});
 }
 
 const updateAccount = async (req, res) => {
-    const {
-        params: { customer_id }
-      } = req;
+    const customer_id = req.params.key;
     const { password } = req.body;
     
     await Account.update({
@@ -48,9 +34,7 @@ const updateAccount = async (req, res) => {
 }
 
 const deleteAccount = async (req, res) => {
-    const {
-        params: { customer_id }
-      } = req;
+    const customer_id = req.params.key;
     await Account.destroy({
         where: {
             customer_id: customer_id,
@@ -80,7 +64,40 @@ const activateAccount = async (req, res) => {
         res.status(StatusCodes.OK).send('Account has been activated!');
     }
     else res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
-    
+}
+
+const getAccount = async (req, res) => {
+    const key = req.params.key;
+    if (isNumeric(key)) {
+        await getAccountById(req, res);
+    }
+    else {
+        await getAccountByEmail(req, res);
+    }
+}
+
+const getAccountById = async (req, res) => {
+    const customer_id = req.params.key; 
+    const account = await Account.findOne({
+        where: {
+            customer_id: customer_id,
+        }
+    });
+    res.status(StatusCodes.OK).json(account);
+}
+
+const getAccountByEmail = async (req, res) => {
+    const email = req.params.key;
+    const account = await Account.findOne({
+        where: {
+            email: email,
+        }
+    })
+    res.status(StatusCodes.OK).json(account);
+}
+
+const isNumeric = (variable) => {
+    return !isNaN(variable);
 }
 module.exports = {
     getAccount, 

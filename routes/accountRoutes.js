@@ -9,7 +9,7 @@ const {
     deleteAccount
 } = require('../controllers/account.controller');
 
-router.route('/:email')
+router.route('/:key')
                 .get(getAccount)
                 .patch(updateAccount)
                 .delete(deleteAccount);
