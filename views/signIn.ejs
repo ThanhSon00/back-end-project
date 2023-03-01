@@ -8,9 +8,14 @@
     <h1>Sign In</h1>
     <form action="/sign-in-controller" method="post" id="signInForm">
         <input type="text" placeholder="Full Name" name="name"/>
-        <input type="number" placeholder="Phone Number" name="phone"/>
+        <input type="text" placeholder="Phone Number" name="phone"/>
         <input type="text" placeholder="Email" name="email" />
         <input type="password" placeholder="Password" name="password"/>
+        <input type="password" placeholder="Verify Password" name="rewrite_password"/>
     </form>
+    <% if (locals.message) { %>
+        <p style="color: red; text-align: center;" > <%=message.toString()%> </p>
+    <%} %>
+  
     <button type="submit" form="signInForm">Confirm</button>
 </div>
