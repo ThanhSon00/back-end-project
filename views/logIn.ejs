@@ -7,14 +7,15 @@
 <div class="login-block">
     <h1>Login</h1>
     <form action="/auth" method="post" id="logInForm">
-        <input type="text" placeholder="Email" name="email" />
+        <input type="text" placeholder="Email" name="email"/>
         <input type="password" placeholder="Password" name="password"/>
     </form>
+    <% if (locals.message) { %>
+        <p style="color: red; text-align: center;" > <%=message.toString()%> </p>
+    <%} %>
     <button type="submit" form="logInForm">Log In</button>
     <form action="/signIn" method="get" id="signInForm"></form>
-    <!-- <h4 style="text-align: center;">Or</h2>
-    <button type="submit" form="signInForm">Sign In</button> -->
 </div>
 <div class="login-block">
-    <h4 style="text-align: center;">Don't have an account? <a href="#" style="color:rgb(0, 140, 255); text-decoration: none; ">Sign Up</a></h4>
+    <h4 style="text-align: center;">Don't have an account? <a href="/sign-in" style="color:rgb(0, 140, 255); text-decoration: none; ">Sign Up</a></h4>
 </div>
