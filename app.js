@@ -12,6 +12,8 @@ const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 const authRoutes = require('./routes/authRoutes');
+const activateRoutes = require('./routes/activateRoutes');
+const signInRoutes = require('./routes/signInRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
@@ -26,8 +28,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/login', async (req, res) => {
-  res.render('login');
+
+app.use('/log-in', async (req, res) => {
+  res.render('logIn');
 });
 
 app.use('/home', async (req, res) => {
@@ -46,7 +49,19 @@ app.use('/checkout', async (req, res) => {
   res.render('checkout');
 });
 
+app.use('/sign-in', async (req, res) => {
+  res.render('signIn');
+})
+
+app.use('/verification', async (req, res) => {
+  res.render('email-verification');
+})
+
+app.use('/activation', asyncHandler(activateRoutes));
+
 app.use('/auth', asyncHandler(authRoutes));
+
+app.use('/sign-in-controller', asyncHandler(signInRoutes));
 
 // api
 app.use('/api/v1/account', asyncHandler(accountRoutes));
