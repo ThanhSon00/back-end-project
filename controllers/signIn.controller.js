@@ -1,8 +1,31 @@
 const axios = require('axios');
+const { StatusCodes } = require('http-status-codes');
 const nodemailer = require('nodemailer')
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
     let url, response;
-    const { email, password, phone, name } = req.body;
+    const { 
+        email, 
+        password, 
+        phone, 
+        name,
+        rewrite_password 
+    } = req.body;
+    
+    // Check all information filled
+    if (email == '' || password == '' || phone == '' || name == '' || rewrite_password == '') {
+        console.log('Please fill all the information');
+        res.status(StatusCodes.BAD_REQUEST).render('signIn', {message: "Please fill all the information"});
+        return;
+    }
+    // Check phone
+
+    // Check email
+
+    // Check passwords
+    if (password != rewrite_password) {
+        res.status(StatusCodes.BAD_REQUEST).render('signIn', {message: "Passwords are not matching"});
+        return;
+    }
     url = 'http://localhost:3000/api/v1/customer/'
     response = await axios.post(url, {
         name: name,
