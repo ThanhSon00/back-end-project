@@ -24,9 +24,8 @@ const Account = sequelize.define("Account", {
         defaultValue: true,
         allowNull: false,
     },
-},
-{
-    paranoid : true,
+}, {
+    paranoid: true,
 });
 
 

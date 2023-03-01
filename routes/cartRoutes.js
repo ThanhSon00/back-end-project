@@ -10,11 +10,11 @@ const {
 } = require('../controllers/cart.controller')
 
 router.route('/')
-                .get(getAllCarts)
-                .post(createCart);
+    .get(getAllCarts)
+    .post(createCart);
 router.route('/:cart_id')
-                .get(getCart)
-                .patch(updateCart)
-                .delete(deleteCart);
+    .get(getCart)
+    .patch(updateCart)
+    .delete(deleteCart);
 
 module.exports = router;

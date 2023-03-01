@@ -12,17 +12,16 @@ const InvoiceProducts = sequelize.define("Invoice_Products", {
         defaultValue: 0,
         allowNull: false,
     }
-},
-{
-    paranoid : true,
+}, {
+    paranoid: true,
 });
-    
-Invoice.belongsToMany(Product, { 
+
+Invoice.belongsToMany(Product, {
     through: InvoiceProducts,
     foreignKey: "invoice_id",
 });
-Product.belongsToMany(Invoice, { 
-    through: InvoiceProducts, 
+Product.belongsToMany(Invoice, {
+    through: InvoiceProducts,
     foreignKey: "product_id",
 });
 

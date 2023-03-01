@@ -7,7 +7,7 @@ const getAllProducts = async (req, res) => {
 }
 
 const getProduct = async (req, res) => {
-    const { params: { product_id }} = req;
+    const { params: { product_id } } = req;
     const product = await Product.findOne({
         where: {
             product_id: product_id,
@@ -18,7 +18,7 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
     const {
-        name, 
+        name,
         amount,
         image,
         price,
@@ -38,9 +38,9 @@ const createProduct = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
-    const { params: { product_id }} = req;
+    const { params: { product_id } } = req;
     const {
-        name, 
+        name,
         amount,
         image,
         price,
@@ -55,14 +55,15 @@ const updateProduct = async (req, res) => {
     }, {
         where: {
             product_id: product_id,
-    }}, { 
+        }
+    }, {
         fields: ['name', 'amount', 'image', 'price', 'description']
     });
     res.status(StatusCodes.OK).send();
 }
 
 const deleteProduct = async (req, res) => {
-    const { params: { product_id }} = req;
+    const { params: { product_id } } = req;
     await Product.destroy({
         where: {
             product_id: product_id,

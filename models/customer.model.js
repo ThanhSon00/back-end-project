@@ -25,10 +25,9 @@ const Customer = sequelize.define("Customer", {
         unique: true,
         allowNull: false,
     },
-},
-{
+}, {
     initialAutoIncrement: 0,
-    paranoid : true,
+    paranoid: true,
 });
 
 // Relationship

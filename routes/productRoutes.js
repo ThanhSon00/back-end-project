@@ -18,20 +18,20 @@ const {
 } = require('../controllers/invoice_product.controller');
 
 router.route('/invoice/')
-                .get(getAllInvoiceProducts)
-                .post(createInvoiceProduct);
+    .get(getAllInvoiceProducts)
+    .post(createInvoiceProduct);
 
 router.route('/')
-                .get(getAllProducts)
-                .post(createProduct);
+    .get(getAllProducts)
+    .post(createProduct);
 router.route('/:product_id')
-                .get(getProduct)
-                .patch(updateProduct)
-                .delete(deleteProduct);
+    .get(getProduct)
+    .patch(updateProduct)
+    .delete(deleteProduct);
 router.route('/:product_id/invoice/:invoice_id')
-                .get(getInvoiceProduct)
-                .patch(updateInvoiceProduct)
-                .delete(deleteInvoiceProduct);
-                
+    .get(getInvoiceProduct)
+    .patch(updateInvoiceProduct)
+    .delete(deleteInvoiceProduct);
+
 
 module.exports = router;

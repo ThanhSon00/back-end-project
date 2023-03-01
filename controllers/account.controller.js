@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes')
 const crypto = require('crypto');
 const getAllAccounts = async (req, res) => {
     const accounts = await Account.findAll();
-    res.status(StatusCodes.OK).json({accounts});
+    res.status(StatusCodes.OK).json({ accounts });
 }
 
 
@@ -15,21 +15,21 @@ const createAccount = async (req, res) => {
         email: email,
         password: password,
         hash: hash,
-    }, { fields: ['customer_id', 'password', 'hash', 'email']});
-    res.status(StatusCodes.CREATED).json({account});
+    }, { fields: ['customer_id', 'password', 'hash', 'email'] });
+    res.status(StatusCodes.CREATED).json({ account });
 }
 
 const updateAccount = async (req, res) => {
     const customer_id = req.params.key;
     const { password } = req.body;
-    
+
     await Account.update({
         password: password,
     }, {
         where: {
             customer_id: customer_id,
         }
-    }, { fields: ['password']});
+    }, { fields: ['password'] });
     res.status(StatusCodes.OK).send();
 }
 
@@ -47,7 +47,7 @@ const activateAccount = async (req, res) => {
     const { params: {
         customer_id,
         hash,
-    }} = req;
+    } } = req;
     const account = await Account.findOne({
         where: {
             customer_id: customer_id,
@@ -60,7 +60,7 @@ const activateAccount = async (req, res) => {
             where: {
                 customer_id: customer_id,
             }
-        }, { fields: ['isNotActivated']});
+        }, { fields: ['isNotActivated'] });
         res.status(StatusCodes.OK).send('Account has been activated!');
     }
     else res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
@@ -77,7 +77,7 @@ const getAccount = async (req, res) => {
 }
 
 const getAccountById = async (req, res) => {
-    const customer_id = req.params.key; 
+    const customer_id = req.params.key;
     const account = await Account.findOne({
         where: {
             customer_id: customer_id,
@@ -100,7 +100,7 @@ const isNumeric = (variable) => {
     return !isNaN(variable);
 }
 module.exports = {
-    getAccount, 
+    getAccount,
     getAllAccounts,
     createAccount,
     updateAccount,

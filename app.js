@@ -71,7 +71,7 @@ app.use('/api/v1/product', asyncHandler(productRoutes));
 app.use('/api/v1/invoice', asyncHandler(invoiceRoutes));
 
 // Create Error 404 when not found path
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 

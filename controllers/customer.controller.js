@@ -1,5 +1,5 @@
 const Customer = require('../models/customer.model');
-const { StatusCodes} = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 const getAllCustomers = async (req, res) => {
     const customers = await Customer.findAll();
@@ -28,7 +28,7 @@ const getCustomer = async (req, res) => {
 }
 
 const updateCustomer = async (req, res) => {
-    const {params: { customer_id }} = req;
+    const { params: { customer_id } } = req;
     const { name } = req.body;
     await Customer.update({
         name: name,
@@ -37,12 +37,12 @@ const updateCustomer = async (req, res) => {
         where: {
             customer_id: customer_id,
         }
-    }, {fields: ['name', 'phone']});
+    }, { fields: ['name', 'phone'] });
     res.status(StatusCodes.OK).send();
 }
 
 const deleteCustomer = async (req, res) => {
-    const { params: { customer_id }} = req;
+    const { params: { customer_id } } = req;
     await Customer.destroy({
         where: {
             customer_id: customer_id,

@@ -12,12 +12,12 @@ const CartProducts = sequelize.define("Cart_Product", {
     timestamps: false,
 });
 
-Cart.belongsToMany(Product, { 
+Cart.belongsToMany(Product, {
     through: CartProducts,
     foreignKey: "cart_id",
 });
-Product.belongsToMany(Cart, { 
-    through: CartProducts, 
+Product.belongsToMany(Cart, {
+    through: CartProducts,
     foreignKey: "product_id",
 });
 

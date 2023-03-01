@@ -7,7 +7,7 @@ const getAllInvoices = async (req, res) => {
 }
 
 const getInvoice = async (req, res) => {
-    const { params: { invoice_id }} = req;
+    const { params: { invoice_id } } = req;
     const invoice = await Invoice.findOne({
         where: {
             invoice_id: invoice_id,
@@ -20,12 +20,12 @@ const createInvoice = async (req, res) => {
     const { customer_id } = req.body;
     const invoice = await Invoice.create({
         customer_id: customer_id,
-    }, { fields: ['customer_id']});
+    }, { fields: ['customer_id'] });
     res.status(StatusCodes.CREATED).json(invoice);
 }
 
 const updateInvoice = async (req, res) => {
-    const { params: { invoice_id }} = req;
+    const { params: { invoice_id } } = req;
     const { totalAmount, totalMoney } = req.body;
     await Invoice.update({
         totalAmount: totalAmount,
@@ -33,13 +33,13 @@ const updateInvoice = async (req, res) => {
     }, {
         where: {
             invoice_id: invoice_id,
-        } 
-    }, { fields: ['totalAmount', 'totalMoney']});
+        }
+    }, { fields: ['totalAmount', 'totalMoney'] });
     res.status(StatusCodes.OK).send();
 }
 
 const deleteInvoice = async (req, res) => {
-    const { params: { invoice_id }} = req;
+    const { params: { invoice_id } } = req;
     await Invoice.destroy({
         where: {
             invoice_id: invoice_id,

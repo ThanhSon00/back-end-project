@@ -32,12 +32,12 @@ const createInvoiceProduct = async (req, res) => {
         invoice_id: invoice_id,
         product_id: product_id,
         amount: amount,
-    }, { fields: ['invoice_id', 'product_id', 'amount']});
+    }, { fields: ['invoice_id', 'product_id', 'amount'] });
     res.status(StatusCodes.CREATED).json(invoiceProduct);
 }
 
 const updateInvoiceProduct = async (req, res) => {
-    const { 
+    const {
         params: {
             invoice_id,
             product_id,
@@ -51,7 +51,7 @@ const updateInvoiceProduct = async (req, res) => {
             invoice_id: invoice_id,
             product_id: product_id,
         }
-    }, { fields: ['amount']});
+    }, { fields: ['amount'] });
 }
 
 const deleteInvoiceProduct = async (req, res) => {

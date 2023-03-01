@@ -7,7 +7,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     if (email == '' || password == '') {
         message = "Please fill both your email and password"
-        res.status(StatusCodes.BAD_REQUEST).render('logIn', {message: message});
+        res.status(StatusCodes.BAD_REQUEST).render('logIn', { message: message });
         return;
     }
     let url = 'http://localhost:3000/api/v1/account/' + email;
@@ -25,7 +25,7 @@ const login = async (req, res) => {
     else {
         message = "Email or password are not correct";
     }
-    res.status(StatusCodes.BAD_REQUEST).render('logIn', {message: message});
+    res.status(StatusCodes.BAD_REQUEST).render('logIn', { message: message });
     return;
 }
 

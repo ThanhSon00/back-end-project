@@ -9,12 +9,12 @@ const {
 } = require('../controllers/customer.controller');
 
 router.route('/')
-            .get(getAllCustomers)
-            .post(createCustomer);
+    .get(getAllCustomers)
+    .post(createCustomer);
 
 router.route('/:customer_id')
-            .get(getCustomer)
-            .patch(updateCustomer)
-            .delete(deleteCustomer);
+    .get(getCustomer)
+    .patch(updateCustomer)
+    .delete(deleteCustomer);
 
 module.exports = router;

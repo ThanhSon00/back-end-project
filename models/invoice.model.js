@@ -17,10 +17,9 @@ const Invoice = sequelize.define("Invoice", {
         defaultValue: 0,
         allowNull: false,
     },
-},
-{
+}, {
     initialAutoIncrement: 0,
-    paranoid : true,
+    paranoid: true,
 });
 
 module.exports = Invoice;

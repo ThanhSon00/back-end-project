@@ -7,7 +7,7 @@ const getAllCarts = async (req, res) => {
 }
 
 const getCart = async (req, res) => {
-    const { params: {cart_id} } = req;
+    const { params: { cart_id } } = req;
     const cart = await Cart.findOne({
         where: {
             cart_id: cart_id,
@@ -26,7 +26,7 @@ const createCart = async (req, res) => {
 }
 
 const updateCart = async (req, res) => {
-    const { params: { cart_id }} = req;
+    const { params: { cart_id } } = req;
     const { totalAmount } = req.body;
     await Cart.update({
         totalAmount: totalAmount,
@@ -34,12 +34,12 @@ const updateCart = async (req, res) => {
         where: {
             cart_id: cart_id,
         }
-    }, { fields: ['totalAmount']});
+    }, { fields: ['totalAmount'] });
     res.status(StatusCodes.OK).send();
 }
 
 const deleteCart = async (req, res) => {
-    const { params: { cart_id }} = req;
+    const { params: { cart_id } } = req;
     await Cart.destroy({
         where: {
             cart_id: cart_id,

@@ -28,10 +28,9 @@ const Product = sequelize.define("Product", {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-},
-{
+}, {
     initialAutoIncrement: 0,
-    paranoid : true,
+    paranoid: true,
 });
 
 module.exports = Product;
