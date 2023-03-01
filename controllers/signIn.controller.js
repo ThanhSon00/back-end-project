@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+const nodemailer = require('nodemailer')
 const signIn = async (req, res) => {
     let url, response;
     const { email, password, phone, name } = req.body;
@@ -17,21 +17,43 @@ const signIn = async (req, res) => {
         email: email,
         password: password,
     });
-
-
-    res.render('login');
+    sendEmail(customer_id, email);
+    res.render('email-verification');
 }
 
-const sendEmail = async (email) => {
-    const link = await getLink(email);
+const sendEmail = async (customer_id, email) => {
+    const link = await getLink(customer_id);
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'phanson999999@gmail.com',
+            pass: 'fxkvgthoxpoalcrm'
+        }
+    })
+
+    const mailConfigs = {
+        from: 'phanson999999@gmail.com',
+        to: email,
+        subject: 'Sign up verification mail',
+        text: link,
+    }
+    transporter.sendMail(mailConfigs, (err, info) => {
+        if (err) {
+            console.log(err);
+            return reject({message: 'An error has occurred'})
+        } return resolve({message: "Email sent successfully"});
+        
+    })
 
 }
 
-const getLink = async (email) => {
-    const url = 'http://localhost:3000/api/v1/account/' + email.toString();
+const getLink = async (customer_id) => {
+    const url = 'http://localhost:3000/api/v1/account/' + customer_id.toString();
     const response = await axios.get(url);
-    const accountString = JSON.stringify(response.data.account);
-    var result = accountString.substring(1, accountString.length-1);
-    const account = JSON.parse(result);
-    return "http://localhost:3000/activation/" + account.email + "/" + account.hash;
+    const account = response.data;
+    return "http://localhost:3000/activation/" + account.customer_id + "/" + account.hash;
+}
+
+module.exports = {
+    signIn,
 }
