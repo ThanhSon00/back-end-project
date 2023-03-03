@@ -1,6 +1,8 @@
 const axios = require('axios');
 const { StatusCodes } = require('http-status-codes');
 const nodemailer = require('nodemailer')
+const ejs = require('ejs');
+const path = require('path');
 const signIn = async (req, res, next) => {
     let url, response;
     const {
@@ -14,8 +16,13 @@ const signIn = async (req, res, next) => {
     // Check all information filled
     if (email == '' || password == '' || phone == '' || name == '' || rewrite_password == '') {
         console.log('Please fill all the information');
-        res.status(StatusCodes.BAD_REQUEST).render('signIn', { message: "Please fill all the information" });
-        return;
+        return res.status(StatusCodes.BAD_REQUEST).render('signIn', { 
+            message: "Please fill all the information",
+            email: email,
+            phone: phone,
+            name: name,
+            password: password,
+            rewrite_password: rewrite_password, });
     }
     // Check phone
 
@@ -23,8 +30,11 @@ const signIn = async (req, res, next) => {
 
     // Check passwords
     if (password != rewrite_password) {
-        res.status(StatusCodes.BAD_REQUEST).render('signIn', { message: "Passwords are not matching" });
-        return;
+        return res.status(StatusCodes.BAD_REQUEST).render('signIn', { 
+            message: "Passwords are not matching",
+            email: email,
+            phone: phone,
+            name: name, });
     }
     url = 'http://localhost:3000/api/v1/customer/'
     response = await axios.post(url, {
@@ -41,7 +51,7 @@ const signIn = async (req, res, next) => {
         password: password,
     });
     sendEmail(customer_id, email);
-    res.render('email-verification');
+    res.render('check-mail');
 }
 
 const sendEmail = async (customer_id, email) => {
@@ -54,20 +64,25 @@ const sendEmail = async (customer_id, email) => {
         }
     })
 
-    const mailConfigs = {
-        from: 'phanson999999@gmail.com',
-        to: email,
-        subject: 'Sign up verification mail',
-        text: link,
-    }
-    transporter.sendMail(mailConfigs, (err, info) => {
+    ejs.renderFile(path.resolve("./views/verify-email.ejs"), {link: link}, function (err, data) {
         if (err) {
             console.log(err);
-            return reject({ message: 'An error has occurred' })
-        } return resolve({ message: "Email sent successfully" });
-
-    })
-
+        } else {
+            var mainOptions = {
+                from: 'phanson999999@gmail.com',
+                to: email,
+                subject: "E-commerce: Verify your email",
+                html: data
+            };
+            transporter.sendMail(mainOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Message sent: ' + info.response);
+                }
+            });
+        }
+    }); 
 }
 
 const getLink = async (customer_id) => {
