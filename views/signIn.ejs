@@ -7,14 +7,14 @@
 <div class="login-block">
     <h1>Sign In</h1>
     <form action="/sign-in-controller" method="post" id="signInForm">
-        <input type="text" placeholder="Full Name" name="name"/>
-        <input type="text" placeholder="Phone Number" name="phone"/>
-        <input type="text" placeholder="Email" name="email" />
-        <input type="password" placeholder="Password" name="password"/>
-        <input type="password" placeholder="Verify Password" name="rewrite_password"/>
+        <input type="text" placeholder="Full Name" name="name" value="<%=locals.name%>"/>
+        <input type="text" placeholder="Phone Number" name="phone" value="<%=locals.phone%>"/>
+        <input type="text" placeholder="Email" name="email" value="<%=locals.email%>"/>
+        <input type="password" placeholder="Password" name="password" value="<%=locals.password%>"/>
+        <input type="password" placeholder="Verify Password" name="rewrite_password" value="<%=locals.rewrite_password%>"/>
     </form>
     <% if (locals.message) { %>
-        <p style="color: red; text-align: center;" > <%=message.toString()%> </p>
+        <p style="color: red; text-align: center;" > <%=message%> </p>
     <%} %>
   
     <button type="submit" form="signInForm">Confirm</button>
