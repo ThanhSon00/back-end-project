@@ -14,9 +14,11 @@ const invoiceRoutes = require('./routes/invoiceRoutes');
 const authRoutes = require('./routes/authRoutes');
 const activateRoutes = require('./routes/activateRoutes');
 const signInRoutes = require('./routes/signInRoutes');
+const logoutRoutes = require('./routes/logoutRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
+const authorization = require('./middleware/authorization');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -33,28 +35,28 @@ app.use('/log-in', async (req, res) => {
   res.render('logIn');
 });
 
-app.use('/home', async (req, res) => {
-  res.render('index');
-});
-
-app.use('/product', async (req, res) => {
-  res.render('product');
-});
-
-app.use('/store', async (req, res) => {
-  res.render('store');
-});
-
-app.use('/checkout', async (req, res) => {
-  res.render('checkout');
-});
-
 app.use('/sign-in', async (req, res) => {
   res.render('signIn');
 })
 
-app.use('/verification', async (req, res) => {
-  res.render('email-verification');
+app.use('/home', authorization ,async (req, res) => {
+  res.render('index');
+});
+
+app.use('/product', authorization, async (req, res) => {
+  res.render('product');
+});
+
+app.use('/store', authorization, async (req, res) => {
+  res.render('store');
+});
+
+app.use('/checkout', authorization, async (req, res) => {
+  res.render('checkout');
+});
+
+app.use('/check-mail', async (req, res) => {
+  res.render('check-mail');
 })
 
 app.use('/activation', asyncHandler(activateRoutes));
@@ -62,7 +64,7 @@ app.use('/activation', asyncHandler(activateRoutes));
 app.use('/auth', asyncHandler(authRoutes));
 
 app.use('/sign-in-controller', asyncHandler(signInRoutes));
-
+app.use('/log-out-controller', asyncHandler(logoutRoutes));
 // api
 app.use('/api/v1/account', asyncHandler(accountRoutes));
 app.use('/api/v1/customer', asyncHandler(customerRoutes));
