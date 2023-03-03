@@ -1,6 +1,10 @@
 const Account = require("../models/account.model");
 const { StatusCodes } = require('http-status-codes')
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const axios = require('axios');
+const dotenv = require('dotenv');
+
 const getAllAccounts = async (req, res) => {
     const accounts = await Account.findAll();
     res.status(StatusCodes.OK).json({ accounts });
@@ -61,9 +65,14 @@ const activateAccount = async (req, res) => {
                 customer_id: customer_id,
             }
         }, { fields: ['isNotActivated'] });
-        res.status(StatusCodes.OK).send('Account has been activated!');
+
+        const token = getJWT(account);
+        res.cookie('access_token', token, { 
+            httpOnly: true,
+        });
+        return res.status(StatusCodes.OK).redirect('../../home')
     }
-    else res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
+    return res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
 }
 
 const getAccount = async (req, res) => {
@@ -94,6 +103,15 @@ const getAccountByEmail = async (req, res) => {
         }
     })
     res.status(StatusCodes.OK).json(account);
+}
+
+const getJWT = (account) => {
+    const payload = {
+        customer_id: account.customer_id,
+        email: account.email,
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    return token;
 }
 
 const isNumeric = (variable) => {
