@@ -5,16 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var createError = require('http-errors');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 const accountRoutes = require('./routes/accountRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
-const authRoutes = require('./routes/authRoutes');
-const activateRoutes = require('./routes/activateRoutes');
-const signInRoutes = require('./routes/signInRoutes');
-const logoutRoutes = require('./routes/logoutRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
@@ -23,6 +20,11 @@ const authorization = require('./middleware/authorization');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(session({
+  secret: 'pokemonvietnam2',
+  resave: false,
+  saveUninitialized: true,
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,11 +34,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use('/log-in', async (req, res) => {
-  res.render('logIn');
+  const message = req.cookies.message;
+  res.clearCookie('message')
+  res.render('log-in', {message: message});
 });
 
 app.use('/sign-in', async (req, res) => {
-  res.render('signIn');
+  res.render('sign-in');
 })
 
 app.use('/home', authorization ,async (req, res) => {
@@ -59,12 +63,18 @@ app.use('/check-mail', async (req, res) => {
   res.render('check-mail');
 })
 
-app.use('/activation', asyncHandler(activateRoutes));
+app.use('/reset-password', async (req, res) => {
+  const message = req.cookies.message;
+  res.clearCookie('message')
+  res.render('reset-password', {message: message});
+})
 
-app.use('/auth', asyncHandler(authRoutes));
+app.use('/forgot-password', async (req, res) => {
+  const message = req.cookies.message;
+  res.clearCookie('message')
+  res.render('forgot-password', {message: message});
+})
 
-app.use('/sign-in-controller', asyncHandler(signInRoutes));
-app.use('/log-out-controller', asyncHandler(logoutRoutes));
 // api
 app.use('/api/v1/account', asyncHandler(accountRoutes));
 app.use('/api/v1/customer', asyncHandler(customerRoutes));
