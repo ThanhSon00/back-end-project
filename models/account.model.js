@@ -37,5 +37,11 @@ Account.beforeCreate(async (account, options) => {
     account.password = hash;
 });
 
+Account.beforeBulkUpdate(async (account, options) => {
+    const password = account.attributes.password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    account.attributes.password = hash;
+});
 
 module.exports = Account;
