@@ -13,6 +13,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 
+const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
 const authorization = require('./middleware/authorization');
@@ -33,13 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.use('/log-in', async (req, res) => {
+app.use('/log-in', checkLogged, async (req, res) => {
   const message = req.cookies.message;
   res.clearCookie('message')
   res.render('log-in', {message: message});
 });
 
-app.use('/sign-in', async (req, res) => {
+app.use('/sign-in', checkLogged, async (req, res) => {
   res.render('sign-in');
 })
 
