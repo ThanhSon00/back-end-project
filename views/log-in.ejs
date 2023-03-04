@@ -5,14 +5,17 @@
 <br>
 <br>
 <div class="login-block">
-    <h1>Login</h1>
-    <form action="/auth" method="post" id="logInForm">
+    <h1>E-commerce</h1>
+    <form action="/api/v1/account/log-in" method="post" id="logInForm">
         <input type="text" placeholder="Email" name="email"/>
         <input type="password" placeholder="Password" name="password"/>
     </form>
     <% if (locals.message) { %>
         <p style="color: red; text-align: center;" > <%=message.toString()%> </p>
     <%} %>
+    <a href="/forgot-password" style="text-decoration: none; color:#0067b8"> Forgot your password? </a>
+    <br>
+    <br>
     <button type="submit" form="logInForm">Log In</button>
 </div>
 <div class="login-block">

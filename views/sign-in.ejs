@@ -6,7 +6,7 @@
 <br>
 <div class="login-block">
     <h1>Sign In</h1>
-    <form action="/sign-in-controller" method="post" id="signInForm">
+    <form action="/api/v1/account/sign-in" method="post" id="signInForm">
         <input type="text" placeholder="Full Name" name="name" value="<%=locals.name%>"/>
         <input type="text" placeholder="Phone Number" name="phone" value="<%=locals.phone%>"/>
         <input type="text" placeholder="Email" name="email" value="<%=locals.email%>"/>
