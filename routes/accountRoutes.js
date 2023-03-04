@@ -20,7 +20,7 @@ router.route('/reset-password').post(resetPassword);
 
 router.route('/reset-password/:token').get(resetAccountPassword);
 
-router.route('/activate/:hash').get(activateAccount);
+router.route('/activate/:token').get(activateAccount);
 
 router.route('/forgot-password').post(forgotAccountPassword);
 

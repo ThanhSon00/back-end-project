@@ -16,9 +16,6 @@ const Account = sequelize.define("Account", {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    hash: {
-        type: DataTypes.TEXT,
-    },
     isNotActivated: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -38,10 +35,12 @@ Account.beforeCreate(async (account, options) => {
 });
 
 Account.beforeBulkUpdate(async (account, options) => {
-    const password = account.attributes.password
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-    account.attributes.password = hash;
+    if (account.attributes.password) {
+        const password = account.attributes.password;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        account.attributes.password = hash;
+    }
 });
 
 module.exports = Account;

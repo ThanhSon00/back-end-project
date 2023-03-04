@@ -67,20 +67,20 @@ const getAccount = async (req, res) => {
 // Normal API
 const activateAccount = async (req, res) => {
     const { params: {
-        customer_id,
-        hash,
+        token,
     } } = req;
+    const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const account = await Account.findOne({
         where: {
-            customer_id: customer_id,
+            customer_id: data.customer_id,
         }
     });
-    if (account.hash == hash) {
+    if (account.isNotActivated) {
         await Account.update({
             isNotActivated: false,
         }, {
             where: {
-                customer_id: customer_id,
+                customer_id: data.customer_id,
             }
         }, { fields: ['isNotActivated'] });
 
@@ -88,7 +88,7 @@ const activateAccount = async (req, res) => {
         res.cookie('access_token', token, { 
             httpOnly: true,
         });
-        return res.status(StatusCodes.OK).redirect(prefixPath + '../../home')
+        return res.status(StatusCodes.OK).redirect(prefixPath + '../home')
     }
     return res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
 }
@@ -180,7 +180,7 @@ const signInAccount = async (req, res) => {
         password: password,
     });
     sendActivationEmail(customer_id, email);
-    res.render('check-mail');
+    res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
 }
 
 const forgotAccountPassword = async (req, res) => {
@@ -201,7 +201,7 @@ const forgotAccountPassword = async (req, res) => {
         return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'forgot-password');
     } else {
         sendPassResetEmail(account.customer_id, account.email);
-        return res.status(StatusCodes.OK).send();
+        return res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
     }
 
 }
@@ -220,6 +220,7 @@ const resetAccountPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
     let message;
     const token = req.cookies.reset_pass_token;
+    res.clearCookie('reset_pass_token');
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const { password, verify_password } = req.body;
     if (password == '' || verify_password == '') {
@@ -315,7 +316,8 @@ const getActivationLink = async (customer_id) => {
     const url = 'http://localhost:3000/api/v1/account/' + customer_id.toString();
     const response = await axios.get(url);
     const account = response.data;
-    return "http://localhost:3000/api/v1/account/activate" + account.customer_id + "/" + account.hash;
+    const token = getJWT(account);
+    return "http://localhost:3000/api/v1/account/activate/" + token;
 }
 
 const getAccountById = async (req, res) => {
