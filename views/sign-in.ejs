@@ -13,6 +13,9 @@
         <input type="password" placeholder="Password" name="password" value="<%=locals.password%>"/>
         <input type="password" placeholder="Verify Password" name="rewrite_password" value="<%=locals.rewrite_password%>"/>
     </form>
+    <a href="/log-in" style="text-decoration: none; color:#0067b8">Already have an account?</a>
+    <br>
+    <br>
     <% if (locals.message) { %>
         <p style="color: red; text-align: center;" > <%=message%> </p>
     <%} %>
