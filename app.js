@@ -36,16 +36,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/log-in', checkLogged, async (req, res) => {
   const message = req.cookies.message;
-  res.clearCookie('message')
-  res.render('log-in', {message: message});
+  const messageType = req.cookies.messageType;
+  res.clearCookie('message');
+  res.clearCookie('messageType')
+  res.render('log-in', {message: message, messageType: messageType});
 });
 
 app.use('/sign-in', checkLogged, async (req, res) => {
-  res.render('sign-in');
+  const message = req.cookies.message;
+  res.clearCookie('message')
+  res.render('sign-in', {message: message});
 })
 
 app.use('/home', authorization ,async (req, res) => {
-  res.render('index');
+  const message = req.cookies.message;
+  const messageType = req.cookies.messageType;
+  res.clearCookie('message');
+  res.clearCookie('messageType');
+  res.render('index', {message: message, messageType: messageType});
 });
 
 app.use('/product', authorization, async (req, res) => {

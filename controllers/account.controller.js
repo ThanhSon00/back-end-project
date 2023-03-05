@@ -88,6 +88,12 @@ const activateAccount = async (req, res) => {
         res.cookie('access_token', token, { 
             httpOnly: true,
         });
+        res.cookie('message', 'Your account has been activated successfully!', {
+            httpOnly: true,
+        });
+        res.cookie('messageType', 'Success', {
+            httpOnly: true,
+        })
         return res.status(StatusCodes.OK).redirect(prefixPath + '../home')
     }
     return res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
@@ -180,6 +186,12 @@ const signInAccount = async (req, res) => {
         password: password,
     });
     sendActivationEmail(customer_id, email);
+    res.cookie('message', 'Verification mail has been sent to ' + email, {
+        httpOnly: true,
+    })
+    res.cookie('messageType', 'Success', {
+        httpOnly: true,
+    })
     res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
 }
 
@@ -201,6 +213,12 @@ const forgotAccountPassword = async (req, res) => {
         return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'forgot-password');
     } else {
         sendPassResetEmail(account.customer_id, account.email);
+        res.cookie('message', 'Password reset link has been sent to ' + email, {
+            httpOnly: true,
+        });
+        res.cookie('messageType', 'Success', {
+            httpOnly: true,
+        });  
         return res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
     }
 
@@ -220,7 +238,6 @@ const resetAccountPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
     let message;
     const token = req.cookies.reset_pass_token;
-    res.clearCookie('reset_pass_token');
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const { password, verify_password } = req.body;
     if (password == '' || verify_password == '') {
@@ -238,6 +255,13 @@ const resetPassword = async (req, res) => {
     const url = "http://localhost:3000/api/v1/account/" + data.customer_id;
     await axios.patch(url, {
         password: password,
+    });
+    res.clearCookie('reset_pass_token');
+    res.cookie('message', 'Your password has been updated successfully', {
+        httpOnly: true,
+    });
+    res.cookie('messageType', 'Success', {
+        httpOnly: true,
     });
     return res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
 }
