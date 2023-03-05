@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ThanhSon00/back-end-project#readme",
   "dependencies": {
+    "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0"
   }
 }
