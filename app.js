@@ -64,8 +64,8 @@ app.use('/store', authorization, async (req, res) => {
   res.render('store');
 });
 
-app.use('/checkout', authorization, async (req, res) => {
-  res.render('checkout');
+app.use('/check-out', authorization, async (req, res) => {
+  res.render('check-out');
 });
 
 app.use('/check-mail', async (req, res) => {
