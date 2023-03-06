@@ -1,0 +1,26 @@
+const axios = require('axios');
+const https = require('https');
+const fs = require('fs');
+
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false, // (NOTE: this will disable client verification)
+  cert: fs.readFileSync("./ssl/server.cert"),
+  key: fs.readFileSync("./ssl/server.key")  ,
+});
+
+const root = axios.create({
+  baseURL: 'https://localhost:3000/',
+  timeout: 1000, 
+  httpsAgent: httpsAgent,
+});
+
+const api = axios.create({  
+    baseURL: 'https://localhost:3000/api/v1/',
+    timeout: 1000, 
+    httpsAgent: httpsAgent,
+});
+
+module.exports = {
+  root,
+  api,
+}

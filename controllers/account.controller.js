@@ -9,8 +9,9 @@ const nodemailer = require('nodemailer')
 const ejs = require('ejs');
 const bcrypt = require('bcryptjs');
 const { get } = require("http");
-
-const prefixPath = '../../../';
+const { api, root } = require('../bin/URL');
+const rootURL = root.defaults.baseURL;
+const apiURL = api.defaults.baseURL;
 // CRUD API
 const getAllAccounts = async (req, res) => {
     const accounts = await Account.findAll();
@@ -94,14 +95,14 @@ const activateAccount = async (req, res) => {
         res.cookie('messageType', 'Success', {
             httpOnly: true,
         })
-        return res.status(StatusCodes.OK).redirect(prefixPath + '../home')
+        return res.status(StatusCodes.OK).redirect(rootURL + 'home')
     }
     return res.status(StatusCodes.NOT_ACCEPTABLE).send('Wrong hash');
 }
 
 const logoutAccount = async (req, res) => {
     res.clearCookie("access_token");
-    res.redirect(prefixPath + 'log-in');
+    res.redirect(rootURL + 'log-in');
 }
 
 const loginAccount = async (req, res) => {
@@ -110,8 +111,7 @@ const loginAccount = async (req, res) => {
     if (email == '' || password == '') {
         message = "Please fill both your email and password";
     }
-    let url = 'http://localhost:3000/api/v1/account/' + email;
-    const response = await axios.get(url);
+    const response = await api.get('account/' + email);
     const account = response.data;
     if (message == null) {
         if (account == null) {
@@ -129,7 +129,7 @@ const loginAccount = async (req, res) => {
             res.cookie('access_token', token, { 
                 httpOnly: true,
             });
-            return res.status(StatusCodes.OK).redirect(prefixPath + 'home');
+            return res.status(StatusCodes.OK).redirect(rootURL + 'home');
         } 
     }
     else {
@@ -140,11 +140,11 @@ const loginAccount = async (req, res) => {
     res.cookie('message', message, { 
         httpOnly: true,
     });
-    return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'log-in');
+    return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'log-in');
 }
 
 const signInAccount = async (req, res) => {
-    let url, response;
+    let response;
     const {
         email,
         password,
@@ -158,7 +158,7 @@ const signInAccount = async (req, res) => {
         res.cookie('message', 'Please fill all the information', {
             httpOnly: true,
         })
-        return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'sign-in');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'sign-in');
     }
     // Check phone
 
@@ -169,18 +169,15 @@ const signInAccount = async (req, res) => {
         res.cookie('message', 'Password are not matched', {
             httpOnly: true,
         });
-        return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'sign-in');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'sign-in');
     }
-    url = 'http://localhost:3000/api/v1/customer/'
-    response = await axios.post(url, {
+    response = await api.post('/customer', {
         name: name,
         phone: phone,
-    });
-
+    })
 
     const customer_id = response.data.customer_id;
-    url = 'http://localhost:3000/api/v1/account/'
-    response = await axios.post(url, {
+    response = await api.post('/account', {
         customer_id: customer_id,
         email: email,
         password: password,
@@ -192,7 +189,7 @@ const signInAccount = async (req, res) => {
     res.cookie('messageType', 'Success', {
         httpOnly: true,
     })
-    res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
+    res.status(StatusCodes.OK).redirect(rootURL + 'log-in');
 }
 
 const forgotAccountPassword = async (req, res) => {
@@ -201,16 +198,15 @@ const forgotAccountPassword = async (req, res) => {
         res.cookie('message', 'Please fill your email', {
             httpOnly: true,
         });
-        return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'forgot-password');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'forgot-password');
     }
-    let url = "http://localhost:3000/api/v1/account/" + email;
-    const response = await axios.get(url);
+    const response = await api.get('account/' + email);
     const account = response.data;
     if (account == null) {
         res.cookie('message', 'Account not found', {
             httpOnly: true,
         });
-        return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'forgot-password');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'forgot-password');
     } else {
         sendPassResetEmail(account.customer_id, account.email);
         res.cookie('message', 'Password reset link has been sent to ' + email, {
@@ -219,7 +215,7 @@ const forgotAccountPassword = async (req, res) => {
         res.cookie('messageType', 'Success', {
             httpOnly: true,
         });  
-        return res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
+        return res.status(StatusCodes.OK).redirect(rootURL + 'log-in');
     }
 
 }
@@ -232,12 +228,15 @@ const resetAccountPassword = async (req, res) => {
     res.cookie('reset_pass_token', token, {
         httpOnly: true,
     })
-    res.status(StatusCodes.OK).redirect(prefixPath + '../' + 'reset-password');
+    res.status(StatusCodes.OK).redirect(rootURL + 'reset-password');
 }
 
 const resetPassword = async (req, res) => {
     let message;
     const token = req.cookies.reset_pass_token;
+    if (!token) {
+        return res.status(StatusCodes.UNAUTHORIZED).redirect(rootURL + 'log-in');
+    }
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const { password, verify_password } = req.body;
     if (password == '' || verify_password == '') {
@@ -250,10 +249,9 @@ const resetPassword = async (req, res) => {
         res.cookie('message', message, {
             httpOnly: true,
         });
-        return res.status(StatusCodes.BAD_REQUEST).redirect(prefixPath + 'reset-password');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + 'reset-password');
     }
-    const url = "http://localhost:3000/api/v1/account/" + data.customer_id;
-    await axios.patch(url, {
+    await api.patch('account/' + data.customer_id, {
         password: password,
     });
     res.clearCookie('reset_pass_token');
@@ -263,7 +261,7 @@ const resetPassword = async (req, res) => {
     res.cookie('messageType', 'Success', {
         httpOnly: true,
     });
-    return res.status(StatusCodes.OK).redirect(prefixPath + 'log-in');
+    return res.status(StatusCodes.OK).redirect(rootURL + 'log-in');
 }
 //
 
@@ -298,11 +296,10 @@ const sendPassResetEmail = async (customer_id, email) => {
 }
 
 const getPassResetLink = async (customer_id) => {
-    const url = 'http://localhost:3000/api/v1/account/' + customer_id.toString();
-    const response = await axios.get(url);
+    const response = await api.get('account/' + customer_id);
     const account = response.data;
     const token = getJWT(account);
-    return "http://localhost:3000/api/v1/account/reset-password/" + token;
+    return apiURL + "account/reset-password/" + token;
 }
 
 const sendActivationEmail = async (customer_id, email) => {
@@ -337,11 +334,10 @@ const sendActivationEmail = async (customer_id, email) => {
 }
 
 const getActivationLink = async (customer_id) => {
-    const url = 'http://localhost:3000/api/v1/account/' + customer_id.toString();
-    const response = await axios.get(url);
+    const response = await api.get('account/' + customer_id);
     const account = response.data;
     const token = getJWT(account);
-    return "http://localhost:3000/api/v1/account/activate/" + token;
+    return apiURL + "account/activate/" + token;
 }
 
 const getAccountById = async (req, res) => {
