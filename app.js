@@ -68,17 +68,16 @@ app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
 });
 
-app.use('/check-mail', async (req, res) => {
-  res.render('check-mail');
-})
-
-app.use('/reset-password', async (req, res) => {
+app.use('/blank', async (req, res) => {
+  res.render('blank');
+});
+app.use('/reset-password', checkLogged, async (req, res) => {
   const message = req.cookies.message;
   res.clearCookie('message')
   res.render('reset-password', {message: message});
 })
 
-app.use('/forgot-password', async (req, res) => {
+app.use('/forgot-password', checkLogged, async (req, res) => {
   const message = req.cookies.message;
   res.clearCookie('message')
   res.render('forgot-password', {message: message});
