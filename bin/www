@@ -3,10 +3,11 @@
 /**
  * Module dependencies.
  */
+var fs = require('fs');
 var dotenv = require('dotenv');
 var app = require('../app');
 var debug = require('debug')('back-end-project:server');
-var http = require('http');
+var https = require('https');
 
 /**
  * Get port from environment and store in Express.
@@ -19,8 +20,10 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
-// var secureServer = https.createServer(app);
+var server = https.createServer({
+  key: fs.readFileSync("./ssl/server.key"),
+  cert: fs.readFileSync("./ssl/server.cert"),
+},app);
 
 /**
  * Listen on provided port, on all network interfaces.
