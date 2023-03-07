@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/ThanhSon00/back-end-project#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "express-session": "^1.17.3",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "uuid": "^9.0.0"
   }
 }
