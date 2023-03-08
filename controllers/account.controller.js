@@ -56,11 +56,11 @@ const deleteAccount = async (req, res) => {
 
 const getAccount = async (req, res) => {
     const key = req.params.key;
-    if (isNumeric(key)) {
-        await getAccountById(req, res);
+    if (checkIfEmailInString(key)) {
+        await getAccountByEmail(req, res);
     }
     else {
-        await getAccountByEmail(req, res);
+        await getAccountById(req, res);        
     }
 }
 // Normal API
@@ -369,6 +369,11 @@ const getJWT = (account) => {
 
 const isNumeric = (variable) => {
     return !isNaN(variable);
+}
+
+const checkIfEmailInString = (text) => { 
+    var re = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+    return re.test(text);
 }
 module.exports = {
     getAccount,
