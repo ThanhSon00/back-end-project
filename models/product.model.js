@@ -1,22 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
-
+const { Sequelize } = require('sequelize');
 const Product = sequelize.define("Product", {
     product_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.STRING,
         primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    amount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-    },
-    image: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -24,12 +14,15 @@ const Product = sequelize.define("Product", {
         type: DataTypes.DOUBLE,
         allowNull: false,
     },
-    description: {
+    image: {
         type: DataTypes.TEXT,
         allowNull: false,
     },
+    category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 }, {
-    initialAutoIncrement: 0,
     paranoid: true,
 });
 

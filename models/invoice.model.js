@@ -1,11 +1,11 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
-
+const { Sequelize } = require('sequelize');
 const Invoice = sequelize.define("Invoice", {
     invoice_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
     },
     totalAmount: {
         type: DataTypes.INTEGER,
@@ -18,7 +18,6 @@ const Invoice = sequelize.define("Invoice", {
         allowNull: false,
     },
 }, {
-    initialAutoIncrement: 0,
     paranoid: true,
 });
 

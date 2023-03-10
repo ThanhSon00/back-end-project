@@ -1,10 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
+const { Sequelize } = require('sequelize');
 const bcrypt = require('bcryptjs');
 // Define model 
 const Account = sequelize.define("Account", {
     customer_id: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
     },
     email: {

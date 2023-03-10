@@ -1,15 +1,16 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
+const { Sequelize } = require('sequelize');
 const Account = require('./account.model');
 const Cart = require('./cart.model');
 const Invoice = require("./invoice.model")
-
+const uuid = require('uuid');
 // Define model
 const Customer = sequelize.define("Customer", {
     customer_id: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
     },
     name: {
         type: DataTypes.STRING,
@@ -26,8 +27,8 @@ const Customer = sequelize.define("Customer", {
         allowNull: false,
     },
 }, {
-    initialAutoIncrement: 0,
     paranoid: true,
+    individualHook: true,
 });
 
 // Relationship
@@ -41,6 +42,6 @@ Customer.hasOne(Cart, {
 
 Customer.hasMany(Invoice, {
     foreignKey: "customer_id"
-})
+});
 
 module.exports = Customer;
