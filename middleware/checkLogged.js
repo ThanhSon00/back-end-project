@@ -6,7 +6,12 @@ const checkLogged = async (req, res, next) => {
     if (!accessToken) {
         return next();
     }
-    const data = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err, account) => {
+        if (err) {
+            res.clearCookie('access_token');
+            return next();
+        }
+    });
     return res.status(StatusCodes.OK).redirect('home');
 }
 

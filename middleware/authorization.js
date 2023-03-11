@@ -5,14 +5,17 @@ const authorization = async (req, res, next) => {
     if (!accessToken) {
         return res.status(StatusCodes.UNAUTHORIZED).redirect('log-in'); 
     }
-    try {
-        const data = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+
+    await jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err, data) => {
+        if (err) {
+            res.clearCookie('access_token');
+            return res.status(StatusCodes.FORBIDDEN).redirect('log-in');
+        }
         req.body.customer_id = data.customer_id;
         req.body.email = data.email;
-    } catch (error) {
-        return res.status(StatusCodes.FORBIDDEN).send();
-    }
-    return next();   
+        return next();
+    });
+    
 }
 
 module.exports = authorization;
