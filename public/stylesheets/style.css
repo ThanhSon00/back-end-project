@@ -1286,6 +1286,7 @@ textarea.input {
 .store-filter {
   margin-bottom: 15px;
   margin-top: 15px;
+  width: auto;
 }
 
 /*-- Store Sort --*/
@@ -1342,7 +1343,9 @@ textarea.input {
 /*-- Store Pagination --*/
 
 .store-pagination {
-  float: right;
+  margin-left: auto;
+  margin-right: auto;
+  width: max-content;
 }
 
 .store-pagination li {
