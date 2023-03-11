@@ -6,6 +6,9 @@ var logger = require('morgan');
 var createError = require('http-errors');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var axios = require('axios');
+
+const { api, root } = require('./bin/URL');
 
 const accountRoutes = require('./routes/accountRoutes');
 const customerRoutes = require('./routes/customerRoutes');
@@ -61,14 +64,32 @@ app.use('/product', authorization, async (req, res) => {
 });
 
 app.use('/store', authorization, async (req, res) => {
-  res.render('store');
+  var { page } = req.query;
+  if (page == undefined) {
+    page = 1;
+  }
+  const response1 = await api.get('/product');
+  const totalAmount = response1.data.count;
+  const response2 = await api.get(`/product?page=${page}`);
+  const { rows, count } = response2.data;
+  const totalPage = Math.floor(totalAmount / 20) + 1;
+  const relativePath = '/store?page='
+  res.render('store', { 
+    products: rows, 
+    prevPageNumber: page - 1,
+    activePageNumber: page,
+    nextPageNumber: parseInt(page) + 1,
+    productAmount: count,
+    totalPage: totalPage,
+    relativePath: relativePath,
+  });
 });
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
 });
 
-app.use('/blank', async (req, res) => {
+app.use('/blank', authorization, async (req, res) => {
   res.render('blank');
 });
 app.use('/reset-password', checkLogged, async (req, res) => {
