@@ -1,20 +1,56 @@
 const Product = require('../models/product.model');
 const { StatusCodes } = require('http-status-codes');
-
+const { Op } = require("sequelize");
+// price=gte:10&price=lte:100
 
 const getAllProducts = async (req, res) => {
-    var limit = 20, offset = 0;
-    const { page } = req.query;
-    if (page == undefined) {
-        limit = 1000;
+    const { page, pageSize, category_id, price } = req.query;
+    var limit, offset, minPrice, maxPrice, categoryFilter, priceFilter;
+    if (category_id) {
+      categoryFilter = {
+        id: category_id,
+      }
     }
-    else offset = limit * (page - 1);
+    if (price) {
+      price.forEach(price => {
+        if (price.startsWith('gte')) {
+            minPrice = price.split(':')[1];
+            } else if (price.startsWith('lte')) {
+            maxPrice = price.split(':')[1];
+        }
+      });
+      priceFilter = {
+        min: minPrice,
+        max: maxPrice,
+      };
+      if (!priceFilter.min || !priceFilter.max) {
+        priceFilter = '';
+      }
+    }
+    if (page && pageSize) {
+        limit = parseInt(pageSize);
+        offset = (page * pageSize) - pageSize;
+    }
+    let where = {};
+    if (priceFilter || categoryFilter) {
+      if (categoryFilter) {
+        where.category_id = categoryFilter.id;
+      }
+      if (priceFilter) {
+          where.price = {
+            [Op.between]: [priceFilter.min, priceFilter.max]
+          }
+      }
+    }
+  
     const products = await Product.findAndCountAll({
+        where,
         limit: limit,
         offset: offset,
     });
-    res.status(StatusCodes.OK).json(products);
+    return res.status(StatusCodes.OK).json(products);
 }
+
 
 const getProduct = async (req, res) => {
     const { product_id } = req.params;
