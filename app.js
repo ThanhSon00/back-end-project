@@ -6,15 +6,14 @@ var logger = require('morgan');
 var createError = require('http-errors');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var axios = require('axios');
-
-const { api, root } = require('./bin/URL');
 
 const accountRoutes = require('./routes/accountRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const storeRoutes = require('./routes/storeRoutes');
 
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
@@ -38,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.use('/log-in', checkLogged, async (req, res) => {
-  const message = req.cookies.message;
+  const message = req.cookies.message; 
   const messageType = req.cookies.messageType;
   res.clearCookie('message');
   res.clearCookie('messageType')
@@ -63,27 +62,7 @@ app.use('/product', authorization, async (req, res) => {
   res.render('product');
 });
 
-app.use('/store', authorization, async (req, res) => {
-  var { page } = req.query;
-  if (page == undefined) {
-    page = 1;
-  }
-  const response1 = await api.get('/product');
-  const totalAmount = response1.data.count;
-  const response2 = await api.get(`/product?page=${page}`);
-  const { rows, count } = response2.data;
-  const totalPage = Math.floor(totalAmount / 20) + 1;
-  const relativePath = '/store?page='
-  res.render('store', { 
-    products: rows, 
-    prevPageNumber: page - 1,
-    activePageNumber: page,
-    nextPageNumber: parseInt(page) + 1,
-    productAmount: count,
-    totalPage: totalPage,
-    relativePath: relativePath,
-  });
-});
+app.use('/store', authorization, asyncHandler(storeRoutes));
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
@@ -105,11 +84,12 @@ app.use('/forgot-password', checkLogged, async (req, res) => {
 })
 
 // api
-app.use('/api/v1/account', asyncHandler(accountRoutes));
-app.use('/api/v1/customer', asyncHandler(customerRoutes));
-app.use('/api/v1/cart', asyncHandler(cartRoutes));
-app.use('/api/v1/product', asyncHandler(productRoutes));
-app.use('/api/v1/invoice', asyncHandler(invoiceRoutes));
+app.use('/api/v1/accounts', asyncHandler(accountRoutes));
+app.use('/api/v1/customers', asyncHandler(customerRoutes));
+app.use('/api/v1/carts', asyncHandler(cartRoutes));
+app.use('/api/v1/products', asyncHandler(productRoutes));
+app.use('/api/v1/invoices', asyncHandler(invoiceRoutes));
+app.use('/api/v1/categories', asyncHandler(categoryRoutes));
 
 // Create Error 404 when not found path
 app.use(function (req, res, next) {
