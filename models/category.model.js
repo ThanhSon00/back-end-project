@@ -1,12 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
+const Sequelize = require('sequelize');
 const Product = require('./product.model');
 // Define model 
 const Category = sequelize.define("Category", {
     category_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
     },
     name: {
         type: DataTypes.STRING,
@@ -15,7 +16,6 @@ const Category = sequelize.define("Category", {
     },
 }, {
     paranoid: true,
-    initialAutoIncrement: 0,
 });
 
 Category.hasMany(Product, {
