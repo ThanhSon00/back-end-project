@@ -9,13 +9,13 @@ const httpsAgent = new https.Agent({
 });
 
 const root = axios.create({
-  baseURL: 'https://localhost:3000/',
+  baseURL: 'https://localhost:3000',
   timeout: 1000, 
   httpsAgent: httpsAgent,
 });
 
 const api = axios.create({  
-    baseURL: 'https://localhost:3000/api/v1/',
+    baseURL: 'https://localhost:3000/api/v1',
     timeout: 1000, 
     httpsAgent: httpsAgent,
 });
