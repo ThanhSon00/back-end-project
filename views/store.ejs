@@ -69,47 +69,15 @@
 					<div class="aside">
 						<h3 class="aside-title">Categories</h3>
 						<div class="checkbox-filter">
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-1">
-								<label for="category-1">
-									<span></span>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Tablets'}).category_id%>">Tablets</a>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Tablets'}).category_id%>">Tablets</a>
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-2">
-								<label for="category-2">
-									<span></span>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Desktops'}).category_id%>"></a>Desktops
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-3">
-								<label for="category-3">
-									<span></span>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Monitors'}).category_id%>"></a>Monitors
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-4">
-								<label for="category-4">
-									<span></span>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Computer Accessories'}).category_id%>"></a>Computer Accessories
-								</label>
-							</div>
-
-							<div class="input-checkbox">
-								<input type="checkbox" id="category-5">
-								<label for="category-5">
-									<span></span>
-									<a href="/store?category_id=<%=categories.find(obj => {return obj.name == 'Laptops'}).category_id%>"></a>Laptops
-								</label>
-							</div>
+							<% for (var i = 0; i < categories.length; i++) {%>
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-<%= i %>">
+									<label for="category-<%= i %>">
+										<span></span>
+										<a href="<%=`${categoryFilteringPath}&category_id=${categories[i].category_id}`%>"><%=categories[i].name%></a>
+									</label>
+								</div>
+							<% } %>
 						</div>
 					</div>
 					<!-- /aside Widget -->
@@ -131,6 +99,7 @@
 								<span class="qty-down">-</span>
 							</div>
 						</div>
+						<a id="price-filter" href="">Search</a>
 					</div>
 					<!-- /aside Widget -->
 
@@ -310,7 +279,7 @@
 				<div class="store-filter clearfix">
 					<span class="store-qty">Showing <%=productAmount%> products</span>
 					<ul class="store-pagination">
-						<li><a href="<%=relativePath + '&page=' + prevPageNumber%>"><i class="fa fa-angle-left"></i></a></li>
+						<li><a href="<%=`${pageFilteringPath}&page=${prevPageNumber}`%>"><i class="fa fa-angle-left"></i></a></li>
 						<% if (totalPage <= 7) {%>
 							<% for (var pageNumber=1; pageNumber <= totalPage; pageNumber++) {%>
 								<% if (pageNumber == activePageNumber) { %>
@@ -318,49 +287,49 @@
 										<%=activePageNumber%>
 									</li>
 								<% } else { %>
-								<li><a href="<%=relativePath + '&page=' + pageNumber%>">
+								<li><a href="<%=`${pageFilteringPath}&page=${pageNumber}`%>">
 									<%=pageNumber%>
 								</a></li>	
 								<% } %>
 							<% } %>
 						<% } else if (activePageNumber>= 5 && activePageNumber <= totalPage - 4) {%>
-								<li><a href="<%=relativePath + '&page=' + 1%>">1</a></li>
+								<li><a href="<%=`${pageFilteringPath}&page=1`%>">1</a></li>
 								<li><a>...</a></li>
-								<li><a href="<%=relativePath + '&page=' + prevPageNumber%>">
+								<li><a href="<%=`${pageFilteringPath}&page=${prevPageNumber}`%>">
 										<%=prevPageNumber%>
 									</a></li>
 								<li class="active">
 									<%=activePageNumber%>
 								</li>
-								<li><a href="<%=relativePath + '&page=' + nextPageNumber%>">
+								<li><a href="<%=`${pageFilteringPath}&page=${nextPageNumber}`%>">
 										<%=nextPageNumber%>
 									</a></li>
 								<li><a>...</a></li>
-								<li><a href="<%=relativePath + '&page=' + totalPage%>">
+								<li><a href="<%=`${pageFilteringPath}&page=${totalPage}`%>">
 										<%=totalPage%>
 									</a></li>
 								<%} else { %>
 									<% if (activePageNumber < 5) {%>
 										<% for (var pageNumber=1; pageNumber < activePageNumber; pageNumber++) {%>
-											<li><a href="<%=relativePath + '&page=' + pageNumber%>">
+											<li><a href="<%=`${pageFilteringPath}&page=${pageNumber}`%>">
 													<%=pageNumber%>
 												</a></li>
 											<% } %>
 												<li class="active">
 													<%=activePageNumber%>
 												</li>
-												<li><a href="<%=relativePath + '&page=' + nextPageNumber%>">
+												<li><a href="<%=`${pageFilteringPath}&page=${nextPageNumber}`%>">
 														<%=nextPageNumber%>
 													</a></li>
 												<li><a>...</a></li>
-												<li><a href="<%=relativePath + '&page=' + totalPage%>">
+												<li><a href="<%=`${pageFilteringPath}&page=${totalPage}`%>">
 														<%=totalPage%>
 													</a></li>
 												<%}%>
 													<%if (activePageNumber > totalPage - 4) {%>
-														<li><a href="<%=relativePath + '&page=' + 1%>">1</a></li>
+														<li><a href="<%=`${pageFilteringPath}&page=1`%>">1</a></li>
 														<li><a>...</a></li>
-														<li><a href="<%=relativePath + '&page=' + prevPageNumber%>">
+														<li><a href="<%=`${pageFilteringPath}&page=${prevPageNumber}`%>">
 																<%=prevPageNumber%>
 															</a></li>
 														<li class="active">
@@ -368,14 +337,14 @@
 														</li>
 														<% for (var pageNumber=parseInt(activePageNumber) + 1;
 															pageNumber <=totalPage; pageNumber++) {%>
-															<li><a href="<%=relativePath + '&page=' + pageNumber%>">
+															<li><a href="<%=`${pageFilteringPath}&page=${pageNumber}`%>">
 																	<%=pageNumber%>
 																</a></li>
 															<% } %>
 																<%}%>
 																	<%}%>
 																		<li><a
-																				href="<%=relativePath + '&page=' + nextPageNumber%>"><i
+																				href="<%=`${pageFilteringPath}&page=${nextPageNumber}`%>"><i
 																					class="fa fa-angle-right"></i></a>
 																		</li>
 					</ul>
@@ -431,7 +400,17 @@
 		<%- include('../partials/footer') %>
 	</footer>
 	<!-- /FOOTER -->
+	<script>
+        function codeAddress() {
+			const priceFilteringPath = "<%=priceFilteringPath%>"
+			var slider = document.getElementById('price-slider');
+			slider.noUiSlider.on('update', (values, handle) => {
+			const priceRange = values;
+			document.getElementById('price-filter').href = `${priceFilteringPath}&price=gte:${priceRange[0]}&price=lte:${priceRange[1]}`;
+		})}
+        window.onload = codeAddress;
 
+	</script>
 	<!-- jQuery Plugins -->
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/bootstrap.min.js"></script>
