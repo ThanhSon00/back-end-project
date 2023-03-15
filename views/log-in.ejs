@@ -13,7 +13,7 @@
 <body>
     <div class="login-block">
         <h1>E-commerce</h1>
-        <form action="/api/v1/account/log-in" method="post" id="logInForm">
+        <form action="/log-in" method="post" id="logInForm">
             <input type="text" placeholder="Email" name="email"/>
             <input type="password" placeholder="Password" name="password"/>
         </form>
@@ -27,7 +27,7 @@
         <button type="submit" form="logInForm">Log In</button>
     </div>
     <div class="login-block">
-        <h4 style="text-align: center;">Don't have an account? <a href="/sign-in" style="color:rgb(0, 140, 255); text-decoration: none; ">Sign Up</a></h4>
+        <h4 style="text-align: center;">Don't have an account? <a href="/register" style="color:rgb(0, 140, 255); text-decoration: none; ">Sign Up</a></h4>
     </div>
 
     <% if (locals.message && locals.messageType) { %>
