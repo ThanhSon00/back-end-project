@@ -16,6 +16,7 @@ const invoiceRoutes = require('./routes/invoice.routes');
 const categoryRoutes = require('./routes/category.routes');
 
 // Page Routes
+const homeRoutes = require('./routes/home.routes');
 const storeRoutes = require('./routes/store.routes');
 const loginRoutes = require('./routes/login.routes');
 const forgotPasswordRoutes = require('./routes/forgotPassword.routes');
@@ -32,7 +33,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(session({
-  secret: 'pokemonvietnam2',
+  secret: 'SomeRandomKey',
   resave: false,
   saveUninitialized: true,
 }));
@@ -51,14 +52,7 @@ app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
 app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
 app.use('/log-out', authorization, asyncHandler(logoutRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
-
-app.use('/home', authorization ,async (req, res) => {
-  const message = req.cookies.message;
-  const messageType = req.cookies.messageType;
-  res.clearCookie('message');
-  res.clearCookie('messageType');
-  res.render('index', {message: message, messageType: messageType});
-});
+app.use('/home', authorization, asyncHandler(homeRoutes));
 
 app.use('/product', authorization, async (req, res) => {
   res.render('product');
