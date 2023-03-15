@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    storeController,
+    renderPage,
 } = require('../controllers/store.controller');
 
-router.route('/').get(storeController);
+router.route('/').get(renderPage);
 
 module.exports = router;
