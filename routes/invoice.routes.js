@@ -16,7 +16,7 @@ const {
     deleteInvoice,
 } = require('../controllers/invoice.controller');
 
-router.route('/product/')
+router.route('/products/')
     .get(getAllInvoiceProducts)
     .post(createInvoiceProduct);
 
@@ -28,7 +28,7 @@ router.route('/:invoice_id')
     .patch(updateInvoice)
     .delete(deleteInvoice);
 
-router.route('/:invoice_id/product/:product_id')
+router.route('/:invoice_id/products/:product_id')
     .get(getInvoiceProduct)
     .patch(updateInvoiceProduct)
     .delete(deleteInvoiceProduct);

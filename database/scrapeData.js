@@ -1,11 +1,13 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
-
+const { api } = require('../bin/URL');
 
 const scrapeData = async (link, shelves) => {
-    const category = link.split('&category=')[1];
-    let pageAmount = 4;
+    const categoryName = link.split('&category=')[1];
+    const response = await api.get(`/categories?name=${categoryName}`);
+    const { category_id } = response.data[0];
+    let pageAmount = 10;
     for (let i = 1; i <= pageAmount; i++) {
         const response = await axios.get(link + '&page=' + i);
         const html = response.data;
@@ -23,14 +25,14 @@ const scrapeData = async (link, shelves) => {
                 title,
                 price: price + fraction,
                 image,
-                category,
+                category_id,
             }
             if (element.price != '') {
                 shelves.push(element);
             }
         });
-        await sleep(3000);      
-        console.log(`Finish page ${i} of ${category}`);
+        await sleep(5000);      
+        console.log(`Finish page ${i} of ${categoryName}`);
     }
     return shelves;
 }
@@ -40,11 +42,11 @@ function sleep(ms) {
   }  
 
 const main = async () => {
-    const monitorsLink = 'https://www.amazon.com/s?rh=n%3A1292115011&fs=true&category=monitors';
-    const laptopsLink = 'https://www.amazon.com/s?rh=n%3A565108&fs=true&category=laptops';
-    const computerAccessoriesLink = 'https://www.amazon.com/s?rh=n%3A172456&fs=true&category=computerAccessories';
-    const tabletsLink = 'https://www.amazon.com/s?rh=n%3A1232597011&fs=true&category=tablets';
-    const desktopsLink = 'https://www.amazon.com/s?rh=n%3A565098&fs=true&category=desktops';
+    const monitorsLink = 'https://www.amazon.com/s?rh=n%3A1292115011&fs=true&category=Monitors';
+    const laptopsLink = 'https://www.amazon.com/s?rh=n%3A565108&fs=true&category=Laptops';
+    const computerAccessoriesLink = 'https://www.amazon.com/s?rh=n%3A172456&fs=true&category=Computer+Accessories';
+    const tabletsLink = 'https://www.amazon.com/s?rh=n%3A1232597011&fs=true&category=Tablets';
+    const desktopsLink = 'https://www.amazon.com/s?rh=n%3A565098&fs=true&category=Desktops';
     
     const linkArray = [
         monitorsLink, 
@@ -63,7 +65,7 @@ const main = async () => {
         return Object.values(element).map(item => `"${item}"`).join(',')
     }).join("\n") 
 
-    fs.writeFile('saved-shelves.csv', "Product_id, title, price, image, category" + '\n' + csvContent, 'utf8', function (err) {
+    fs.writeFile('saved-shelves.csv', "product_id, title, price, image, category_id" + '\n' + csvContent, 'utf8', function (err) {
         if (err) {
             console.log('Some error occurred - file either not saved or corrupted.')
         } else {

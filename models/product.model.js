@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/connect');
-const { Sequelize } = require('sequelize');
+const Sequelize = require('sequelize');
 const Product = sequelize.define("Product", {
     product_id: {
         type: DataTypes.STRING,
@@ -18,10 +18,10 @@ const Product = sequelize.define("Product", {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    category: {
-        type: DataTypes.STRING,
+    category_id: {
+        type: Sequelize.UUID,
         allowNull: false,
-    }
+    },
 }, {
     paranoid: true,
 });

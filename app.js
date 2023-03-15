@@ -7,13 +7,21 @@ var createError = require('http-errors');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-const accountRoutes = require('./routes/accountRoutes');
-const customerRoutes = require('./routes/customerRoutes');
-const cartRoutes = require('./routes/cartRoutes');
-const productRoutes = require('./routes/productRoutes');
-const invoiceRoutes = require('./routes/invoiceRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const storeRoutes = require('./routes/storeRoutes');
+// Resource Routes (Rest API)
+const accountRoutes = require('./routes/account.routes');
+const customerRoutes = require('./routes/customer.routes');
+const cartRoutes = require('./routes/cart.routes');
+const productRoutes = require('./routes/product.routes');
+const invoiceRoutes = require('./routes/invoice.routes');
+const categoryRoutes = require('./routes/category.routes');
+
+// Page Routes
+const storeRoutes = require('./routes/store.routes');
+const loginRoutes = require('./routes/login.routes');
+const forgotPasswordRoutes = require('./routes/forgotPassword.routes');
+const resetPasswordRoutes = require('./routes/resetPassword.routes');
+const logoutRoutes = require('./routes/logout.routes');
+const registerRoutes = require('./routes/register.routes');
 
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
@@ -27,7 +35,8 @@ app.use(session({
   secret: 'pokemonvietnam2',
   resave: false,
   saveUninitialized: true,
-}))
+}));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,20 +44,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-app.use('/log-in', checkLogged, async (req, res) => {
-  const message = req.cookies.message; 
-  const messageType = req.cookies.messageType;
-  res.clearCookie('message');
-  res.clearCookie('messageType')
-  res.render('log-in', {message: message, messageType: messageType});
-});
-
-app.use('/sign-in', checkLogged, async (req, res) => {
-  const message = req.cookies.message;
-  res.clearCookie('message')
-  res.render('sign-in', {message: message});
-})
+// Page
+app.use('/log-in', checkLogged, asyncHandler(loginRoutes));
+app.use('/store', authorization, asyncHandler(storeRoutes));
+app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
+app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
+app.use('/log-out', authorization, asyncHandler(logoutRoutes));
+app.use('/register', checkLogged, asyncHandler(registerRoutes));
 
 app.use('/home', authorization ,async (req, res) => {
   const message = req.cookies.message;
@@ -62,7 +64,6 @@ app.use('/product', authorization, async (req, res) => {
   res.render('product');
 });
 
-app.use('/store', authorization, asyncHandler(storeRoutes));
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
@@ -71,17 +72,7 @@ app.use('/check-out', authorization, async (req, res) => {
 app.use('/blank', authorization, async (req, res) => {
   res.render('blank');
 });
-app.use('/reset-password', checkLogged, async (req, res) => {
-  const message = req.cookies.message;
-  res.clearCookie('message')
-  res.render('reset-password', {message: message});
-})
 
-app.use('/forgot-password', checkLogged, async (req, res) => {
-  const message = req.cookies.message;
-  res.clearCookie('message')
-  res.render('forgot-password', {message: message});
-})
 
 // api
 app.use('/api/v1/accounts', asyncHandler(accountRoutes));
@@ -90,7 +81,6 @@ app.use('/api/v1/carts', asyncHandler(cartRoutes));
 app.use('/api/v1/products', asyncHandler(productRoutes));
 app.use('/api/v1/invoices', asyncHandler(invoiceRoutes));
 app.use('/api/v1/categories', asyncHandler(categoryRoutes));
-
 // Create Error 404 when not found path
 app.use(function (req, res, next) {
   next(createError(404));
