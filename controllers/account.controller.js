@@ -59,12 +59,14 @@ const deleteAccount = async (req, res) => {
 
 const getAccount = async (req, res) => {
     const { customer_id } = req.params;
-    if (checkIfEmailInString(customer_id)) {
-        await getAccountByEmail(req, res);
-    }
-    else {
-        await getAccountById(req, res);        
-    }
+    const account = await Account.findOne({
+        where: {
+            customer_id: customer_id,
+        }
+    });
+    console.log(account);
+    req.status(StatusCodes.OK).json(account);
+
 }
 
 module.exports = {

@@ -3,17 +3,17 @@ const { StatusCodes } = require('http-status-codes');
 
 const getAllCarts = async (req, res) => {
     const carts = await Cart.findAll();
-    res.status(StatusCodes.OK).json(carts);
+    return res.status(StatusCodes.OK).json(carts);
 }
 
 const getCart = async (req, res) => {
-    const { params: { cart_id } } = req;
+    const { cart_id } = req.params;
     const cart = await Cart.findOne({
         where: {
             cart_id: cart_id,
         }
     });
-    res.status(StatusCodes.OK).json(cart);
+    return res.status(StatusCodes.OK).json(cart);
 }
 
 const createCart = async (req, res) => {
@@ -23,6 +23,7 @@ const createCart = async (req, res) => {
     }, {
         fields: ['customer_id']
     })
+    return res.status(StatusCodes.CREATED).json(cart);
 }
 
 const updateCart = async (req, res) => {
