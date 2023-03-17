@@ -150,12 +150,12 @@
 	var priceSlider = document.getElementById('price-slider');
 	if (priceSlider) {
 		noUiSlider.create(priceSlider, {
-			start: [1, 999],
+			start: [1, 2000],
 			connect: true,
 			step: 1,
 			range: {
 				'min': 1,
-				'max': 999
+				'max': 2000
 			}
 		});
 
@@ -166,3 +166,49 @@
 	}
 
 })(jQuery);
+
+// Prevent loading page when submit form
+$(document).ready(function(){
+	$('form').submit(function(event){
+	  event.preventDefault(); // Prevent default form submission behavior
+	  var formData = $(this).serialize(); // Serialize form data
+	  $.ajax({
+		url: $(this).attr('action'),
+		type: $(this).attr('method'),
+		data: formData,
+		success: function(response){
+		  // Handle success response
+		  showSuccessMessage();
+		},
+		error: function(xhr, status, error){
+		  // Handle error response
+		  console.log(xhr.responseText);
+		}
+	  });
+	});
+  });
+  function showSuccessMessage() {
+	  var alert_items = document.querySelectorAll(".alert_item");
+	  var alert_wrapper = document.querySelector(".alert_wrapper");
+	  var close_btn = document.querySelectorAll(".close");
+	  // var message = "<%=locals.message%>";
+	  // var messageType = "<%=locals.messageType%>";
+	  alert_wrapper.classList.add("active");
+	  alert_items.forEach(function (alert_item, alert_index) {
+		  alert_item.style.top = "-100%";
+	  })
+
+	  close_btn.forEach(function (close, close_index) {
+		  close.addEventListener("click", function () {
+			  alert_wrapper.classList.remove("active");
+
+			  alert_items.forEach(function (alert_item, alert_index) {
+				  alert_item.style.top = "-100%";
+			  })
+		  })
+	  })
+
+	  document.querySelector(".alert_item.alert_success").style.top = "10%";
+	  document.querySelector(".alert_item.alert_success div.data p.sub").innerHTML = "Add product to cart successfully";
+  }
+

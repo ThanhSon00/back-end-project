@@ -2213,3 +2213,7 @@ textarea.input {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+a#price-filter {
+  background-color: #8D99AE;
+}
