@@ -1,4 +1,6 @@
-const Invoice = require('../models/invoice.model');
+
+
+const { Invoice } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllInvoices = async (req, res) => {

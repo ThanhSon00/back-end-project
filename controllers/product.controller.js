@@ -1,4 +1,6 @@
-const Product = require('../models/product.model');
+
+
+const { Product } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 const { Op } = require("sequelize");
 // price=gte:10&price=lte:100

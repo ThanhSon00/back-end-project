@@ -1,4 +1,6 @@
-const InvoiceProduct = require('../models/invoice_product.model');
+
+
+const { InvoiceProduct } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllInvoiceProducts = async (req, res) => {

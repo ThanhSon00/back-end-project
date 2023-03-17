@@ -1,4 +1,4 @@
-const Account = require("../models/account.model");
+const { Account } = require("../models/models");
 const { StatusCodes } = require('http-status-codes')
 
 // CRUD API
@@ -64,8 +64,7 @@ const getAccount = async (req, res) => {
             customer_id: customer_id,
         }
     });
-    console.log(account);
-    req.status(StatusCodes.OK).json(account);
+    res.status(StatusCodes.OK).json(account);
 
 }
 
