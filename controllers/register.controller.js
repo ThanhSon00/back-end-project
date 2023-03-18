@@ -47,6 +47,12 @@ const registerAccount = async (req, res) => {
     })
 
     const { customer_id } = response.data;
+    // Create cart for new customer
+    await api.post('/carts', {
+        customer_id: customer_id,
+    })
+    
+    // Create account for new customer
     response = await api.post('/accounts', {
         customer_id: customer_id,
         email: email,

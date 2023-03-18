@@ -24,8 +24,10 @@ const login = async (req, res) => {
             message = "Your account has not been activated yet";
         }
         else {
+            const cart = (await api.get(`/customers/${account.customer_id}/carts`)).data;
             const payload = {
                 customer_id: account.customer_id,
+                cart_id: cart.cart_id,
                 email: account.email,
             }
             const token = getJWT(payload);
