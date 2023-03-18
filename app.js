@@ -24,6 +24,9 @@ const resetPasswordRoutes = require('./routes/resetPassword.routes');
 const logoutRoutes = require('./routes/logout.routes');
 const registerRoutes = require('./routes/register.routes');
 
+// Partial Routes
+const headerRoutes = require('./routes/header.routes');
+
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
@@ -46,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Page
+app.use('/header', asyncHandler(headerRoutes));
 app.use('/log-in', checkLogged, asyncHandler(loginRoutes));
 app.use('/store', authorization, asyncHandler(storeRoutes));
 app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
