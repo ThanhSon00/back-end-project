@@ -1,4 +1,4 @@
-const Cart = require('../models/cart.model');
+const { Cart } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 
 const getAllCarts = async (req, res) => {
@@ -13,7 +13,18 @@ const getCart = async (req, res) => {
             cart_id: cart_id,
         }
     });
-    return res.status(StatusCodes.OK).json(cart);
+    const objData = JSON.parse(JSON.stringify(cart, null, 4));
+    objData._links = [];
+    objData._links.push(getProductLink(cart_id));
+    return res.status(StatusCodes.OK).json(objData);
+}
+
+const getProductLink = (cart_id) => {
+    return {
+        rel: "product",
+        href: `/carts/${cart_id}/products`,
+        method: "GET",
+    }
 }
 
 const createCart = async (req, res) => {
