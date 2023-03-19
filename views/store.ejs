@@ -99,7 +99,7 @@
 								<span class="qty-down">-</span>
 							</div>
 						</div>
-						<a id="price-filter" href="">Search</a>
+						<a class="search-btn" id="price-filter" href="">Search</a>
 					</div>
 					<!-- /aside Widget -->
 
@@ -233,7 +233,7 @@
 							<!-- product -->
 
 							<div class="col-md-4 col-xs-6">
-								<div class="product">
+								<div class="product" id="<%= products[i].product_id %>">
 									<div class="product-img"">
 											<div class=" cover"><img src="<%= products[i].image%>" class="center" alt=""></div>
 								</div>
@@ -265,8 +265,11 @@
 									</div>
 								</div>
 								<div class="add-to-cart">
-									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-										cart</button>
+									<form id="add-to-cart" action="store" method="post">
+										<input name="product_id" value="<%= products[i].product_id %>" type="hidden">
+										<button class="add-to-cart-btn" type="submit"><i class="fa fa-shopping-cart"></i> add to
+											cart</button>
+									</form>
 								</div>
 							</div>
 					</div>
@@ -399,18 +402,68 @@
 	<footer id="footer">
 		<%- include('../partials/footer') %>
 	</footer>
-	<!-- /FOOTER -->
-	<script>
-        function codeAddress() {
-			const priceFilteringPath = "<%=priceFilteringPath%>"
-			var slider = document.getElementById('price-slider');
-			slider.noUiSlider.on('update', (values, handle) => {
-			const priceRange = values;
-			document.getElementById('price-filter').href = `${priceFilteringPath}&price=gte:${priceRange[0]}&price=lte:${priceRange[1]}`;
-		})}
-        window.onload = codeAddress;
 
-	</script>
+	<div class="alert_wrapper">
+		<div class="alert_backdrop"></div>
+		<div class="alert_inner">
+			<div class="alert_item alert_info">
+				<div class="icon data_icon">
+					<i class="fas fa-info-circle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Info:</span>
+						User action pending
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_warning">
+				<div class="icon data_icon">
+					<i class="fas fa-exclamation-triangle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Warning:</span>
+						User action warning
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_error">
+				<div class="icon data_icon">
+					<i class="fas fa-bomb"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Error:</span>
+						User action error
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_success">
+				<div class="icon data_icon">
+					<i class="fas fa-check-circle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Success:</span>
+					</p>
+					<p class="sub"></p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FOOTER -->
 	<!-- jQuery Plugins -->
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/bootstrap.min.js"></script>
@@ -418,8 +471,36 @@
 	<script src="javascripts/nouislider.min.js"></script>
 	<script src="javascripts/jquery.zoom.min.js"></script>
 	<script src="javascripts/main.js"></script>
+	<script src="javascripts/ejs.js"></script>
+	<script src="javascripts/ejs.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script type="module" src=""
+<script>
+		// Fix max range of slider
+		$(document).ready( function(){
+			const minPrice = "<%=minPrice%>" || "gte:1";
+			const maxPrice = "<%=maxPrice%>" || "2000";
+			var slider = document.getElementById('price-slider');
+			slider.noUiSlider.updateOptions({
+				range: {
+					'min': 1,
+					'max': 2000,
+				},
+				start: [minPrice.replace('gte:', ''), 
+						maxPrice.replace('lte:', '')]
+			});
+		});
 
+		function codeAddress() {
+			var slider = document.getElementById('price-slider');
+			const priceFilteringPath = "<%=priceFilteringPath%>"
+			slider.noUiSlider.on('update', (values, handle) => {
+				const priceRange = values;
+				document.getElementById('price-filter').href = `${priceFilteringPath}&price=gte:${priceRange[0]}&price=lte:${priceRange[1]}`;
+			})
+		}
+		window.onload = codeAddress;
+	</script>
 </body>
 
 </html>
