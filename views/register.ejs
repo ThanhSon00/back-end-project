@@ -7,16 +7,16 @@
 <div class="login-block">
     <h1>Sign In</h1>
     <form action="/register" method="post" id="signInForm">
-        <input type="text" placeholder="Full Name" name="name" value="<%=locals.name%>"/>
-        <input type="text" placeholder="Phone Number" name="phone" value="<%=locals.phone%>"/>
-        <input type="text" placeholder="Email" name="email" value="<%=locals.email%>"/>
-        <input type="password" placeholder="Password" name="password" value="<%=locals.password%>"/>
-        <input type="password" placeholder="Verify Password" name="rewrite_password" value="<%=locals.rewrite_password%>"/>
+        <input type="text" placeholder="Full Name" name="name" value="<%=name%>"/>
+        <input type="text" placeholder="Phone Number" name="phone" value="<%=phone%>"/>
+        <input type="text" placeholder="Email" name="email" value="<%=email%>"/>
+        <input type="password" placeholder="Password" name="password" value="<%=password%>"/>
+        <input type="password" placeholder="Verify Password" name="rewrite_password" value="<%=rewrite_password%>"/>
     </form>
     <a href="/log-in" style="text-decoration: none; color:#0067b8">Already have an account?</a>
     <br>
     <br>
-    <% if (locals.message) { %>
+    <% if (message) { %>
         <p style="color: red; text-align: center;" > <%=message%> </p>
     <%} %>
   
