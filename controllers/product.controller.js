@@ -3,7 +3,6 @@
 const { Product } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 const { Op } = require("sequelize");
-// price=gte:10&price=lte:100
 
 const getAllProducts = async (req, res) => {
     const { page, pageSize, category_id, price } = req.query;

@@ -25,7 +25,7 @@
             <!-- LOGO -->
             <div class="col-md-3">
                 <div class="header-logo">
-                    <a href="#" class="logo">
+                    <a href="/home" class="logo">
                         <img src="./images/logo.png" alt="">
                     </a>
                 </div>
@@ -72,9 +72,7 @@
                             <div class="cart-list">
                                 <div class="cart-items">
                                     <% for (var i = 0; i < cartProducts.length; i++) { %>
-                                        <div class="product-widget">
-                                          <form class="remove-from-cart" id="<%= cartProducts[i].product_id %>" method="delete" action="header">
-                                            <input type="hidden" value="<%= cartProducts[i].product_id %>" name="product_id">
+                                        <div class="product-widget" id="<%= cartProducts[i].product_id %>">
                                             <div class="product-img">
                                                 <img src="<%= cartProducts[i].image %>" alt="">
                                             </div>
@@ -82,18 +80,18 @@
                                                 <h3 class="product-name"><a href="#"><%= cartProducts[i].name %></a></h3>
                                                 <h4 class="product-price"><span class="qty">1x</span>$<%= cartProducts[i].price %></h4>
                                             </div>
-                                            <button class="delete" type="submit"><i class="fa fa-close"></i></button>    
-                                          </form>                                
+                                            <button class="delete" data-product-id="<%= cartProducts[i].product_id %>" data-cart-id="<%= cart.cart_id %>"><i class="fa fa-close"></i></button>                              
                                         </div>
                                       <% } %>
                                 </div>
-                            <!-- <div class="cart-summary">
-                                <small><%= cart.totalAmount %> Item(s) selected</small>
-                                <h5>SUBTOTAL: $2940.00</h5>
-                            </div> -->
-                            <div class="cart-btns">
-                                <a href="#">View Cart</a>
-                                <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+                                <!-- <div class="cart-summary">
+                                    <small><%= cart.totalAmount %> Item(s) selected</small>
+                                    <h5>SUBTOTAL: $2940.00</h5>
+                                </div> -->
+                                <div class="cart-btns">
+                                    <a href="#">View Cart</a>
+                                    <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>

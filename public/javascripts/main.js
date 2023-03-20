@@ -169,48 +169,50 @@
 
 })(jQuery);
 
+addButtonEventListener();
+
 // Prevent loading page when submit form
-$(document).ready(function(){
-	$('form#add-to-cart').submit(function(event){
-	  event.preventDefault(); // Prevent default form submission behavior
-	  var formData = $(this).serialize(); // Serialize form data
-	  $.ajax({
-		url: $(this).attr('action'),
-		type: $(this).attr('method'),
-		data: formData,
-		success: function(response){
-		  // Handle success response
-		  showSuccessMessage();
-		  const product_id = this.data.replace('product_id=', '');
-		  addProductToCart(product_id);
-		},
-		error: function(xhr, status, error){
-		  // Handle error response
-		  console.log(xhr.responseText);
-		}
-	  });
-	});
-	$('form.remove-from-cart').submit(function(event){
-		event.preventDefault(); // Prevent default form submission behavior
-		var formData = $(this).serialize(); // Serialize form data
-		$.ajax({
-		  url: $(this).attr('action'),
-		  type: $(this).attr('method'),
-		  data: formData,
-		  success: function(response){
-			// Handle success response
-			const product_id = this.data.replace('product_id=', '');
-			var div = document.querySelector(`form#${product_id}`);
-			div.remove();
-			decreaseTotalAmount();
-		  },
-		  error: function(xhr, status, error){
-			// Handle error response
-			console.log(xhr.responseText);
-		  }
+function addButtonEventListener() {
+	$(document).ready(function(){
+		$("button.delete").click(function() { 
+		  const cart_id = $(this).data("cart-id");
+		  const product_id = $(this).data("product-id");
+		  $.ajax({
+			  url: `/api/v1/carts/${cart_id}/products/${product_id}`,
+			  type: 'delete',
+			  data: '',
+			  success: function(response){
+				// Handle success response
+				var div = document.querySelector(`.product-widget#${product_id}`);
+				div.remove();
+				decreaseTotalAmount();
+			  },
+			  error: function(xhr, status, error){
+				// Handle error response
+				console.log(xhr.responseText);
+			  }
+			});
 		});
-	  });
-  });
+		$("button.add-to-cart-btn").click(function() { 
+		  const cart_id = $(this).data("cart-id");
+		  const product_id = $(this).data("product-id");
+		  $.ajax({
+			  url: `/api/v1/carts/${cart_id}/products`,
+			  type: 'post',
+			  data: `product_id=${product_id}`,
+			  success: function(response){
+				addProductToCart(cart_id, product_id);
+				showSuccessMessage();
+			  },
+			  error: function(xhr, status, error){
+				// Handle error response
+				console.log(xhr.responseText);
+			  }
+			});
+		});
+	});
+}
+
   function showSuccessMessage() {
 	  var alert_items = document.querySelectorAll(".alert_item");
 	  var alert_wrapper = document.querySelector(".alert_wrapper");
@@ -234,7 +236,7 @@ $(document).ready(function(){
 	  document.querySelector(".alert_item.alert_success div.data p.sub").innerHTML = "Add product to cart successfully";
   }
 
-  function addProductToCart(product_id) {
+  function addProductToCart(cart_id, product_id) {
 	const cartProduct = {
 		product_id: product_id,
 		image: document.querySelector(`div#${product_id} div.product-img div.cover img`).src,
@@ -242,41 +244,22 @@ $(document).ready(function(){
 		price: document.querySelector(`div#${product_id} h4.product-price`).innerText.replace('$', ''),
 	};
 	const ejsView = `
-<div class="product-widget">
-	<form class="remove-from-cart" id="<%= cartProduct.product_id %>" method="delete" action="header">
-	  <input type="hidden" value="<%= cartProduct.product_id %>" name="product_id">
-	  <div class="product-img">
-		  <img src="<%= cartProduct.image %>" alt="">
-	  </div>
-	  <div class="product-body">
-		  <h3 class="product-name"><a href="#"><%= cartProduct.name %></a></h3>
-		  <h4 class="product-price"><span class="qty">1x</span>$<%= cartProduct.price %></h4>
-	  </div>
-	  <button class="delete" type="submit"><i class="fa fa-close"></i></button>    
-	</form>                                
-</div>`;
-	let html = ejs.render(ejsView, { cartProduct: cartProduct });
+	<div class="product-widget" id="<%= cartProduct.product_id %>">
+	<div class="product-img">
+		<img src="<%= cartProduct.image %>" alt="">
+	</div>
+	<div class="product-body">
+		<h3 class="product-name"><a href="#"><%= cartProduct.name %></a></h3>
+		<h4 class="product-price"><span class="qty">1x</span>$<%= cartProduct.price %></h4>
+	</div>
+	<button class="delete" data-product-id="<%= cartProduct.product_id %>" data-cart-id="<%= cart_id %>"><i class="fa fa-close"></i></button>                              
+	</div>`;
+	let html = ejs.render(ejsView, { cartProduct: cartProduct, cart_id: cart_id });
 	  // Vanilla JS:
 	const fragment = create(html);
 	// document.querySelector('.cart-items').appendChild(fragment);
 	document.querySelector('.cart-items').appendChild(fragment);
-	document.querySelector(`form#${product_id} button`).addEventListener('click', (event) => {
-		event.preventDefault(); // Prevent default form submission behavior
-		$.ajax({
-			url: 'header',
-			type: 'delete',
-			data: `product_id=${product_id}`,
-			success: function(response){
-			var div = document.querySelector(`form#${product_id}`);
-			div.remove();
-			decreaseTotalAmount();
-			},
-			error: function(xhr, status, error){
-			// Handle error response
-			console.log(xhr.responseText);
-			}
-		});
-	});
+	addButtonEventListener();
 	const totalAmount = document.querySelector('div.dropdown div.qty').innerText;
 	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) + 1;
 
