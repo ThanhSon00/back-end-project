@@ -3,7 +3,8 @@
 const { StatusCodes } = require('http-status-codes');
 const { CartProduct, Product, Cart } = require('../models/models');
 const createCartProduct = async (req, res) => {
-    const { product_id, amount, cart_id } = req.body;
+    const { cart_id } = req.params;
+    const { product_id, amount } = req.body;
     const cartProduct = await CartProduct.create({
         product_id: product_id,
         amount: amount,

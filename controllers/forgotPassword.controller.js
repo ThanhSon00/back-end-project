@@ -5,7 +5,6 @@ const nodemailer = require('nodemailer')
 const ejs = require('ejs');
 const { api, root } = require('../bin/URL');
 const rootURL = root.defaults.baseURL;
-const apiURL = api.defaults.baseURL;
 
 const renderPage = async (req, res) => {
     const message = req.cookies.message;
@@ -81,10 +80,6 @@ const getPassResetLink = async (account) => {
 const getJWT = (payload) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
     return token;
-}
-const resetPassword = async (req, res) => {
-    const { token } = req.params;
-
 }
 
 module.exports = {
