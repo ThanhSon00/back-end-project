@@ -123,9 +123,11 @@ const activateAccount = async (req, res) => {
     await api.patch(`/accounts/${data.customer_id}`, {
         isNotActivated: false,
     });
+    const cart = (await api.get(`/customers/${customer_id}/carts`)).data;
     const payload = {
         customer_id: data.customer_id,
         email: data.email,
+        cart_id: cart.cart_id,
     }
     res.cookie('access_token', getJWT(payload), { 
         httpOnly: true,

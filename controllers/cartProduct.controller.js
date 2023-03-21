@@ -5,11 +5,11 @@ const { CartProduct, Product, Cart } = require('../models/models');
 const createCartProduct = async (req, res) => {
     const { cart_id } = req.params;
     const { product_id, amount } = req.body;
-    const cartProduct = await CartProduct.create({
+    const cartProduct = await CartProduct.upsert({
         product_id: product_id,
         amount: amount,
         cart_id: cart_id,
-    }, { fields: ['cart_id', 'product_id', 'amount']});
+    }, { fields: ['cart_id', 'product_id', 'amount']})
     return res.status(StatusCodes.OK).json(cartProduct);
 }
 
@@ -31,7 +31,8 @@ const deleteCartProduct = async (req, res) => {
         where: {
             product_id: product_id,
             cart_id: cart_id,
-        }
+        },
+        individualHooks: true
     });
     return res.status(StatusCodes.OK).send();
 }
