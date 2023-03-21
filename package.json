@@ -26,5 +26,8 @@
     "jsonwebtoken": "^9.0.0",
     "puppeteer": "^19.7.3",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.0"
   }
 }
