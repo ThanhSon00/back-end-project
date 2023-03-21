@@ -1,11 +1,6 @@
 const { Cart } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 
-const getAllCarts = async (req, res) => {
-    const carts = await Cart.findAll();
-    return res.status(StatusCodes.OK).json(carts);
-}
-
 const getCart = async (req, res) => {
     const { cart_id } = req.params;
     const cart = await Cart.findOne({
@@ -50,20 +45,8 @@ const updateCart = async (req, res) => {
     res.status(StatusCodes.OK).send();
 }
 
-const deleteCart = async (req, res) => {
-    const { params: { cart_id } } = req;
-    await Cart.destroy({
-        where: {
-            cart_id: cart_id,
-        }
-    });
-    res.status(StatusCodes.OK).send();
-}
-
 module.exports = {
-    getAllCarts,
     getCart,
     createCart,
     updateCart,
-    deleteCart,
 }

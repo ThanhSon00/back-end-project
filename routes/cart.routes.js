@@ -2,11 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    getAllCarts,
     getCart,
     createCart,
     updateCart,
-    deleteCart,
 } = require('../controllers/cart.controller')
 
 const {
@@ -27,10 +25,8 @@ router.route('/:cart_id/products')
 router.route('/:cart_id')
     .get(getCart)
     .patch(updateCart)
-    .delete(deleteCart);
 
 router.route('/')
-    .get(getAllCarts)
     .post(createCart);
 
 module.exports = router;
