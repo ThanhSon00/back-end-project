@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcryptjs');
@@ -154,23 +154,6 @@ const Category = sequelize.define("Category", {
     paranoid: true,
 });
 
-// Hook
-Account.beforeCreate(async (account, options) => {
-    const password = account.password;
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-    account.password = hash;
-});
-
-Account.beforeBulkUpdate(async (account, options) => {
-    if (account.attributes.password) {
-        const password = account.attributes.password;
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password, salt);
-        account.attributes.password = hash;
-    }
-});
-
 // Associations
 
 Cart.belongsToMany(Product, {
@@ -207,6 +190,57 @@ Product.belongsToMany(Invoice, {
 Category.hasMany(Product, {
     foreignKey: "category_id"
 })
+
+
+// Hook
+Account.beforeCreate(async (account, options) => {
+    const password = account.password;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    account.password = hash;
+});
+
+Account.beforeBulkUpdate(async (account, options) => {
+    if (account.attributes.password) {
+        const password = account.attributes.password;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        account.attributes.password = hash;
+    }
+});
+
+CartProduct.afterUpsert(async (instances, options) => {
+    const cartProduct = instances[0].dataValues;
+    const cart = await Cart.findOne({
+        where: {
+            cart_id: cartProduct.cart_id
+        }
+    })
+    const totalAmount = parseInt(cart.totalAmount);
+    await Cart.update({
+        totalAmount: totalAmount + 1,
+    }, {
+        where: {
+            cart_id: cartProduct.cart_id
+        }
+    })
+});
+
+CartProduct.afterDestroy(async (cartProduct, options) => {
+    const cart = await Cart.findOne({
+        where: {
+            cart_id: cartProduct.cart_id
+        }
+    })
+    const totalAmount = parseInt(cart.totalAmount);
+    await Cart.update({
+        totalAmount: totalAmount - 1,
+    }, {
+        where: {
+            cart_id: cartProduct.cart_id
+        }
+    })
+});
 
 module.exports = {
     Account,

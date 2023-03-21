@@ -841,17 +841,16 @@
 			</div>
 			<!-- /container -->
 		</div>
-		<!-- /NEWSLETTER -->
 
 		<!-- FOOTER -->
 		<footer id="footer">
 			<%- include('../partials/footer'); %>
 		</footer>
-	<% if (message && messageType) { %>
+		<!-- /NEWSLETTER -->
 		<div class="alert_wrapper">
-            <div class="alert_backdrop"></div>
+			<div class="alert_backdrop"></div>
             <div class="alert_inner">
-                <div class="alert_item alert_info">
+				<div class="alert_item alert_info">
                     <div class="icon data_icon">
                         <i class="fas fa-info-circle"></i>
                     </div>
@@ -862,56 +861,69 @@
                         <p class="sub">Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div class="icon close">
-                        <i class="fas fa-times"></i>
+						<i class="fas fa-times"></i>
                     </div>
                 </div>
                 <div class="alert_item alert_warning">
-                    <div class="icon data_icon">
-                        <i class="fas fa-exclamation-triangle"></i>
+					<div class="icon data_icon">
+						<i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div class="data">
-                        <p class="title"><span>Warning:</span>
+						<p class="title"><span>Warning:</span>
                             User action warning
                         </p>
                         <p class="sub">Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div class="icon close">
-                        <i class="fas fa-times"></i>
+						<i class="fas fa-times"></i>
                     </div>
                 </div>
                 <div class="alert_item alert_error">
-                    <div class="icon data_icon">
-                        <i class="fas fa-bomb"></i>
+					<div class="icon data_icon">
+						<i class="fas fa-bomb"></i>
                     </div>
                     <div class="data">
-                        <p class="title"><span>Error:</span>
+						<p class="title"><span>Error:</span>
                             User action error
                         </p>
                         <p class="sub">Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div class="icon close">
-                        <i class="fas fa-times"></i>
+						<i class="fas fa-times"></i>
                     </div>
                 </div>
                 <div class="alert_item alert_success">
-                    <div class="icon data_icon">
-                        <i class="fas fa-check-circle"></i>
+					<div class="icon data_icon">
+						<i class="fas fa-check-circle"></i>
                     </div>
                     <div class="data">
-                        <p class="title"><span>Success:</span>
+						<p class="title"><span>Success:</span>
                         </p>
                         <p class="sub"></p>
                     </div>
                     <div class="icon close">
-                        <i class="fas fa-times"></i>
+						<i class="fas fa-times"></i>
                     </div>
                 </div>
             </div>
         </div>
 
+		
+		
+		<!-- jQuery Plugins -->
+		<script src="javascripts/jquery.min.js"></script>
+		<script src="javascripts/bootstrap.min.js"></script>
+		<script src="javascripts/slick.min.js"></script>
+		<script src="javascripts/nouislider.min.js"></script>
+		<script src="javascripts/jquery.zoom.min.js"></script>
+		<script src="javascripts/main.js"></script>
+		<script src="javascripts/ejs.js"></script>
+		<script src="javascripts/ejs.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
+		<% if (message && messageType) { %>
 		<script>
-            var message = "<%=message%>";
+			var message = "<%=message%>";
             var messageType = "<%=messageType%>";
             var alert_items = document.querySelectorAll(".alert_item");
             var alert_wrapper = document.querySelector(".alert_wrapper");
@@ -934,16 +946,7 @@
             document.querySelector(".alert_item.alert_success").style.top = "10%";
             document.querySelector(".alert_item.alert_success div.data p.sub").innerHTML = message;
         </script>
-    
-    <%} %>
+    	<%} %>
 		<!-- /FOOTER -->
-
-		<!-- jQuery Plugins -->
-		<script src="javascripts/jquery.min.js"></script>
-		<script src="javascripts/bootstrap.min.js"></script>
-		<script src="javascripts/slick.min.js"></script>
-		<script src="javascripts/nouislider.min.js"></script>
-		<script src="javascripts/jquery.zoom.min.js"></script>
-		<script src="javascripts/main.js"></script>
 	</body>
 </html>

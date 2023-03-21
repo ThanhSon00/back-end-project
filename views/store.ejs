@@ -470,12 +470,11 @@
 	<script src="javascripts/ejs.js"></script>
 	<script src="javascripts/ejs.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script type="module" src=""
-<script>
+	<script>
 		// Fix max range of slider
 		$(document).ready( function(){
 			const minPrice = "<%=minPrice%>" || "gte:1";
-			const maxPrice = "<%=maxPrice%>" || "2000";
+			const maxPrice = "<%=maxPrice%>" || "lte:2000";
 			var slider = document.getElementById('price-slider');
 			slider.noUiSlider.updateOptions({
 				range: {
