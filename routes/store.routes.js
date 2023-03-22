@@ -3,10 +3,13 @@ const router = express.Router();
 
 const {
     renderPage,
-    addProductToCart
 } = require('../controllers/store.controller');
+
 
 router.route('/')
             .get(renderPage)
-            .post(addProductToCart);
+
+router.route('/:product_id')
+            .get()
+            
 module.exports = router;

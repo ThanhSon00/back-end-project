@@ -49,7 +49,6 @@ const renderPage = async (req, res) => {
         totalPage,
         categories,
         relativePath,
-        category_id,
         minPrice,
         maxPrice,
         pageFilteringPath,
@@ -76,24 +75,8 @@ const getRelatedResource = async (parentResource, rel) => {
     return response.data;
 }
 
-const addProductToCart = async (req, res) => {
-    const data = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
-    const customer_id = data.customer_id;
-    const cart = (await api.get(`/customers/${customer_id}/carts`)).data;
-    const cart_id = cart.cart_id;
-    const { product_id } = req.body;
-    const amount = req.body.amount || 1;
-    // Api need 2 keys which are customer_id and cart_id
-    const cartProduct = await api.post(`/carts/${cart_id}/products`, {
-        cart_id: cart_id,
-        product_id: product_id,
-        amount: amount,    
-    });
-    const cartProductObject = JSON.stringify(cartProduct.data);
-    res.status(StatusCodes.OK).json(cartProductObject);
-}
-
 module.exports = {
     renderPage,
-    addProductToCart
+    getCurrentCustomer,
+    getRelatedResource,
 }
