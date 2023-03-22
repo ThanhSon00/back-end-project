@@ -154,6 +154,22 @@ const Category = sequelize.define("Category", {
     paranoid: true,
 });
 
+const ProductDetail = sequelize.define("ProductDetail", {
+    product_id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+    },
+    image: {
+        type: DataTypes.TEXT,
+    },
+    description: {
+        type: DataTypes.TEXT,
+    },
+}, {
+    paranoid: true,
+})
+
+
 // Associations
 
 Cart.belongsToMany(Product, {
@@ -165,6 +181,10 @@ Product.belongsToMany(Cart, {
     through: CartProduct,
     foreignKey: "product_id",
 });
+
+Product.hasOne(ProductDetail, {
+    foreignKey: "product_id",
+})
 
 Customer.hasOne(Account, {
     foreignKey: "customer_id",
@@ -251,4 +271,5 @@ module.exports = {
     Category,
     InvoiceProduct,
     CartProduct,
+    ProductDetail,
 }

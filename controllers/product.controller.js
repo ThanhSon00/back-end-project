@@ -1,6 +1,6 @@
 
 
-const { Product } = require('../models/models');
+const { Product, ProductDetail } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 const { Op } = require("sequelize");
 
@@ -116,10 +116,21 @@ const deleteProduct = async (req, res) => {
     res.status(StatusCodes.OK).send();
 }
 
+const getProductDetail = async (req, res) => {
+    const { product_id } = req.params;
+    const productDetail = await ProductDetail.findOne({
+        where: {
+            product_id: product_id,
+        }
+    });
+    return res.status(StatusCodes.OK).json(productDetail);
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
     createProduct,
     updateProduct,
     deleteProduct,
+    getProductDetail,
 }

@@ -22,7 +22,7 @@ const forgotPasswordRoutes = require('./routes/forgotPassword.routes');
 const resetPasswordRoutes = require('./routes/resetPassword.routes');
 const logoutRoutes = require('./routes/logout.routes');
 const registerRoutes = require('./routes/register.routes');
-
+const productDetailsRoutes = require('./routes/productDetails.routes');
 // Middleware
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
@@ -53,10 +53,7 @@ app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
 app.use('/log-out', authorization, asyncHandler(logoutRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
 app.use('/home', authorization, asyncHandler(homeRoutes));
-
-app.use('/product', authorization, async (req, res) => {
-  res.render('product');
-});
+app.use('/product', authorization, asyncHandler(productDetailsRoutes));
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
@@ -74,7 +71,6 @@ app.use('/api/v1/products', asyncHandler(productRoutes));
 app.use('/api/v1/invoices', asyncHandler(invoiceRoutes));
 app.use('/api/v1/categories', asyncHandler(categoryRoutes));
 
-// Middleware
 app.use(errorHandler);
 
 module.exports = app;
