@@ -6,10 +6,6 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
 const login = async (req, res) => {
-    const token = req.body.credential;
-    const client = new OAuth2Client(process.env.CLIENT_ID);
-    await verify(client, token);
-
     var message, success;
     const { email, password } = req.body;
     if (!email || !password) {
