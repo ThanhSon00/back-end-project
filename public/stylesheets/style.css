@@ -1212,9 +1212,9 @@ textarea.input {
 	Aside
 \*----------------------------*/
 
-.aside+.aside {
+/* .aside+.aside {
   margin-top: 30px;
-}
+} */
 
 .aside>.aside-title {
   text-transform: uppercase;
@@ -2212,8 +2212,4 @@ textarea.input {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-a#price-filter {
-  background-color: #8D99AE;
 }

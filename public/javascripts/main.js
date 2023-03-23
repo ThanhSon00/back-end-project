@@ -242,7 +242,9 @@ function addProductToCart(cart_id, product_id) {
 	const ejsView = `
 <div class="product-widget" id="<%= cartProduct.product_id %>">
 <div class="product-img">
-	<img src="<%= cartProduct.image %>" alt="">
+	<div class="cover">
+		<img src="<%= cartProduct.image %>" alt="" class="center" style="width:60px; height:60px">
+	</div>
 </div>
 <div class="product-body">
 	<h3 class="product-name"><a href="#"><%= cartProduct.name %></a></h3>
