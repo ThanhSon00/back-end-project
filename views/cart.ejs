@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include('../partials/head') %>
+</head>
+
+<body>
+	<!-- HEADER -->
+	<header>
+		<%- include('../partials/header') %>
+	</header>
+	<!-- /HEADER -->
+
+	<!-- NAVIGATION -->
+	<nav id="navigation">
+		<!-- container -->
+		<div class="container">
+			<!-- responsive-nav -->
+			<div id="responsive-nav">
+				<!-- NAV -->
+				<ul class="main-nav nav navbar-nav">
+					<li><a href="/home">Home</a></li>
+					<li><a href="/store">Store</a></li>
+					<li class="active"><a href="/cart">Cart</a></li>
+					<li><a href="/invoice">Invoice</a></li>
+				</ul>
+				<!-- /NAV -->
+			</div>
+			<!-- /responsive-nav -->
+		</div>
+		<!-- /container -->
+	</nav>
+	<br>
+	<!-- /NAVIGATION -->
+	<table width='100%'>
+		<col width='10%'> <!--This is for the first column-->
+		<col width='10%'> <!--This is for the first column-->
+		<col width='40%'> <!--This is for the second column-->
+		<col width='40%'> <!--This is for the third column-->
+		<tr>
+			<th></th>
+			<th style="text-align: center;">Product</th>
+			<th>Name</th>
+			<th>Action</th>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<div class="product-img" style="text-align-last: center;">
+					<div class="cover">
+						<img src="https://m.media-amazon.com/images/I/41wvQ9Jdq3L._AC_SX355_.jpg" alt="" style="
+						width: 100px;
+						height: 100px;
+						margin: 40px;
+					" class="center">
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="product-body" style="
+							height: -webkit-fill-available;
+						">
+					<p class="product-category">Category</p>
+					<h3 class="product-name"><a href="" tabindex="0">product name goes here</a></h3>
+					<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+					<div class="product-rating">
+					</div>
+				</div>
+			</td>
+			<td></td>
+		</tr>
+	 </table>
+
+
+	<!-- FOOTER -->
+	<footer id="footer">
+		<%- include('../partials/footer') %>
+	</footer>
+
+	<div class="alert_wrapper">
+		<div class="alert_backdrop"></div>
+		<div class="alert_inner">
+			<div class="alert_item alert_info">
+				<div class="icon data_icon">
+					<i class="fas fa-info-circle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Info:</span>
+						User action pending
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_warning">
+				<div class="icon data_icon">
+					<i class="fas fa-exclamation-triangle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Warning:</span>
+						User action warning
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_error">
+				<div class="icon data_icon">
+					<i class="fas fa-bomb"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Error:</span>
+						User action error
+					</p>
+					<p class="sub">Lorem ipsum dolor sit amet.</p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<div class="alert_item alert_success">
+				<div class="icon data_icon">
+					<i class="fas fa-check-circle"></i>
+				</div>
+				<div class="data">
+					<p class="title"><span>Success:</span>
+					</p>
+					<p class="sub"></p>
+				</div>
+				<div class="icon close">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FOOTER -->
+	<!-- jQuery Plugins -->
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/bootstrap.min.js"></script>
+	<script src="javascripts/slick.min.js"></script>
+	<script src="javascripts/nouislider.min.js"></script>
+	<script src="javascripts/jquery.zoom.min.js"></script>
+	<script src="javascripts/main.js"></script>
+	<script src="javascripts/ejs.js"></script>
+	<script src="javascripts/ejs.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</body>
+
+</html>

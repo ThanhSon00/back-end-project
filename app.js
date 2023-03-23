@@ -23,6 +23,8 @@ const resetPasswordRoutes = require('./routes/resetPassword.routes');
 const logoutRoutes = require('./routes/logout.routes');
 const registerRoutes = require('./routes/register.routes');
 const productDetailsRoutes = require('./routes/productDetails.routes');
+const myCartRoutes = require('./routes/myCart.routes');
+
 // Middleware
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
@@ -54,6 +56,7 @@ app.use('/log-out', authorization, asyncHandler(logoutRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
 app.use('/home', authorization, asyncHandler(homeRoutes));
 app.use('/product', authorization, asyncHandler(productDetailsRoutes));
+app.use('/cart', authorization, asyncHandler(myCartRoutes));
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
