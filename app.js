@@ -55,8 +55,12 @@ app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
 app.use('/log-out', authorization, asyncHandler(logoutRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
 app.use('/home', authorization, asyncHandler(homeRoutes));
-app.use('/product', authorization, asyncHandler(productDetailsRoutes));
+app.use('/products', authorization, asyncHandler(productDetailsRoutes));
 app.use('/cart', authorization, asyncHandler(myCartRoutes));
+
+app.use(`/test`, async (req, res) => {
+  res.render('product');
+})
 
 app.use('/check-out', authorization, async (req, res) => {
   res.render('check-out');
