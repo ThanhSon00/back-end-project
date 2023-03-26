@@ -40,12 +40,12 @@ const deleteCartProduct = async (req, res) => {
 const getProductsInCart = async (req, res) => {
     const { cart_id } = req.params;
     const cartProducts = await Cart.findOne({
-        include: Product,
-    }, {
         where: {
             cart_id: cart_id,
-    }});
-    const objData = JSON.parse(JSON.stringify(cartProducts, null, 4));
+        },
+        include: Product,
+    });
+    const objData = JSON.parse(JSON.stringify(cartProducts.Products, null, 4));
     return res.status(StatusCodes.OK).json(objData);
 }
 

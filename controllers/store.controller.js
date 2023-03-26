@@ -16,8 +16,8 @@ const renderPage = async (req, res) => {
     const categories = (await api.get('categories')).data;
     const totalPage = Math.floor(count / pageSize) + 1;     
     const customer = await getCurrentCustomer(req.cookies.access_token);
-    const cart = (await getRelatedResource(customer, 'cart'))
-    const cartProducts = (await getRelatedResource(cart, 'product')).Products;
+    const cart = await getRelatedResource(customer, 'cart');
+    const cartProducts = await getRelatedResource(cart, 'product');
     let relativePath = '/store?';
     if (category_id) {
         relativePath += `&category_id=${category_id}`;
@@ -58,6 +58,7 @@ const renderPage = async (req, res) => {
         cartProducts,
     });
 }
+
 
 const getCurrentCustomer = async (token) => {
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
