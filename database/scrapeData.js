@@ -3,6 +3,75 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const { api } = require('../bin/URL');
 
+const scrapeWebData = async (url, shelves) => {
+    const product_id = url.replace('https://www.amazon.com/dp/', '');
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.goto(url);
+
+    await page.emulateMediaType('screen');            // use screen media
+    await page.pdf({ path: `pdf/${product_id}.pdf`, displayHeaderFooter: true, printBackground: true });  // generate pdf
+
+    try {
+        await page.waitForSelector('.imageThumbnail img');
+    } catch (e) {
+        if (e instanceof puppeteer.TimeoutError) {
+            console.log("Image not found");
+        }
+        else console.error(e)
+    }
+
+    const productInformation = await page.evaluate(() => {
+        const product_id = document.baseURI.replace('https://www.amazon.com/dp/', '');
+        const array = [];
+        document.querySelectorAll('.imageThumbnail img').forEach((ele) => {
+            array.push(ele.getAttribute('src'));
+        })
+        const imageLinks = array.join('|');
+        let productDescription = document.querySelector('div#productDescription span') || '';
+        productDescription = productDescription.textContent || '';
+        productDescription = productDescription.replace(/['"]+/g, ' Inch ');
+        if (!productDescription) {
+            console.log("Description not found");
+        }
+        // let productDescription = document.querySelector('div#productDescription span').textContent.replace(/['"]+/g, ' Inch ') || '';
+        return {
+            product_id,
+            imageLinks,
+            productDescription,
+        }
+    })
+    await browser.close();
+    shelves.push(productInformation);
+}
+
+const getProductsDescription = async () => {
+    const baseURL = 'https://www.amazon.com/dp';
+    const products = await Product.findAll({
+        attributes: ['product_id'],
+        limit: 50,
+        offset: 739,
+    });
+    for (var i = 0; i < products.length; i++) {
+        await sleep(3000);
+        const shelves = [];
+        const product_id = products[i].dataValues.product_id;
+        const url = `${baseURL}/${product_id}`;
+        await scrapeWebData(url, shelves);
+        console.log(`Finish ${i + 1} product(s)`);
+        let csvContent = shelves.map(element => {
+            return Object.values(element).map(item => `"${item}"`).join(',')
+        }).join("\n")
+        fs.appendFile('product-information.csv', '\n' + csvContent, 'utf8', function (err) {
+            if (err) {
+                console.log('Some error occurred - file either not saved or corrupted.')
+            } else {
+                console.log('File has been saved!')
+            }
+        })
+    }
+}
+
 const scrapeData = async (link, shelves) => {
     const categoryName = link.split('&category=')[1];
     const response = await api.get(`/categories?name=${categoryName}`);
@@ -31,7 +100,7 @@ const scrapeData = async (link, shelves) => {
                 shelves.push(element);
             }
         });
-        await sleep(5000);      
+        await sleep(5000);
         console.log(`Finish page ${i} of ${categoryName}`);
     }
     return shelves;
@@ -39,7 +108,7 @@ const scrapeData = async (link, shelves) => {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }  
+}
 
 const main = async () => {
     const monitorsLink = 'https://www.amazon.com/s?rh=n%3A1292115011&fs=true&category=Monitors';
@@ -47,12 +116,12 @@ const main = async () => {
     const computerAccessoriesLink = 'https://www.amazon.com/s?rh=n%3A172456&fs=true&category=Computer+Accessories';
     const tabletsLink = 'https://www.amazon.com/s?rh=n%3A1232597011&fs=true&category=Tablets';
     const desktopsLink = 'https://www.amazon.com/s?rh=n%3A565098&fs=true&category=Desktops';
-    
+
     const linkArray = [
-        monitorsLink, 
-        laptopsLink, 
-        computerAccessoriesLink, 
-        tabletsLink, 
+        monitorsLink,
+        laptopsLink,
+        computerAccessoriesLink,
+        tabletsLink,
         desktopsLink
     ]
 
@@ -63,7 +132,7 @@ const main = async () => {
     }
     let csvContent = shelves.map(element => {
         return Object.values(element).map(item => `"${item}"`).join(',')
-    }).join("\n") 
+    }).join("\n")
 
     fs.writeFile('saved-shelves.csv', "product_id, title, price, image, category_id" + '\n' + csvContent, 'utf8', function (err) {
         if (err) {
