@@ -8,10 +8,14 @@ const {
     updateProduct,
     deleteProduct,
     getProductDetail,
+    getProductCategory,
 } = require('../controllers/product.controller');
 
 router.route('/:product_id/details')
     .get(getProductDetail);
+
+router.route('/:product_id/categories')
+    .get(getProductCategory);
 
 router.route('/:product_id')
     .get(getProduct)

@@ -1,6 +1,4 @@
-
-
-const { Product, ProductDetail } = require('../models/models');
+const { Category, Product, ProductDetail } = require('../models/models');
 const { StatusCodes } = require('http-status-codes');
 const { Op } = require("sequelize");
 
@@ -51,6 +49,11 @@ const getAllProducts = async (req, res) => {
     });
     return res.status(StatusCodes.OK).json(products);
 }
+
+function shuffleArray(arr) {
+    arr.sort(() => Math.random() - 0.5);
+    return arr;
+  }
 
 
 const getProduct = async (req, res) => {
@@ -126,6 +129,19 @@ const getProductDetail = async (req, res) => {
     return res.status(StatusCodes.OK).json(productDetail);
 }
 
+const getProductCategory = async (req, res) => {
+    const { product_id } = req.params;
+    const productCategory = await Category.findOne({
+        include: {
+            model: Product,
+            where: {
+                product_id: product_id,
+            }
+        }
+    })
+    return res.status(StatusCodes.OK).json(productCategory);
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
@@ -133,4 +149,5 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getProductDetail,
+    getProductCategory,
 }
