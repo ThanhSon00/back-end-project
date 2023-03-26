@@ -2200,6 +2200,19 @@ textarea.input {
   object-fit: contain;
 }
 
+.cover-thumbnail-product img {
+  width: 153px;
+  height: 153px;
+  object-fit: contain;
+}
+
+.cover-main-product img {
+  width: 350px;
+  height: 350px;
+  object-fit: contain;
+}
+
+
 .center {
   display: block;
   margin-left: auto;
