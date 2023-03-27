@@ -79,8 +79,8 @@
                                                 </div>
                                             </div>
                                             <div class="product-body">
-                                                <h3 class="product-name"><a href="#"><%= cartProducts[i].name %></a></h3>
-                                                <h4 class="product-price"><span class="qty">1x</span>$<%= cartProducts[i].price %></h4>
+                                                <h3 class="product-name"><a href="/products/<%= cartProducts[i].product_id %>"><%= cartProducts[i].name %></a></h3>
+                                                <h4 class="product-price"><span class="qty"> <%= cartProducts[i].Cart_Product.amount %>x</span>$<%= cartProducts[i].price %></h4>
                                             </div>
                                             <button class="delete" data-product-id="<%= cartProducts[i].product_id %>" data-cart-id="<%= cart.cart_id %>"><i class="fa fa-close"></i></button>                              
                                         </div>
