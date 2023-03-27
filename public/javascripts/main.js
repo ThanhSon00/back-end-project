@@ -265,10 +265,10 @@ function addProductToCart(cart_id, product_id, page) {
 	if (page == "product") {
 		cartProduct = {
 			product_id: product_id,
-			image: document.querySelector(".product-preview img").src,
-			name: document.querySelector("h2.product-name").textContent,
-			price: document.querySelector("h3.product-price").textContent.replace('$',''),
-			amount: document.querySelector('.input-number input').value,
+			image: document.querySelector(`div#${product_id} img`).src,
+			name: document.querySelector(`div#${product_id} .product-name`).textContent,
+			price: document.querySelector(`div#${product_id} h3.product-price`).textContent.replace('$',''),
+			amount: document.querySelector(`div#${product_id} .input-number input`).value,
 		}
 	}
 	const ejsView = `

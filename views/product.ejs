@@ -41,7 +41,7 @@
 						<ul class="breadcrumb-tree">
 							<li><a href="/home">Home</a></li>
 							<li><a href="/store">All Categories</a></li>
-							<li><a href="/store?category_id=<%= product.category_id %>"><%= productCategory.name %></a></li>
+						 	<li><a href="/store?category_id=<%= product.category_id %>"><%= productCategory.name %></a></li>
 							<li class="active"><%= product.name %></li>
 						</ul>
 					</div>
@@ -57,7 +57,7 @@
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
-				<div class="row">
+				<div class="row" id="<%= product.product_id %>">
 					<!-- Product main img -->
 					<div class="col-md-5 col-md-push-2">
 						<div id="product-main-img">
@@ -387,14 +387,17 @@
 					</div>
 					<% for (var i = 0; i < relatedProducts.length; i++) { %> 
 						<div class="col-md-3 col-xs-6">
-							<div class="product">
+							<div class="product" id="<%= relatedProducts[i].product_id %>">
 								<div class="product-img cover">
 									<img src="<%= relatedProducts[i].image %>" alt="" class="center">
 								</div>
 								<div class="product-body">
+									<div class="input-number">
+										<input type="hidden" value="1">
+									</div>
 									<p class="product-category"><%= productCategory.name %></p>
 									<h3 class="product-name"><a href="/products/<%= relatedProducts[i].product_id %>"><%= relatedProducts[i].name %></a></h3>
-									<h4 class="product-price">$<%= relatedProducts[i].price %></h4>
+									<h3 class="product-price">$<%= relatedProducts[i].price %></h3>
 									<div class="product-rating">
 									</div>
 									<div class="product-btns">
