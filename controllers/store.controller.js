@@ -56,6 +56,7 @@ const renderPage = async (req, res) => {
         priceFilteringPath,
         cart,
         cartProducts,
+        category_id,
     });
 }
 

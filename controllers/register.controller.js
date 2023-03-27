@@ -120,7 +120,8 @@ const getJWT = (payload) => {
 const activateAccount = async (req, res) => {
     const { token } = req.params
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    await api.patch(`/accounts/${data.customer_id}`, {
+    const customer_id = data.customer_id;
+    await api.patch(`/accounts/${customer_id}`, {
         isNotActivated: false,
     });
     const cart = (await api.get(`/customers/${customer_id}/carts`)).data;
