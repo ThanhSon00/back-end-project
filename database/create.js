@@ -1,7 +1,7 @@
 const models = require('../models/models');
 const sequelize = require('./connect');
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
   .then(() => {
     console.log('All models synchronized successfully.');
   })
