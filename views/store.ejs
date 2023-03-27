@@ -41,7 +41,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="breadcrumb-tree">
-						<li><a href="#">Store</a></li>						
+						<li><a href="/store">Store</a></li>						
 					</ul>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 						<div class="checkbox-filter">
 							<% for (var i = 0; i < categories.length; i++) {%>
 								<div class="input-checkbox">
-									<input type="checkbox" id="category-<%= i %>">
+									<input type="checkbox" id="category-<%= i %>" data-id="<%= categories[i].category_id %>">
 									<label for="category-<%= i %>">
 										<span></span>
 										<a href="<%=`${categoryFilteringPath}&category_id=${categories[i].category_id}`%>"><%=categories[i].name%></a>
@@ -466,9 +466,18 @@
 	<script src="/javascripts/ejs.js"></script>
 	<script src="/javascripts/ejs.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	
 	<script>
+		function htmlDecode(input) {
+			var e = document.createElement('div');
+			e.innerHTML = input;
+			return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+		}
+	</script>
+	<script>
+		const categoryFilteringPath = ("<%= categoryFilteringPath %>").replaceAll("amp;", "");
 		// Fix max range of slider
-		$(document).ready( function(){
+		$(document).ready(function(){
 			const minPrice = "<%=minPrice%>" || "gte:1";
 			const maxPrice = "<%=maxPrice%>" || "lte:2000";
 			var slider = document.getElementById('price-slider');
@@ -482,43 +491,50 @@
 			});
 		});
 
+		// Change button href when price slider value changed
 		function codeAddress() {
 			var slider = document.getElementById('price-slider');
 			const priceFilteringPath = "<%=priceFilteringPath%>"
 			slider.noUiSlider.on('update', (values, handle) => {
 				const priceRange = values;
-				document.getElementById('price-filter').href = `${priceFilteringPath}&price=gte:${priceRange[0]}&price=lte:${priceRange[1]}`;
+				document.getElementById('price-filter').href = `${priceFilteringPath.replace("amp;", "")}&price=gte:${priceRange[0]}&price=lte:${priceRange[1]}`;
 			})
 		}
+		window.onload = codeAddress;
 
-		
-		const categoryFilterId = GetURLParameter('category_id')
-		console.log(categoryFilterId);
-		const categoryName = `<%= categories.find((category) => { return category.category_id == `+ categoryFilterId + `}).name %>`;
+		// Add category name to breadcrumb page
+		const categories = JSON.parse(htmlDecode("<%= JSON.stringify(categories) %>"));		
+		const  categoryFilterId = JSON.parse(htmlDecode("<%= JSON.stringify(category_id) %>"));		
+		const categoryFilter = categories.find((category) => {
+			return category.category_id == categoryFilterId;
+		}) 
 		var ejsView;
-		if (categoryFilterId) {
+		if (categoryFilter) {
 			ejsView = `
-			<li><a href="/store"></a>All Categories</li>
-			<li class="active"> ${categoryName} </li>`;
+			<li><a href="/store">All Categories</a></li>
+			<li class="active"> ${categoryFilter.name} </li>`;
 		} else {
 			ejsView = `
 			<li class="active">All Categories</li>`;			
 		}
-		const html = ejs.render(ejsView, { categoryName: categoryName});
+		const html = ejs.render(ejsView);
 		const fragment = create(html);
-
 		document.querySelector('.breadcrumb-tree').appendChild(fragment);
 
-		function GetURLParameter(sParam) {
-			var sPageURL = window.location.search.substring(1);
-			var sURLVariables = sPageURL.split('&');
-			for (var i = 0; i < sURLVariables.length; i++) {
-				var sParameterName = sURLVariables[i].split('=');
-				if (sParameterName[0] == sParam) {
-					return sParameterName[1];
-				}
+		// Add event listener for categories check box
+		for (let i = 0; i < categories.length; i++) {
+			document.querySelector(`input#category-${i}`).addEventListener('click', () => {
+				window.location.href = `${categoryFilteringPath}&category_id=${categories[i].category_id}`;
+			})
+		}
+		const category_id = "<%=category_id%>";
+		const inputs = document.querySelectorAll('input');
+		inputs.forEach((input) => {
+			if (input.dataset.id == category_id) {
+				input.checked = 'true';
 			}
-		}​
+		}) 	
+
 	</script>
 </body>
 
