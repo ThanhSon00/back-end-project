@@ -14,13 +14,16 @@ const createCartProduct = async (req, res) => {
 }
 
 const updateCartProduct = async (req, res) => {
-    const { cart_id } = req.params;
+    const { cart_id, product_id } = req.params;
+    const { amount } = req.body;
     await CartProduct.update({
         amount: amount
     }, {
         where: {
             cart_id: cart_id,
-        }
+            product_id: product_id,
+        },
+        individualHooks: true,
     }, { fields: ['amount']});
     return res.status(StatusCodes.OK).send();
 }
