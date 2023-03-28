@@ -233,15 +233,34 @@ CartProduct.afterUpsert(async (instances, options) => {
     const cartProduct = instances[0].dataValues;
     const cart = await Cart.findOne({
         where: {
-            cart_id: cartProduct.cart_id
+            cart_id: cartProduct.cart_id,
         }
     })
     const totalAmount = parseInt(cart.totalAmount);
     await Cart.update({
-        totalAmount: totalAmount + 1,
+        totalAmount: parseInt(totalAmount) + parseInt(cartProduct.amount),
     }, {
         where: {
-            cart_id: cartProduct.cart_id
+            cart_id: cartProduct.cart_id,
+        }
+    })
+});
+
+CartProduct.afterUpdate(async (instances, options) => {
+    const newCartProduct = instances.dataValues;
+    const oldCartProduct = instances._previousDataValues;
+    const amountToChange = newCartProduct.amount - oldCartProduct.amount;
+    const cart = await Cart.findOne({
+        where: {
+            cart_id: newCartProduct.cart_id,
+        }
+    })
+    const totalAmount = parseInt(cart.totalAmount);
+    await Cart.update({
+        totalAmount: parseInt(totalAmount) + parseInt(amountToChange),
+    }, {
+        where: {
+            cart_id: newCartProduct.cart_id,
         }
     })
 });
@@ -254,7 +273,7 @@ CartProduct.afterDestroy(async (cartProduct, options) => {
     })
     const totalAmount = parseInt(cart.totalAmount);
     await Cart.update({
-        totalAmount: totalAmount - 1,
+        totalAmount: totalAmount - cartProduct.amount,
     }, {
         where: {
             cart_id: cartProduct.cart_id
