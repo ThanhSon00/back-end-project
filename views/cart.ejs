@@ -51,14 +51,17 @@
 	<!-- /BREADCRUMB -->
 
 	<br>
-	<table width="100%">
+	<table style="
+    margin-left: 100px;
+    margin-right: 50px;
+">
 		<colgroup>
 
 			<col width="5%"> <!--This is for the first column-->
 			<col width="7%"> <!--This is for the first column-->
 			<col width="40%"> <!--This is for the second column-->
 			<col width="15%">
-			<col width="33%"> <!--This is for the third column-->
+			<col width="15%"> <!--This is for the third column-->
 
 		</colgroup>
 		<tbody>
@@ -71,83 +74,113 @@
 			    text-align: center;
 			">Action</th>
 			</tr>
-
-
-			<tr>
-				<td style="text-align-last: center;">
-					<label class="checkbox-container" style="
-	">
-						<input type="checkbox" style="
-				" name="category-1">
-						<span class="checkmark" style="
-	"></span>
-					</label>
-				</td>
-				<td>
-					<div class="product-img" style="text-align-last: center;">
-						<div class="cover">
-							<img src="https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/618AJAMT-HL._AC_UL320_.jpg"
-								alt="" style="
-										width: 100px;
-										height: 100px;
-									" class="center">
+			<% for (var i = 0; i < cartProducts.length; i++) { %> 
+				<tr id="<%= cartProducts[i].product_id %>">
+					<td style="text-align-last: center;">
+						<label class="checkbox-container">
+							<input type="checkbox" class="product-checkbox" id="<%= cartProducts[i].product_id %>">
+							<span class="checkmark"></span>
+						</label>
+					</td>
+					<td>
+						<div class="product-img" style="text-align-last: center;">
+							<div class="cover">
+								<img src="<%= cartProducts[i].image %>"
+									alt="" style="
+											width: 100px;
+											height: 100px;
+										" class="center">
+							</div>
 						</div>
-					</div>
-				</td>
-				<td style="
-				">
-					<div class="product-body" style="
-											padding-left: 88px;
-											height: -webkit-fill-available;
-										">
-						<h4 class="product-name"><a href="" tabindex="0" style="
-										-webkit-line-clamp: 1;
-									">Microsoft Surface 3 128GB WiFi Tablet 10.8 Inch Intel Atom - Silver (Renewed)</a></h4>
-						<h4 class="product-price">$980.00</h4>
-						<div class="product-rating">
+					</td>
+					<td>
+						<div class="product-body" style="
+												padding-left: 88px;
+												height: -webkit-fill-available;
+											">
+							<h4 class="product-name"><a href="/products/<%= cartProducts[i].product_id %>" tabindex="0" style="
+											-webkit-line-clamp: 1;
+										"><%= cartProducts[i].name %></a></h4>
+							<h4 class="product-price">$<%= cartProducts[i].price %> </h4>
 						</div>
-					</div>
-				</td>
-				<td style="padding: 20px;text-align: -webkit-center;">
-					<button style="
-		    display: inline;
-		    font-weight: bold;
-		    background-color: #cc0e0e;
-		    color: white;
-		    border: none;
-		    width: 30px;
-		    height: 40px;
-		"> &lt; </button>
-					<div class="input-number" style="display: inline;">
-						<input type="number" value="1" style="
-		    text-align-last: center;
-		    padding: inherit;
-		    width: 50px;
-		    border: 1px solid;
-		">
-					</div><button style="
-    display: inline;
-    font-weight: bold;
-    background-color: #cc0e0e;
-    color: white;
-    border: none;
-    width: 30px;
-    height: 40px;
-"> &gt; </button>
-				</td>
-				<td style="
+					</td>
+					<td style="padding: 20px;text-align: -webkit-center;">
+						<button style="
+				display: inline;
+				font-weight: bold;
+				background-color: #cc0e0e;
+				color: white;
+				border: none;
+				width: 30px;
+				height: 40px;
+				" class="decrease" id="<%= cartProducts[i].product_id %>"> &lt; </button>
+						<div class="input-number" style="display: inline;">
+							<input type="number" value="<%= cartProducts[i].Cart_Product.amount %>" style="
 				text-align-last: center;
-			"> <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-						class="bi bi-trash" viewBox="0 0 16 16">
-						<path
-							d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-						<path fill-rule="evenodd"
-							d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-					</svg></a></td>
-
-			</tr>
+				padding: inherit;
+				width: 50px;
+				border: 1px solid;
+				" disabled>
+						</div><button style="
+				display: inline;
+				font-weight: bold;
+				background-color: #cc0e0e;
+				color: white;
+				border: none;
+				width: 30px;
+				height: 40px;
+				" class="increase"id="<%= cartProducts[i].product_id %>"> &gt; </button>
+					</td>
+					<td style="
+					text-align-last: center;
+				"> <a class="delete-cart-product" id="<%= cartProducts[i].product_id %>"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash"
+								viewBox="0 0 16 16">
+								<path
+									d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z">
+								</path>
+								<path fill-rule="evenodd"
+									d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z">
+								</path>
+							</svg></a></td>
+				
+				</tr>	
+			<% } %>
 		</tbody>
 	</table>
+	<div id="cart-navbar" class="sticky" style="
+    text-align-last: center;">
+		<table width="100%">
+			<colgroup>
+				<col width="5%"> <!--This is for the first column-->
+				<col width="7%"> <!--This is for the first column-->
+				<col width="40%"> <!--This is for the second column-->
+				<col width="15%">
+				<col width="15%"> <!--This is for the third column-->	
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>		<label class="checkbox-container">
+						<input type="checkbox" name="category-1">
+						<span class="checkmark" style="
+    margin: 0px;
+"></span>
+					</label></td>
+					<td></td>
+					<td>Total Money: $<span class="total-money">0</span></td>
+					<td>Total Amount: <span class="total-amount">0</span></td>
+					<td><button style="
+						display: inline;
+						font-weight: bold;
+						background-color: #cc0e0e;
+						color: white;
+						border: none;
+						height: 50px;
+						width: 100%;
+					"> Order Product </button></td>
+				</tr>
+			</tbody>
+		</table>	
+	</div>
 	<div id="newsletter" class="section">
 		<!-- container -->
 		<div class="container">
@@ -259,6 +292,118 @@
 	<script src="javascripts/ejs.js"></script>
 	<script src="javascripts/ejs.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+	// When the user scrolls the page, execute myFunction
+		window.onscroll = function () { myFunction() };
+
+		// Get the navbar
+		var navbar = document.getElementById("cart-navbar");
+
+		// Get the offset position of the navbar
+		var sticky = navbar.offsetTop;
+
+		// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+		function myFunction() {
+			if (window.pageYOffset <= sticky) {
+				navbar.classList.add("sticky")
+			} else {
+				navbar.classList.remove("sticky");
+			}
+		}
+
+	// Add event listener to button for increasing or decreasing amount
+	const cart_id = "<%= cart.cart_id %>";
+	document.querySelectorAll('button.increase').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const product_id = button.id;
+			var amountNumberElement = document.querySelector(`tr#${product_id} .input-number input`);
+			amountNumberElement.value = parseInt(amountNumberElement.value) + 1;
+			await updateProductAmount(parseInt(amountNumberElement.value), product_id);
+			if (document.querySelector(`input.product-checkbox#${product_id}`).checked) {
+				updateTotal(product_id, 1);
+			}
+		})
+	})
+	document.querySelectorAll('button.decrease').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const product_id = button.id;
+			var amountNumberElement = document.querySelector(`tr#${product_id} .input-number input`);
+			amountNumberElement.value = parseInt(amountNumberElement.value) - 1;
+			if (amountNumberElement.value < 1) {
+				amountNumberElement.value = 1;
+			} else {
+				await updateProductAmount(parseInt(amountNumberElement.value), product_id);
+				if (document.querySelector(`input.product-checkbox#${product_id}`).checked) {
+					updateTotal(product_id, -1);
+				}
+			}
+		})
+	})
+
+	const updateProductAmount = async (amount, product_id) => {
+		const obj = {
+			amount: amount,
+		}
+		const body = JSON.stringify(obj);
+		await fetch(`/api/v1/carts/${cart_id}/products/${product_id}`, {
+				method: 'PATCH',
+				body: body,
+				headers: {
+					'Content-Type': `application/json`
+				}
+			});
+	}
+
+	// Add event listener to buttons for deleting cart product
+	document.querySelectorAll('a.delete-cart-product').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const product_id = button.id;
+			const checkbox = document.querySelector(`input.product-checkbox#${product_id}`);
+			const amountToChange = parseInt(0 - document.querySelector(`tr#${product_id} .input-number input`).value);
+			if (checkbox.checked) {
+				updateTotal(product_id, amountToChange);
+			}
+			await deleteCartProduct(product_id);
+			document.querySelector(`tr#${product_id}`).remove();
+		})
+	})
+
+	const deleteCartProduct = async (product_id) => {
+		await fetch(`/api/v1/carts/${cart_id}/products/${product_id}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': `application/json`
+				}
+			});
+	}
+
+	// Add event listener for checkbox in cart page
+	
+	const checkboxes = document.querySelectorAll('.checkbox-container input.product-checkbox');
+	checkboxes.forEach((checkbox) => {
+		checkbox.addEventListener('change', () => {
+			const product_id = checkbox.id;
+			const amountToChange = parseInt(document.querySelector(`tr#${product_id} .input-number input`).value);
+
+			updateTotal(product_id, amountToChange);
+		})
+	})
+
+	const updateTotal = (product_id, amountToChange) => {
+		const checkbox = document.querySelector(`input.product-checkbox#${product_id}`);
+		const productPrice = parseFloat(document.querySelector(`tr#${product_id} .product-price`).innerText.replace('$', ''));
+		const totalProductPrice = parseFloat(amountToChange * productPrice); 
+		const totalAmount =	parseInt(document.querySelector('span.total-amount').innerText);  
+		const totalMoney = parseFloat(document.querySelector('span.total-money').innerText);
+		if (checkbox.checked) {
+			document.querySelector('span.total-amount').innerText = totalAmount + amountToChange;
+			document.querySelector('span.total-money').innerText = parseFloat(totalMoney + totalProductPrice).toFixed(2); 
+		} else {
+			document.querySelector('span.total-amount').innerText = totalAmount - amountToChange;				
+			document.querySelector('span.total-money').innerText = parseFloat(totalMoney - totalProductPrice).toFixed(2); 
+		}
+	}
+	</script>
 </body>
 
 </html>
