@@ -184,9 +184,10 @@ $(document).ready(function () {
 			data: '',
 			success: function (response) {
 				// Handle success response
+				const amountToDecrease = document.querySelector(`.product-widget#${product_id} .qty`);
+				decreaseTotalAmount(amountToDecrease);
 				var div = document.querySelector(`.product-widget#${product_id}`);
 				div.remove();
-				decreaseTotalAmount();
 			},
 			error: function (xhr, status, error) {
 				// Handle error response
@@ -296,9 +297,10 @@ function addProductToCart(cart_id, product_id, page) {
 			data: '',
 			success: function (response) {
 				// Handle success response
+				const amountToDecrease = document.querySelector(`.product-widget#${product_id} .qty`).innerText.replace('x', '');
+				decreaseTotalAmount(parseInt(amountToDecrease));
 				var div = document.querySelector(`.product-widget#${product_id}`);
 				div.remove();
-				decreaseTotalAmount();
 			},
 			error: function (xhr, status, error) {
 				// Handle error response
@@ -307,7 +309,7 @@ function addProductToCart(cart_id, product_id, page) {
 		});
 	});
 	const totalAmount = document.querySelector('div.dropdown div.qty').innerText;
-	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) + 1;
+	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) + parseInt(cartProduct.amount);
 }
 
 function create(htmlStr) {
@@ -320,8 +322,8 @@ function create(htmlStr) {
 	return frag;
 }
 
-function decreaseTotalAmount() {
+function decreaseTotalAmount(amountToDecrease) {
 	const totalAmount = document.querySelector('div.dropdown div.qty').innerText;
-	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) - 1;
+	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) - amountToDecrease || '0';
 }
 
