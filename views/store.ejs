@@ -137,7 +137,7 @@
 							<div class="col-md-4 col-xs-6">
 								<div class="product" id="<%= products[i].product_id %>">
 									<div class="product-img">
-											<div class=" cover"><img src="<%= products[i].image%>" class="center" alt=""></div>
+											<div class=" cover"><a href="/products/<%= products[i].product_id %>"><img src="<%= products[i].image%>" class="center" alt=""></a></div>
 								</div>
 								<div class="product-body">
 									<p class="product-category">
@@ -422,8 +422,13 @@
 
 		// Add event listener for categories check box
 		for (let i = 0; i < categories.length; i++) {
-			document.querySelector(`input#category-${i}`).addEventListener('click', () => {
-				window.location.href = `${categoryFilteringPath}&category_id=${categories[i].category_id}`;
+			const checkbox = document.querySelector(`input#category-${i}`);
+			checkbox.addEventListener('click', () => {
+				if (checkbox.checked) {
+					window.location.href = `${categoryFilteringPath}&category_id=${categories[i].category_id}`;
+				} else {
+					window.location.href = `${categoryFilteringPath}`;
+				}
 			})
 		}
 		const category_id = "<%=category_id%>";
@@ -434,6 +439,11 @@
 			}
 		}) 	
 
+		function htmlDecode(input) {
+			var e = document.createElement('div');
+			e.innerHTML = input;
+			return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+		}
 	</script>
 </body>
 
