@@ -201,8 +201,11 @@ $(document).ready(function () {
 		if (url.includes('products')) {
 			page = "product";
 		}
-		else if (url.includes('store')) {
+		if (url.includes('store')) {
 			page = "store";
+		}
+		if (url.includes('home')) {
+			page = "home";
 		}
 		const cart_id = $(this).data("cart-id");
 		const product_id = $(this).data("product-id");
@@ -272,6 +275,16 @@ function addProductToCart(cart_id, product_id, page) {
 			amount: document.querySelector(`div#${product_id} .input-number input`).value,
 		}
 	}
+	if (page == "home")	{
+		cartProduct = {
+			product_id: product_id,
+			image: document.querySelector(`div#${product_id} div.product-img img`).src,
+			name: document.querySelector(`div#${product_id} h3.product-name`).innerText,
+			price: document.querySelector(`div#${product_id} h4.product-price`).innerText.replace('$', ''),
+			amount: 1,
+		}
+	}
+
 	const ejsView = `
 <div class="product-widget" id="<%= cartProduct.product_id %>">
 <div class="product-img">
@@ -326,4 +339,7 @@ function decreaseTotalAmount(amountToDecrease) {
 	const totalAmount = document.querySelector('div.dropdown div.qty').innerText;
 	document.querySelector('div.dropdown div.qty').innerText = parseInt(totalAmount) - amountToDecrease || '0';
 }
-
+if (document.baseURI.includes('home')) {
+	$('button.slick-next.slick-arrow').prependTo('.tab-pane.active');
+	$('button.slick-prev.slick-arrow').appendTo('.tab-pane.active');
+}
