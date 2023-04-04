@@ -8,6 +8,12 @@ var dotenv = require('dotenv');
 var app = require('../app');
 var debug = require('debug')('back-end-project:server');
 var https = require('https');
+const cron = require('node-cron');
+const { api } = require('./URL');
+
+cron.schedule("*/5 * * * *", async () => {
+  await api.post(`/tokens`);
+})
 
 /**
  * Get port from environment and store in Express.
