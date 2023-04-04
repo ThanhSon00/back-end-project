@@ -1,10 +1,13 @@
-const jwt = require('jsonwebtoken');
 const { api } = require('../bin/URL');
+const {
+    getRelatedResource,
+} = require('./store.controller')
+
 const renderPage = async (req, res) => {
-    const data = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET_KEY);
-    const { cart_id } = data;
-    const cart = (await api.get(`/carts/${cart_id}`)).data;
-    const cartProducts = (await api.get(`/carts/${cart_id}/products`)).data;
+    const { customer_id } = req.body;
+    const customer = (await api.get(`/customers/${customer_id}`)).data;
+    const cart = await getRelatedResource(customer, 'cart');
+    const cartProducts = getRelatedResource(cart, 'product');
     const categories = (await api.get(`/categories`)).data;
     const message = req.cookies.message;
     const messageType = req.cookies.messageType;
@@ -21,7 +24,7 @@ const renderPage = async (req, res) => {
     });  
 }
 
-function randomIntFromInterval(min, max) { // min and max included 
+function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 

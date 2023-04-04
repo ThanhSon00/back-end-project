@@ -114,12 +114,12 @@ const getActivationLink = (payload) => {
 }
 
 const getJWT = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
 }
 
 const activateAccount = async (req, res) => {
     const { token } = req.params
-    const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
     const customer_id = data.customer_id;
     await api.patch(`/accounts/${customer_id}`, {
         isNotActivated: false,

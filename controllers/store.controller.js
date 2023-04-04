@@ -6,6 +6,7 @@ const renderPage = async (req, res) => {
     if (!req.query.price) {
         req.query.price = ['', ''];
     }
+    const { customer_id } = req.body;
     const category_id = req.query.category_id || '';
     const pageSize = 9;
     const minPrice = req.query.price[0] || '';
@@ -15,7 +16,7 @@ const renderPage = async (req, res) => {
     const { rows, count } = response.data;
     const categories = (await api.get('categories')).data;
     const totalPage = Math.floor(count / pageSize) + 1;     
-    const customer = await getCurrentCustomer(req.cookies.access_token);
+    const customer = (await api.get(`/customers/${customer_id}`)).data;
     const cart = await getRelatedResource(customer, 'cart');
     const cartProducts = await getRelatedResource(cart, 'product');
     let relativePath = '/store?';
@@ -60,14 +61,6 @@ const renderPage = async (req, res) => {
     });
 }
 
-
-const getCurrentCustomer = async (token) => {
-    const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const customer_id = data.customer_id; 
-    const response = await api.get(`/customers/${customer_id}`);
-    return response.data;
-}
-
 const getRelatedResource = async (parentResource, rel) => {
     const link = parentResource._links.find((link) => link.rel == rel);
     const response = await api({
@@ -79,6 +72,5 @@ const getRelatedResource = async (parentResource, rel) => {
 
 module.exports = {
     renderPage,
-    getCurrentCustomer,
     getRelatedResource,
 }
