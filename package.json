@@ -24,6 +24,8 @@
     "express-session": "^1.17.3",
     "google-auth-library": "^8.7.0",
     "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
+    "node-cron": "^3.0.2",
     "puppeteer": "^19.7.3",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-recaptcha": "^3.6.8",
