@@ -14,6 +14,9 @@ const productRoutes = require('./routes/product.routes');
 const invoiceRoutes = require('./routes/invoice.routes');
 const categoryRoutes = require('./routes/category.routes');
 
+// Resource Routes (non Rest API) 
+const refreshTokenRoutes = require('./routes/refreshToken.routes');
+
 // Page Routes
 const homeRoutes = require('./routes/home.routes');
 const storeRoutes = require('./routes/store.routes');
@@ -58,18 +61,6 @@ app.use('/home', authorization, asyncHandler(homeRoutes));
 app.use('/products', authorization, asyncHandler(productDetailsRoutes));
 app.use('/cart', authorization, asyncHandler(myCartRoutes));
 
-app.use(`/test`, async (req, res) => {
-  res.render('product');
-})
-
-app.use('/check-out', authorization, async (req, res) => {
-  res.render('check-out');
-});
-
-app.use('/blank', authorization, async (req, res) => {
-  res.render('blank');
-});
-
 // api
 app.use('/api/v1/accounts', asyncHandler(accountRoutes));
 app.use('/api/v1/customers', asyncHandler(customerRoutes));
@@ -77,6 +68,7 @@ app.use('/api/v1/carts', asyncHandler(cartRoutes));
 app.use('/api/v1/products', asyncHandler(productRoutes));
 app.use('/api/v1/invoices', asyncHandler(invoiceRoutes));
 app.use('/api/v1/categories', asyncHandler(categoryRoutes));
+app.use('/api/v1/tokens', asyncHandler(refreshTokenRoutes));
 
 app.use(errorHandler);
 
