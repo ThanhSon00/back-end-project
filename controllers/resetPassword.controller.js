@@ -6,7 +6,7 @@ const rootURL = root.defaults.baseURL;
 
 const redirectPage = async (req, res) => {
     const { token } = req.params;
-    await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
     res.cookie('reset_pass_token', token, {
         httpOnly: true,
     })
@@ -25,7 +25,7 @@ const resetPassword = async (req, res) => {
     if (!token) {
         return res.status(StatusCodes.UNAUTHORIZED).redirect(rootURL + '/log-in');
     }
-    const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
     const { password, verify_password } = req.body;
     if (!password|| !verify_password) {
         message = "Please fill all the information";

@@ -78,7 +78,7 @@ const getPassResetLink = async (account) => {
 }
 
 const getJWT = (payload) => {
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
     return token;
 }
 

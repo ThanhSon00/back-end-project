@@ -8,8 +8,5 @@ const {
 
 router.route('/')
             .get(renderPage)
-
-router.route('/:product_id')
-            .get()
             
 module.exports = router;
