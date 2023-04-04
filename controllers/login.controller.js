@@ -4,6 +4,8 @@ const { StatusCodes } = require('http-status-codes');
 const rootURL = root.defaults.baseURL;
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const uuid = require('uuid');
+const moment = require('moment');
 
 const login = async (req, res) => {
     var message, success;
@@ -31,12 +33,17 @@ const login = async (req, res) => {
                 cart_id: cart.cart_id,
                 email: account.email,
             }
-            const token = getJWT(payload);
-            res.cookie('access_token', token.accessToken, { 
+            const tokens = getTokens(payload)
+            res.cookie('access_token', tokens.accessToken, { 
                 httpOnly: true,
-                sameSite: 'Strict',
                 secure: true,
+                
             });
+            res.cookie('refresh_token', tokens.refreshToken, {
+                httpOnly: true,
+                secure: true,
+                path: '/login/refresh'
+            })
             return res.status(StatusCodes.OK).redirect(rootURL + '/home');
         } 
     }
@@ -49,13 +56,6 @@ const login = async (req, res) => {
         httpOnly: true,
     });
     return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/log-in');
-}
-
-const getJWT = (payload) => {
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '10m' });
-    return {
-        accessToken,
-    }
 }
 
 const renderPage = async (req, res) => {
@@ -81,13 +81,29 @@ const googleLogin = async (req, res) => {
         email: account.email, 
         cart_id: cart.cart_id,
     }
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '15m' });
-    res.cookie('access_token', accessToken, {
+    const tokens = getTokens(payload);
+    res.cookie('access_token', tokens.accessToken, { 
         httpOnly: true,
         secure: true,
+    });
+    res.cookie('refresh_token', tokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        path: '/login/refresh'
     })
     return res.status(StatusCodes.OK).redirect('/home');
 }
+
+const getTokens = (payload) => {
+    const jti = uuid.v4();
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: process.env.REFRESH_TOKEN_TTL, jwtid: jti});
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: process.env.ACCESS_TOKEN_TTL });
+    return {
+        refreshToken,
+        accessToken,
+    }
+}
+
 
 const verify = async (client, token) => {
     const ticket = await client.verifyIdToken({
@@ -115,10 +131,45 @@ const createNewData = async (data) => {
     return response.data.account;
 }
 
+const refreshToken = async (req, res) => {
+    const refreshToken = req.cookies.refresh_token;
+    res.clearCookie('access_token');
+    if (await refreshTokenIsValid(refreshToken)) {
+        const data = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+        const payload = {
+            customer_id: data.customer_id,
+            cart_id: data.cart_id,
+            email: data.email,
+        }
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: process.env.ACCESS_TOKEN_TTL });
+        res.cookie('access_token', accessToken);
+        res.status(StatusCodes.OK).redirect(`${root.defaults.baseURL}/home`);
+    } else {
+        res.clearCookie('refresh_token');
+        return res.status(StatusCodes.UNAUTHORIZED).redirect(`${rootURL}/log-in`);
+    }
+}
+
+
+const refreshTokenIsValid = async (refreshToken) => {
+    try {
+        const data = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+        const tokens = (await api.get(`/tokens/${data.customer_id}`)).data;
+        const tokenInBlacklist = tokens.map(token => token.jti).includes(data.jti);
+        if (tokenInBlacklist) {
+            return false;
+        }
+    } catch (err) {
+        return false;
+    }
+    return true;
+}
+
 
 module.exports = {
     login,
     renderPage,
     googleLogin,
     createNewData,
+    refreshToken,
 }

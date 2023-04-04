@@ -5,6 +5,6 @@ const {
     logout
 } = require('../controllers/logout.controller');
 
-router.route('/').get(logout);
+router.route('/').post(logout);
 
 module.exports = router;

@@ -169,6 +169,22 @@ const ProductDetail = sequelize.define("ProductDetail", {
     paranoid: true,
 })
 
+const Token = sequelize.define("Token", {
+    customer_id: {
+        type: Sequelize.UUID,
+        primaryKey: true,
+    },
+    jti: {
+        type: Sequelize.UUID,
+        primaryKey: true,
+    },
+    expiration: {
+        type: DataTypes.DATE,
+    }
+}, {
+    timestamps: false,
+})
+
 
 // Associations
 
@@ -291,4 +307,5 @@ module.exports = {
     InvoiceProduct,
     CartProduct,
     ProductDetail,
+    Token,
 }
