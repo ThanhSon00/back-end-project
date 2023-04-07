@@ -1,3 +1,4 @@
+const { cookieAttributes, refreshTokenAttributes } = require('../setting/cookieAttributes')
 const { api, root } = require('../bin/URL');
 const rootURL = root.defaults.baseURL;
 const apiURL = root.defaults.baseURL;
@@ -28,7 +29,7 @@ const registerAccount = async (req, res) => {
         res.cookie('message', 'Please fill all the information', {
             httpOnly: true,
         })
-        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/sign-in');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/register');
     }
     // Check phone
 
@@ -39,7 +40,7 @@ const registerAccount = async (req, res) => {
         res.cookie('message', 'Password are not matched', {
             httpOnly: true,
         });
-        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/sign-in');
+        return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/register');
     }
     response = await api.post('/customers', {
         name: name,
@@ -48,9 +49,9 @@ const registerAccount = async (req, res) => {
 
     const { customer_id } = response.data;
     // Create cart for new customer
-    await api.post('/carts', {
+    const cart = (await api.post('/carts', {
         customer_id: customer_id,
-    })
+    })).data;
     
     // Create account for new customer
     response = await api.post('/accounts', {
@@ -62,6 +63,7 @@ const registerAccount = async (req, res) => {
     const payload = {
         customer_id: account.customer_id,
         email: account.email,
+        cart_id: cart.cart_id,
     }
     await sendActivationEmail(payload);
 
@@ -110,41 +112,15 @@ const sendActivationEmail = async (payload) => {
 }
 
 const getActivationLink = (payload) => {
-    return `${rootURL}/register/${getJWT(payload)}`;
+    return `${rootURL}/activate/${getJWT(payload)}`;
 }
 
 const getJWT = (payload) => {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
 }
 
-const activateAccount = async (req, res) => {
-    const { token } = req.params
-    const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
-    const customer_id = data.customer_id;
-    await api.patch(`/accounts/${customer_id}`, {
-        isNotActivated: false,
-    });
-    const cart = (await api.get(`/customers/${customer_id}/carts`)).data;
-    const payload = {
-        customer_id: data.customer_id,
-        email: data.email,
-        cart_id: cart.cart_id,
-    }
-    res.cookie('access_token', getJWT(payload), { 
-        httpOnly: true,
-    });
-    res.cookie('message', 'Your account has been activated successfully!', {
-        httpOnly: true,
-    });
-    res.cookie('messageType', 'Success', {
-        httpOnly: true,
-    })
-    res.clearCookie('activate_token');
-    return res.status(StatusCodes.OK).redirect(rootURL + '/home')
-}
 
 module.exports = {
     renderPage,
     registerAccount,
-    activateAccount,
 }
