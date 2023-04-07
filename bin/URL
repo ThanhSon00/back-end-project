@@ -8,14 +8,19 @@ const httpsAgent = new https.Agent({
   key: fs.readFileSync("./ssl/server.key")  ,
 });
 
+const url = 'https://localhost:3000';
+const urlAPI = `${url}/api/v1`;
+const deployUrl = 'https://my-first-project-be.onrender.com';
+const deployUrlAPI = `${deployUrl}/api/v1`;
+
 const root = axios.create({
-  baseURL: 'https://localhost:3000',
+  baseURL: deployUrl,
   timeout: 5000, 
   httpsAgent: httpsAgent,
 });
 
 const api = axios.create({  
-    baseURL: 'https://localhost:3000/api/v1',
+    baseURL: deployUrlAPI,
     timeout: 5000, 
     httpsAgent: httpsAgent,
 });
