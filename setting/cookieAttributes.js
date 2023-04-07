@@ -1,7 +1,6 @@
 const cookieAttributes = {
     httpOnly: true,
     secure: true,
-    sameSite: 'strict',
     domain: process.env.DOMAIN,
 }
 
