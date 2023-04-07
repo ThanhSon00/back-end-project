@@ -27,12 +27,16 @@ const logoutRoutes = require('./routes/logout.routes');
 const registerRoutes = require('./routes/register.routes');
 const productDetailsRoutes = require('./routes/productDetails.routes');
 const myCartRoutes = require('./routes/myCart.routes');
+const tokenRoutes = require('./routes/token.routes');
+const activateRoutes = require('./routes/activate.routes');
 
 // Middleware
 const checkLogged = require('./middleware/checkLogged');
 const errorHandler = require('./middleware/errorHandler');
 const asyncHandler = require('./middleware/asyncHandler');
-const authorization = require('./middleware/authorization');
+const checkAccessToken = require('./middleware/checkAccessToken');
+const checkRefreshToken = require('./middleware/checkRefreshToken');
+const checkActivateToken = require('./middleware/checkActivateToken');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -52,16 +56,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Page
 app.use('/log-in', checkLogged, asyncHandler(loginRoutes));
-app.use('/store', authorization, asyncHandler(storeRoutes));
+app.use('/store', checkAccessToken, asyncHandler(storeRoutes));
 app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
 app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
-app.use('/log-out', authorization, asyncHandler(logoutRoutes));
+app.use('/log-out', checkAccessToken, asyncHandler(logoutRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
-app.use('/home', authorization, asyncHandler(homeRoutes));
-app.use('/products', authorization, asyncHandler(productDetailsRoutes));
-app.use('/cart', authorization, asyncHandler(myCartRoutes));
+app.use('/home', checkAccessToken, asyncHandler(homeRoutes));
+app.use('/products', checkAccessToken, asyncHandler(productDetailsRoutes));
+app.use('/cart', checkAccessToken, asyncHandler(myCartRoutes));
+app.use('/refresh-token', checkRefreshToken, asyncHandler(tokenRoutes))
+app.use('/activate/:token', checkActivateToken, asyncHandler(activateRoutes));
 
-// api
+// resources api
 app.use('/api/v1/accounts', asyncHandler(accountRoutes));
 app.use('/api/v1/customers', asyncHandler(customerRoutes));
 app.use('/api/v1/carts', asyncHandler(cartRoutes));

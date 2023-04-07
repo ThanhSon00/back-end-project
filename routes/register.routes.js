@@ -10,7 +10,5 @@ const {
 router.route('/')
                 .get(renderPage)
                 .post(registerAccount);
-router.route('/:token')
-                .get(activateAccount);
 
 module.exports = router;
