@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const uuid = require('uuid');
 const { cookieAttributes, refreshTokenAttributes } = require('../setting/cookieAttributes');
+require('dotenv').config();
 
 const login = async (req, res) => {
     var message, success;
