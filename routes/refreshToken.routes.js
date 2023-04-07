@@ -2,15 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    validateToken,
-    getTokens,
-    createToken,
+    validateRefreshToken,
+    getRefreshTokens,
+    createRefreshToken,
 } = require('../controllers/refreshToken.controller');
 
 router.route('/')
-    .post(validateToken);
+    .post(validateRefreshToken);
 
 router.route('/:customer_id')
-    .get(getTokens)
-    .post(createToken);
+    .get(getRefreshTokens)
+    .post(createRefreshToken);
+
 module.exports = router;

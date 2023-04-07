@@ -5,7 +5,6 @@ const {
     renderPage,
     login,
     googleLogin,
-    refreshToken,
 } = require('../controllers/login.controller');
 
 router.route('/')
@@ -15,6 +14,4 @@ router.route('/')
 router.route('/google')
             .post(googleLogin);
 
-router.route('/refresh')
-            .get(refreshToken);
 module.exports = router;
