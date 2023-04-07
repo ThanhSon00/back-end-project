@@ -1,12 +1,15 @@
 const { StatusCodes } = require('http-status-codes')
 const jwt = require('jsonwebtoken');
 const { api, root } = require('../bin/URL');
-const dotenv = require('dotenv').config();
 const rootURL = root.defaults.baseURL;
 
 const redirectPage = async (req, res) => {
     const { token } = req.params;
-    await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, data) => {
+        if (err) {
+            return res.status(StatusCodes.UNAUTHORIZED).redirect(`${rootURL}/log-in`)
+        }
+    });
     res.cookie('reset_pass_token', token, {
         httpOnly: true,
     })
