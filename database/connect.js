@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('DatabaseTesting', 'root', 'pokemonvietnam2', {
-  host: 'localhost',
+const sequelize = new Sequelize('sql12611726', 'sql12611726', 'NkEtZBBmhR', {
+  host: 'sql12.freemysqlhosting.net',
   dialect: 'mysql'
 });
 
