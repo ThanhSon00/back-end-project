@@ -3,7 +3,7 @@ const sequelize = require('../database/connect');
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const Cart = sequelize.define("Cart", {
+const Cart = sequelize.define("cart", {
     cart_id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -21,7 +21,7 @@ const Cart = sequelize.define("Cart", {
     timestamps: false,
 });
 
-const Product = sequelize.define("Product", {
+const Product = sequelize.define("product", {
     product_id: {
         type: DataTypes.STRING,
         primaryKey: true,
@@ -46,7 +46,7 @@ const Product = sequelize.define("Product", {
     paranoid: true,
 });
 
-const Customer = sequelize.define("Customer", {
+const Customer = sequelize.define("customer", {
     customer_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -71,7 +71,7 @@ const Customer = sequelize.define("Customer", {
     individualHook: true,
 });
 
-const CartProduct = sequelize.define("Cart_Product", {
+const CartProduct = sequelize.define("cart_product", {
     amount: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
@@ -81,7 +81,7 @@ const CartProduct = sequelize.define("Cart_Product", {
     timestamps: false,
 });
 
-const InvoiceProduct = sequelize.define("Invoice_Products", {
+const InvoiceProduct = sequelize.define("invoice_products", {
     amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -95,7 +95,7 @@ const InvoiceProduct = sequelize.define("Invoice_Products", {
     paranoid: true,
 });
 
-const Account = sequelize.define("Account", {
+const Account = sequelize.define("account", {
     customer_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -119,7 +119,7 @@ const Account = sequelize.define("Account", {
     paranoid: true,
 });
 
-const Invoice = sequelize.define("Invoice", {
+const Invoice = sequelize.define("invoice", {
     invoice_id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -139,7 +139,7 @@ const Invoice = sequelize.define("Invoice", {
     paranoid: true,
 });
 
-const Category = sequelize.define("Category", {
+const Category = sequelize.define("category", {
     category_id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -154,7 +154,7 @@ const Category = sequelize.define("Category", {
     paranoid: true,
 });
 
-const ProductDetail = sequelize.define("ProductDetail", {
+const ProductDetail = sequelize.define("productdetail", {
     product_id: {
         type: DataTypes.STRING,
         primaryKey: true,
@@ -169,7 +169,7 @@ const ProductDetail = sequelize.define("ProductDetail", {
     paranoid: true,
 })
 
-const Token = sequelize.define("Token", {
+const Token = sequelize.define("token", {
     customer_id: {
         type: Sequelize.UUID,
         primaryKey: true,

@@ -48,7 +48,7 @@ const getProductsInCart = async (req, res) => {
         },
         include: Product,
     });
-    const objData = JSON.parse(JSON.stringify(cartProducts.Products, null, 4));
+    const objData = JSON.parse(JSON.stringify(cartProducts.products, null, 4));
     return res.status(StatusCodes.OK).json(objData);
 }
 
