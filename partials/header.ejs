@@ -10,8 +10,9 @@
         <ul class="header-links pull-right">
             <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
             <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
-            <li><a href="/log-out"><i class="fa fa-sign-out"></i> Log Out</a></li>
+            <li><a class="log-out" href="#tab" onclick="document.querySelector('form.log-out').submit()"><i class="fa fa-sign-out"></i> Log Out</a></li>
         </ul>
+        <form class="log-out" action="log-out" method="post"></form>
     </div>
 </div>
 <!-- /TOP HEADER -->
@@ -80,7 +81,7 @@
                                             </div>
                                             <div class="product-body">
                                                 <h3 class="product-name"><a href="/products/<%= cartProducts[i].product_id %>"><%= cartProducts[i].name %></a></h3>
-                                                <h4 class="product-price"><span class="qty"> <%= cartProducts[i].Cart_Product.amount %>x</span>$<%= cartProducts[i].price %></h4>
+                                                <h4 class="product-price"><span class="qty"> <%= cartProducts[i].cart_product.amount %>x</span>$<%= cartProducts[i].price %></h4>
                                             </div>
                                             <button class="delete" data-product-id="<%= cartProducts[i].product_id %>" data-cart-id="<%= cart.cart_id %>"><i class="fa fa-close"></i></button>                              
                                         </div>
