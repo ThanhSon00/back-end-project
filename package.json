@@ -30,6 +30,7 @@
     "puppeteer": "^19.7.3",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-recaptcha": "^3.6.8",
+    "sequelize": "^6.30.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
