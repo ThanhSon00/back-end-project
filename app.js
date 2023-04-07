@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var session = require('express-session');
+var session = require('cookie-session');
 
 // Resource Routes (Rest API)
 const accountRoutes = require('./routes/account.routes');
