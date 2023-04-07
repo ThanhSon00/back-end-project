@@ -3,7 +3,7 @@ const https = require('https');
 const fs = require('fs');
 
 const httpsAgent = new https.Agent({
-  rejectUnauthorized: false, // (NOTE: this will disable client verification)
+  // rejectUnauthorized: false, // (NOTE: this will disable client verification)
   cert: fs.readFileSync("./ssl/server.cert"),
   key: fs.readFileSync("./ssl/server.key")  ,
 });
@@ -16,13 +16,13 @@ const deployUrlAPI = `${deployUrl}/api/v1`;
 const root = axios.create({
   baseURL: deployUrl,
   timeout: 5000, 
-  httpsAgent: httpsAgent,
+
 });
 
 const api = axios.create({  
     baseURL: deployUrlAPI,
     timeout: 5000, 
-    httpsAgent: httpsAgent,
+
 });
 
 module.exports = {
