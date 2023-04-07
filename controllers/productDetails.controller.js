@@ -7,7 +7,7 @@ const {
 const renderPage = async (req, res) => {
     const { product_id } = req.params;
     const { customer_id } = req.body;
-    const customer = await api.get(`/customers/${customer_id}`);
+    const customer = (await api.get(`/customers/${customer_id}`)).data;
     const cart = await getRelatedResource(customer, 'cart')
     const cartProducts = await getRelatedResource(cart, 'product');
     const productDetails = (await api.get(`/products/${product_id}/details`)).data;
