@@ -3,14 +3,15 @@ const { StatusCodes } = require('http-status-codes');
 const rootURL = root.defaults.baseURL;
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
-
+const { cookieAttributes } = require('../setting/cookieAttributes')
 const refreshAccessToken = async (req, res) => {
     const payload = req.body;
     res.clearCookie('access_token');
-    if (await refreshTokenIsValid(payload)) {
+    const tokenIsValid = await refreshTokenIsValid(payload);
+    if (tokenIsValid) {
         delete payload.path
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: process.env.ACCESS_TOKEN_TTL });
-        res.cookie('access_token', accessToken);
+        res.cookie('access_token', accessToken, cookieAttributes);
         return res.status(StatusCodes.OK).redirect(`${rootURL}/home`);
     } else {
         res.clearCookie('refresh_token');
