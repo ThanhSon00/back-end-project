@@ -343,3 +343,12 @@ if (document.baseURI.includes('home')) {
 	$('button.slick-next.slick-arrow').prependTo('.tab-pane.active');
 	$('button.slick-prev.slick-arrow').appendTo('.tab-pane.active');
 }
+
+function handleData(data) {
+	// Do something with the data
+	console.log(data);
+}
+
+var script = document.createElement('script');
+script.src = 'http://localhost:3000/api/users?callback=handleData';
+document.head.appendChild(script);
