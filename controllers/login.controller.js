@@ -54,9 +54,10 @@ const login = async (req, res) => {
 const renderPage = async (req, res) => {
     const message = req.cookies.message; 
     const messageType = req.cookies.messageType;
+    const clientId = process.env.CLIENT_ID;
     res.clearCookie('message');
     res.clearCookie('messageType')
-    res.render('log-in', {message: message, messageType: messageType});  
+    res.render('log-in', {message: message, messageType: messageType, clientId: clientId});  
 }
 
 const googleLogin = async (req, res) => {
@@ -120,4 +121,5 @@ module.exports = {
     login,
     renderPage,
     googleLogin,
+    getTokens
 }

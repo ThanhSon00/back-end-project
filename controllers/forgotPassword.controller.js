@@ -45,7 +45,7 @@ const sendPassResetEmail = async (account) => {
         service: 'gmail',
         auth: {
             user: 'phanson999999@gmail.com',
-            pass: 'fxkvgthoxpoalcrm'
+            pass: process.env.APP_PASSWORD
         }
     })
     ejs.renderFile(path.resolve("./views/verify-email.ejs"), {link: link}, function (err, data) {

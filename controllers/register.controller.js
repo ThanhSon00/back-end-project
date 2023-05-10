@@ -31,11 +31,6 @@ const registerAccount = async (req, res) => {
         })
         return res.status(StatusCodes.BAD_REQUEST).redirect(rootURL + '/register');
     }
-    // Check phone
-
-    // Check email
-
-    // Check passwords
     if (password != rewrite_password) {
         res.cookie('message', 'Password are not matched', {
             httpOnly: true,
@@ -65,7 +60,7 @@ const registerAccount = async (req, res) => {
         email: account.email,
         cart_id: cart.cart_id,
     }
-    await sendActivationEmail(payload);
+    sendActivationEmail(payload);
 
     res.cookie('activate_token', getJWT(payload), {
         httpOnly: true,
@@ -80,17 +75,17 @@ const registerAccount = async (req, res) => {
 }
 
 
-const sendActivationEmail = async (payload) => {
+const sendActivationEmail = (payload) => {
     const link = getActivationLink(payload);
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'phanson999999@gmail.com',
-            pass: 'fxkvgthoxpoalcrm'
+            pass: process.env.APP_PASSWORD
         }
     })
 
-    ejs.renderFile(path.resolve("./views/activate-account.ejs"), { link: link}, async function (err, data) {
+    ejs.renderFile(path.resolve("./views/activate-account.ejs"), { link: link }, async function (err, data) {
         if (err) {
             console.log(err);
         } else {
