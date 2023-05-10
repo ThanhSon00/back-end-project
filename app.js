@@ -6,7 +6,6 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var session = require('cookie-session');
 
-// Resource Routes (Rest API)
 const accountRoutes = require('./routes/account.routes');
 const customerRoutes = require('./routes/customer.routes');
 const cartRoutes = require('./routes/cart.routes');
@@ -14,7 +13,6 @@ const productRoutes = require('./routes/product.routes');
 const invoiceRoutes = require('./routes/invoice.routes');
 const categoryRoutes = require('./routes/category.routes');
 
-// Resource Routes (non Rest API) 
 const refreshTokenRoutes = require('./routes/refreshToken.routes');
 
 // Page Routes
@@ -54,19 +52,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Page
-app.use('/log-in', checkLogged, asyncHandler(loginRoutes));
-app.use('/store', checkAccessToken, asyncHandler(storeRoutes));
-app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
-app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
-app.use('/log-out', checkAccessToken, asyncHandler(logoutRoutes));
-app.use('/register', checkLogged, asyncHandler(registerRoutes));
-app.use('/home', checkAccessToken, asyncHandler(homeRoutes));
-app.use('/products', checkAccessToken, asyncHandler(productDetailsRoutes));
-app.use('/cart', checkAccessToken, asyncHandler(myCartRoutes));
-app.use('/refresh-token', checkRefreshToken, asyncHandler(tokenRoutes))
-app.use('/activate/:token', checkActivateToken, asyncHandler(activateRoutes));
-
 // resources api
 app.use('/api/v1/accounts', asyncHandler(accountRoutes));
 app.use('/api/v1/customers', asyncHandler(customerRoutes));
@@ -76,6 +61,19 @@ app.use('/api/v1/invoices', asyncHandler(invoiceRoutes));
 app.use('/api/v1/categories', asyncHandler(categoryRoutes));
 app.use('/api/v1/tokens', asyncHandler(refreshTokenRoutes));
 
+// Page
+app.use('/log-in',  checkLogged, asyncHandler(loginRoutes));
+app.use('/register', checkLogged, asyncHandler(registerRoutes));
+app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
+app.use('/reset-password', checkLogged, asyncHandler(resetPasswordRoutes));
+app.use('/home', checkAccessToken, asyncHandler(homeRoutes));
+app.use('/store', checkAccessToken, asyncHandler(storeRoutes));
+app.use('/cart', checkAccessToken, asyncHandler(myCartRoutes));
+app.use('/products', checkAccessToken, asyncHandler(productDetailsRoutes));
+app.use('/log-out', asyncHandler(logoutRoutes));
+app.use('/refresh-token', checkRefreshToken, asyncHandler(tokenRoutes))
+app.use('/activate/:token', checkActivateToken, asyncHandler(activateRoutes));
+app.use('/', checkAccessToken, asyncHandler(homeRoutes))
 app.use(errorHandler);
 
 module.exports = app;
