@@ -73,7 +73,7 @@ app.use('/products', checkAccessToken, asyncHandler(productDetailsRoutes));
 app.use('/log-out', asyncHandler(logoutRoutes));
 app.use('/refresh-token', checkRefreshToken, asyncHandler(tokenRoutes))
 app.use('/activate/:token', checkActivateToken, asyncHandler(activateRoutes));
-app.use('/', checkAccessToken, asyncHandler(homeRoutes))
+// app.use('/', checkAccessToken, asyncHandler(homeRoutes))
 app.use(errorHandler);
 
 module.exports = app;
