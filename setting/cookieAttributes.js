@@ -1,6 +1,7 @@
 const cookieAttributes = {
     httpOnly: true,
     secure: true,
+    domain: process.env.DOMAIN,
 }
 
 const refreshTokenAttributes = {...cookieAttributes};
