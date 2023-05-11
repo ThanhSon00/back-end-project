@@ -12,7 +12,7 @@ const checkAccessToken = async (req, res, next) => {
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET_KEY, async (err, data) => {
         if (err) {
             if (err.name === "TokenExpiredError") {
-                return res.status(StatusCodes.OK).redirect('/refresh-token/refresh');
+                return res.redirect('/refresh-token/refresh');
             } else {
                 res.clearCookie('access_token', cookieAttributes);
                 res.status(StatusCodes.UNAUTHORIZED).redirect(`${rootURL}/log-in`);
