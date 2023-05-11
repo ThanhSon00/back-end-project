@@ -25,7 +25,9 @@ const activateAccount = async (req, res) => {
     res.cookie('refresh_token', tokens.refreshToken, refreshTokenAttributes);
     res.cookie('message', 'Your account has been activated successfully!', { httpOnly: true });
     res.cookie('messageType', 'Success', { httpOnly: true })
-    res.clearCookie('activate_token');
+    res.clearCookie('activate_token',  {
+        httpOnly: true,
+    });
     return res.status(StatusCodes.OK).redirect(rootURL + '/home')
 }
 

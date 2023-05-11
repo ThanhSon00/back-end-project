@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const jwt = require('jsonwebtoken');
 const { root, api } = require('../bin/URL');
 const rootURL = root.defaults.baseURL;
+const { cookieAttributes } = require('../setting/cookieAttributes')
 const checkAccessToken = async (req, res, next) => {
     const accessToken = req.cookies.access_token;
     if (!accessToken) {
@@ -13,7 +14,8 @@ const checkAccessToken = async (req, res, next) => {
             if (err.name === "TokenExpiredError") {
                 return res.status(StatusCodes.OK).redirect('/refresh-token/refresh');
             } else {
-                return res.status(StatusCodes.UNAUTHORIZED).redirect(`${rootURL}/log-in`);
+                res.clearCookie('access_token', cookieAttributes);
+                res.status(StatusCodes.UNAUTHORIZED).redirect(`${rootURL}/log-in`);
             }
         } else {
             req.body.customer_id = data.customer_id;

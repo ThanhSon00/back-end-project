@@ -45,7 +45,9 @@ const resetPassword = async (req, res) => {
     await api.patch(`/accounts/${data.customer_id}`, {
         password: password,
     });     
-    res.clearCookie('reset_pass_token');
+    res.clearCookie('reset_pass_token', {
+        httpOnly: true,
+    });
     res.cookie('message', 'Your password has been updated successfully', {
         httpOnly: true,
     });
