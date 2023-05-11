@@ -1,5 +1,3 @@
-const { StatusCodes } = require('http-status-codes');
-const jwt = require('jsonwebtoken');
 const { api } = require('../bin/URL');
 
 const renderPage = async (req, res) => {

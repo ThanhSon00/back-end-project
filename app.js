@@ -1,4 +1,5 @@
 const express = require('express');
+const { root } = require('./bin/URL');
 var app = express();
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -35,6 +36,7 @@ const asyncHandler = require('./middleware/asyncHandler');
 const checkAccessToken = require('./middleware/checkAccessToken');
 const checkRefreshToken = require('./middleware/checkRefreshToken');
 const checkActivateToken = require('./middleware/checkActivateToken');
+const notFoundErrorHandler = require('./middleware/notFoundErrorHandler');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -62,6 +64,10 @@ app.use('/api/v1/categories', asyncHandler(categoryRoutes));
 app.use('/api/v1/tokens', asyncHandler(refreshTokenRoutes));
 
 // Page
+app.get('/', (req, res) => {
+  res.redirect('/log-in');
+})
+
 app.use('/log-in',  checkLogged, asyncHandler(loginRoutes));
 app.use('/register', checkLogged, asyncHandler(registerRoutes));
 app.use('/forgot-password', checkLogged, asyncHandler(forgotPasswordRoutes));
@@ -73,7 +79,8 @@ app.use('/products', checkAccessToken, asyncHandler(productDetailsRoutes));
 app.use('/log-out', asyncHandler(logoutRoutes));
 app.use('/refresh-token', checkRefreshToken, asyncHandler(tokenRoutes))
 app.use('/activate/:token', checkActivateToken, asyncHandler(activateRoutes));
-// app.use('/', checkAccessToken, asyncHandler(homeRoutes))
+
+app.use(notFoundErrorHandler);
 app.use(errorHandler);
 
 module.exports = app;
