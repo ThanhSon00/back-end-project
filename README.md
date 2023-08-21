@@ -1,26 +1,59 @@
-# Project Title
 
-Electronic Store
+# Electronic Store
 
-## Project Description
-
-Electronic Store is a web-based application that allows users to view and buy products.
-## Installation
-
-To install and run MyProject locally, follow these steps:
-
-1. Clone the repository: `git clone https://github.com/ThanhSon00/back-end-project`
-2. Navigate to the project directory: `cd back-end-project`
-3. Install dependencies: `npm install`
-4. Start the application: `npm start`
-
-## Usage
-
-To use MyProject, follow these steps:
-
-1. Open your web browser and navigate to `http://localhost:3000`.
-2. Sign up for a new account or log in with your existing credentials.
-3. You will be redirected to the home page, where you can view products and manage your cart.
+An online web shop where customers can view products from Amazon by filter, add them to carts.
 
 
+![Logo](https://res.cloudinary.com/dfnm6sooi/image/upload/f_auto,q_auto/fpklzhxgtiau2ulcaktp)
+
+
+## Badges
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+
+
+## Authors
+
+- [@ThanhSon00](https://www.github.com/ThanhSon00)
+
+
+## Demo
+
+https://my-first-project-be.onrender.com
+
+
+## Features
+
+
+
+
+## Screenshots
+
+![App Screenshot](https://res.cloudinary.com/dfnm6sooi/image/upload/f_auto,q_auto/hzltirdcss33f9c3jppk)
+
+![App Screenshot](https://res.cloudinary.com/dfnm6sooi/image/upload/f_auto,q_auto/clgxxkosevmxpoqvdo22)
+
+![App Screenshot](https://res.cloudinary.com/dfnm6sooi/image/upload/f_auto,q_auto/lhowajoybvjiqzgex3cp)
+
+![App Screenshot](https://res.cloudinary.com/dfnm6sooi/image/upload/f_auto,q_auto/rolpo5hypu1hivtaaqil)
+
+## Tech Stack
+
+**Client:** HTML5, CSS3, Javascript
+
+**Server:** NodeJS, ExpressJS, MySQL
+
+
+## Lessons Learned
+
+What did you learn while building this project? What challenges did you face and how did you overcome them?
+
+
+## Acknowledgements
+
+ - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
+ - [Awesome README](https://github.com/matiassingers/awesome-readme)
+ - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
 
