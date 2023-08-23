@@ -26,8 +26,11 @@ https://my-first-project-be.onrender.com
 
 ## Features
 
-
-
+- Login, Create Account
+- Reset Password
+- Search product by category, price
+- Add, update, delete product in cart
+- Support Google Login
 
 ## Screenshots
 
@@ -44,11 +47,6 @@ https://my-first-project-be.onrender.com
 **Client:** HTML5, CSS3, Javascript
 
 **Server:** NodeJS, ExpressJS, MySQL
-
-
-## Lessons Learned
-
-What did you learn while building this project? What challenges did you face and how did you overcome them?
 
 
 ## Acknowledgements
